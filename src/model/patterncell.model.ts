@@ -1,11 +1,11 @@
-import { CELL_TYPE } from "./patterntype.enum";
+import { CELL_TYPE } from './patterntype.enum'
 
 export interface IPatternCell {
-  colorindex: number;
-  type: CELL_TYPE;
+    colorindex: number
+    type: CELL_TYPE
 }
 
 export const newPatternCell: IPatternCell = {
-  colorindex: 0,
-  type: CELL_TYPE.EMPTY,
-};
+    colorindex: 0,
+    type: CELL_TYPE.EMPTY
+}

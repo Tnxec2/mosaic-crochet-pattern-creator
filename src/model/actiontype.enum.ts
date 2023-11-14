@@ -7,5 +7,5 @@ export enum ACTION_TYPES {
     LR = 'lr',
     XR = 'xr',
     LX = 'lx',
-    LXR = 'lxr',
+    LXR = 'lxr'
 }

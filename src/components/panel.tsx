@@ -1,16 +1,13 @@
-
-import { ColorsComponent } from "./colors";
-import { PatternSizeComponent } from "./patternsize";
-import { ActionsComponent } from "./actions";
-
+import { ColorsComponent } from './colors'
+import { PatternSizeComponent } from './patternsize'
+import { ActionsComponent } from './actions'
 
 export const PanelComponent = () => {
-
-  return (
-    <>
-      <PatternSizeComponent />
-      <ColorsComponent />
-      <ActionsComponent />
-    </>
-  );
-};
+    return (
+        <>
+            <PatternSizeComponent />
+            <ColorsComponent />
+            <ActionsComponent />
+        </>
+    )
+}

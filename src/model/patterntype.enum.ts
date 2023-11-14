@@ -6,5 +6,5 @@ export enum CELL_TYPE {
     LR = 'lr',
     XR = 'xr',
     LX = 'lx',
-    LXR = 'lxr',
+    LXR = 'lxr'
 }
