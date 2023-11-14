@@ -1,7 +1,14 @@
-# Getting Started with Create React App
+# Mosaic Crochet Pattern Creator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+this is my just for fun project.
 
+this is a Web-Based tool to create mosaic crochet patterns.
+
+Open from github pages:
+
+[https://tnxec2.github.io/mosaic-crochet-pattern-creator/](https://tnxec2.github.io/mosaic-crochet-pattern-creator/)
+
+# React Stuff
 ## Available Scripts
 
 In the project directory, you can run:
