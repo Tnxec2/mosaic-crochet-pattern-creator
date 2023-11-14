@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { FileLoaderComponent } from "./fileloader";
 import { IPattern, PatternContext } from "../context";
 import { onSave } from "../services/file.service";
+import { VERSION } from "../model/constats";
 
 function NavbarComponent() {
   const {
@@ -26,10 +27,10 @@ function NavbarComponent() {
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand href="#">Mosaic Crochet Pattern Generator</Navbar.Brand>
-          <Navbar.Toggle aria-controls="menu-navbar-nav" />
-          <Navbar.Collapse id="menu-navbar-nav">
-            <Nav className="me-auto">
+          <Navbar id="menu-navbar-nav">
+            
+            <Navbar.Brand href="#">Mosaic Crochet Pattern Generator</Navbar.Brand>
+            <Nav className="me-auto ms-0">
               <NavDropdown title="File" id="file-nav-dropdown">
                 <NavDropdown.Item href="" onClick={() => newPattern()}>
                   New
@@ -49,7 +50,12 @@ function NavbarComponent() {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
-          </Navbar.Collapse>
+          </Navbar>
+          <Navbar id="menu-navbar-text">
+            <Navbar.Text className="justify-content-end ms-3">
+              v. {VERSION}
+            </Navbar.Text>
+          </Navbar>
         </Container>
       </Navbar>
 
