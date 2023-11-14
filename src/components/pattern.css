@@ -1,0 +1,35 @@
+.pattern-container {
+    overflow: auto;
+}
+
+#pattern {
+    width: max-content;
+    height: max-content;
+    transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+}
+
+.r {
+    display: flex;
+}
+
+.cell {
+    border: 1px solid #252525;
+    width: 1.5em;
+    height: 1.5em;
+    cursor: pointer;
+    text-align: center;
+}
+.empty {
+    cursor: unset;
+    border: unset;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

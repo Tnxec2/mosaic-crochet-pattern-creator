@@ -1,0 +1,8 @@
+.selected-action {
+  box-shadow: inset 0 0 0.5em rgb(0, 34, 255);
+}
+
+.btn img {
+  width: 2em !important;
+  height: 2em !important;
+}

@@ -1,25 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import NavbarComponent from "./components/navbar";
+import { PanelComponent } from "./components/panel";
+import { PatternComponent } from "./components/pattern";
+import { PatternContextProvider } from "./context";
+import { Col, Row } from "react-bootstrap";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PatternContextProvider>
+      <NavbarComponent />
+      <Row className="m-3">
+        <Col sm={2}>
+          <PanelComponent />
+        </Col>
+        <Col sm={10}>
+          <PatternComponent />
+        </Col>
+      </Row>
+    </PatternContextProvider>
   );
 }
 
