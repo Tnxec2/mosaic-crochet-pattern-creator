@@ -1,90 +1,92 @@
-import { ChangeEvent, FC, useContext, useMemo } from 'react'
-import { Form } from 'react-bootstrap'
+import { FC, useContext, useEffect, useState } from 'react'
+import { Button, Form } from 'react-bootstrap'
 import { PatternContext } from '../context'
 import { IPatternCell } from '../model/patterncell.model'
 import { CELL_TYPE } from '../model/patterntype.enum'
 
 type Props = {}
 export const PatternSizeComponent: FC<Props> = () => {
+    const [ rows, setRows ] = useState(10)
+    const [ cols, setCols ] = useState(10)
     const { patternState, savePattern } = useContext(PatternContext)
 
-    const rows = useMemo(() => patternState.pattern.length, [patternState])
-    const cols = useMemo(
-        () =>
-            patternState.pattern.length > 0
+    useEffect(() => {
+        setRows(patternState.pattern.length)
+        setCols(patternState.pattern.length > 0
                 ? patternState.pattern[0].length
-                : 0,
-        [patternState]
-    )
+                : 0)
+    }, [patternState])
 
-    const changeRows = (e: ChangeEvent<HTMLInputElement>) => {
-        let newRowCount = Number(e.target.value) || 1
+    const change = () => {
+        if (rows === patternState.pattern.length && cols === patternState.pattern[0].length) return
 
-        if (newRowCount > patternState.pattern.length) {
+        if (rows > patternState.pattern.length) {
             let rowsToAppend = []
+            let lastRowColorIndex = patternState.pattern[patternState.pattern.length-1][0].colorindex
+            let rowColorIndex = lastRowColorIndex === 0 ? 1 : 0
+
             while (
-                newRowCount >
+                rows >
                 patternState.pattern.length + rowsToAppend.length
             ) {
                 let row: IPatternCell[] = []
                 for (
                     let index = 0;
-                    index < patternState.pattern[0].length;
+                    index < cols;
                     index++
                 ) {
                     row.push({
-                        colorindex: patternState.selectedColorIndex,
+                        colorindex: rowColorIndex,
                         type: CELL_TYPE.EMPTY
                     })
                 }
                 rowsToAppend.push(row)
+                rowColorIndex = rowColorIndex === 0 ? 1 : 0
             }
             savePattern({
                 ...patternState,
-                pattern: [...patternState.pattern, ...rowsToAppend]
+                pattern: [...patternState.pattern.map((row) => changeCols(row)), ...rowsToAppend]
             })
         } else if (
-            newRowCount > 0 &&
-            newRowCount < patternState.pattern.length
+            rows > 0 &&
+            rows < patternState.pattern.length
         ) {
             savePattern({
                 ...patternState,
-                pattern: [...patternState.pattern.slice(0, newRowCount)]
+                pattern: [...patternState.pattern.slice(0, rows).map((row) => changeCols(row))]
+            })
+        } else {
+            savePattern({
+                ...patternState,
+                pattern: [...patternState.pattern.map((row) => changeCols(row))]
             })
         }
     }
 
-    const changeCols = (e: ChangeEvent<HTMLInputElement>) => {
-        let newColsCount = Number(e.target.value) || 1
+    function changeCols (row: IPatternCell[]): IPatternCell[] {
 
-        if (newColsCount > patternState.pattern[0].length) {
+        if (cols > patternState.pattern[0].length) {
             let colsToAppend: IPatternCell[] = []
             while (
                 colsToAppend.length <
-                newColsCount - patternState.pattern[0].length
+                cols - patternState.pattern[0].length
             ) {
                 colsToAppend.push({
-                    colorindex: patternState.selectedColorIndex,
+                    colorindex: row[row.length-1].colorindex,
                     type: CELL_TYPE.EMPTY
                 })
             }
-            savePattern({
-                ...patternState,
-                pattern: patternState.pattern.map((row) => [
+            return [
                     ...row,
                     ...colsToAppend
-                ])
-            })
+                ]
         } else if (
-            newColsCount > 0 &&
-            newColsCount < patternState.pattern[0].length
+            cols > 0 &&
+            cols < patternState.pattern[0].length
         ) {
-            savePattern({
-                ...patternState,
-                pattern: patternState.pattern.map((row) =>
-                    row.slice(0, newColsCount)
-                )
-            })
+            return row.slice(0, cols)
+        } else {
+            return [...row]
         }
     }
 
@@ -97,7 +99,7 @@ export const PatternSizeComponent: FC<Props> = () => {
                     min={0}
                     placeholder="rows"
                     value={rows}
-                    onChange={changeRows}
+                    onChange={(e) => setRows(Number(e.target.value) || 1)}
                 />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -107,8 +109,11 @@ export const PatternSizeComponent: FC<Props> = () => {
                     min={0}
                     placeholder="rows"
                     value={cols}
-                    onChange={changeCols}
+                    onChange={(e) => setCols(Number(e.target.value) || 1)}
                 />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Button onClick={change}>Change</Button>
             </Form.Group>
         </>
     )
