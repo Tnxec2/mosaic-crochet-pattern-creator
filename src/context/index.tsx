@@ -54,6 +54,12 @@ interface IPatternContext {
     showCellStitchType: boolean
     setShowCellStichType: React.Dispatch<React.SetStateAction<boolean>>
     convertToPng: () => void
+    mirrorVertical: boolean
+    setMirrorVertical: React.Dispatch<React.SetStateAction<boolean>>
+    mirrorHorizontal: boolean
+    setMirrorHorizontal: React.Dispatch<React.SetStateAction<boolean>>
+    toggleStich: boolean
+    setToggleStich: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const initialState: IPatternContext = {
@@ -64,6 +70,12 @@ const initialState: IPatternContext = {
     showOpenFileDialog: false,
     setShowCellStichType: () => {},
     showCellStitchType: true,
+    setMirrorHorizontal: () => {},
+    mirrorHorizontal: true,
+    setMirrorVertical: () => {},
+    mirrorVertical: true,
+    setToggleStich: () => {},
+    toggleStich: true,
     getCellColor: (row: number, col: number) => {
         return ''
     },
@@ -80,6 +92,9 @@ const PatternContextProvider: FC<IProps> = (props) => {
     const [patternState, setPatternState] = useState<IPattern>(loadPattern())
     const [showOpenFileDialog, setShowOpenFileDialog] = useState(false)
     const [showCellStitchType, setShowCellStichType] = useState(true)
+    const [mirrorVertical, setMirrorVertical] = useState(false)
+    const [mirrorHorizontal, setMirrorHorizontal] = useState(false)
+    const [toggleStich, setToggleStich] = useState(true)
 
     const savePattern = (pattern: IPattern) => {
         pattern.saved = false
@@ -143,7 +158,13 @@ const PatternContextProvider: FC<IProps> = (props) => {
         setShowOpenFileDialog,
         convertToPng,
         showCellStitchType,
-        setShowCellStichType
+        setShowCellStichType,
+        mirrorVertical,
+        setMirrorVertical,
+        mirrorHorizontal,
+        setMirrorHorizontal,
+        toggleStich,
+        setToggleStich
     }
 
     return (

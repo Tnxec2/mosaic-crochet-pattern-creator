@@ -20,8 +20,12 @@ export const PatternComponent: FC = () => {
         savePattern,
         getCellColor,
         showCellStitchType,
-        setShowCellStichType
+        setShowCellStichType,
+        mirrorVertical,
+        mirrorHorizontal,
+        toggleStich
     } = useContext(PatternContext)
+
 
     const [dropDownPos, setDropDownPos] = useState<TDropDownPos>({
         row: 0,
@@ -33,9 +37,9 @@ export const PatternComponent: FC = () => {
         savePattern({
             ...patternState,
             pattern: patternState.pattern.map((r, rowI) =>
-                rowI === row
+                rowI === row || (mirrorHorizontal && rowI === patternState.pattern.length - row - 1)
                     ? r.map((c, colI) =>
-                          colI === col ? getnewcell(c, mouseOver) : c
+                          colI === col || (mirrorVertical && colI === r.length - col - 1) ? getnewcell(c, mouseOver) : c
                       )
                     : r
             )
@@ -62,7 +66,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.X:
                 return {
                     ...c,
-                    type: mouseOver
+                    type: mouseOver || !toggleStich
                         ? CELL_TYPE.X
                         : c.type === CELL_TYPE.X
                           ? CELL_TYPE.EMPTY
@@ -71,7 +75,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.L:
                 return {
                     ...c,
-                    type: mouseOver
+                    type: mouseOver || !toggleStich
                         ? CELL_TYPE.L
                         : c.type === CELL_TYPE.L
                           ? CELL_TYPE.EMPTY
@@ -80,7 +84,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.R:
                 return {
                     ...c,
-                    type: mouseOver
+                    type: mouseOver || !toggleStich
                         ? CELL_TYPE.R
                         : c.type === CELL_TYPE.R
                           ? CELL_TYPE.EMPTY
@@ -89,7 +93,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.LR:
                 return {
                     ...c,
-                    type: mouseOver
+                    type: mouseOver || !toggleStich
                         ? CELL_TYPE.LR
                         : c.type === CELL_TYPE.LR
                           ? CELL_TYPE.EMPTY
@@ -98,7 +102,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.XR:
                 return {
                     ...c,
-                    type: mouseOver
+                    type: mouseOver || !toggleStich
                         ? CELL_TYPE.XR
                         : c.type === CELL_TYPE.XR
                           ? CELL_TYPE.EMPTY
@@ -107,7 +111,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.LX:
                 return {
                     ...c,
-                    type: mouseOver
+                    type: mouseOver || !toggleStich
                         ? CELL_TYPE.LX
                         : c.type === CELL_TYPE.LX
                           ? CELL_TYPE.EMPTY
@@ -116,7 +120,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.LXR:
                 return {
                     ...c,
-                    type: mouseOver
+                    type: mouseOver || !toggleStich
                         ? CELL_TYPE.LXR
                         : c.type === CELL_TYPE.LXR
                           ? CELL_TYPE.EMPTY
