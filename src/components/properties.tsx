@@ -5,7 +5,7 @@ import { Form } from "react-bootstrap"
 type Props = {}
 
 export const PropertiesComponent: FC<Props> = () => {
-    const { mirrorVertical, setMirrorVertical, mirrorHorizontal, setMirrorHorizontal, toggleStich, setToggleStich } = useContext(PatternContext)
+    const { mirrorVertical, setMirrorVertical, mirrorHorizontal, setMirrorHorizontal, toggleStitch, setToggleStitch } = useContext(PatternContext)
 
     return (
         <>            
@@ -16,15 +16,15 @@ export const PropertiesComponent: FC<Props> = () => {
                     className="form-check-input"
                     type="checkbox"
                     role="switch"
-                    checked={toggleStich}
+                    checked={toggleStitch}
                     onChange={(e) => {
-                        setToggleStich(e.target.checked)
+                        setToggleStitch(e.target.checked)
                     }}
                 />
                 <label
                     className="form-check-label"
                 >
-                    toggle stich
+                    toggle stitch
                 </label>
             </div>
             <div className="form-check form-switch">

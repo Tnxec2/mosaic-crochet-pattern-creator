@@ -52,14 +52,14 @@ interface IPatternContext {
     showOpenFileDialog: boolean
     setShowOpenFileDialog: React.Dispatch<React.SetStateAction<boolean>>
     showCellStitchType: boolean
-    setShowCellStichType: React.Dispatch<React.SetStateAction<boolean>>
+    setShowCellStitchType: React.Dispatch<React.SetStateAction<boolean>>
     convertToPng: () => void
     mirrorVertical: boolean
     setMirrorVertical: React.Dispatch<React.SetStateAction<boolean>>
     mirrorHorizontal: boolean
     setMirrorHorizontal: React.Dispatch<React.SetStateAction<boolean>>
-    toggleStich: boolean
-    setToggleStich: React.Dispatch<React.SetStateAction<boolean>>
+    toggleStitch: boolean
+    setToggleStitch: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const initialState: IPatternContext = {
@@ -68,14 +68,14 @@ const initialState: IPatternContext = {
     newPattern: () => {},
     setShowOpenFileDialog: () => {},
     showOpenFileDialog: false,
-    setShowCellStichType: () => {},
+    setShowCellStitchType: () => {},
     showCellStitchType: true,
     setMirrorHorizontal: () => {},
     mirrorHorizontal: true,
     setMirrorVertical: () => {},
     mirrorVertical: true,
-    setToggleStich: () => {},
-    toggleStich: true,
+    setToggleStitch: () => {},
+    toggleStitch: true,
     getCellColor: (row: number, col: number) => {
         return ''
     },
@@ -91,10 +91,10 @@ const PatternContext = createContext(initialState)
 const PatternContextProvider: FC<IProps> = (props) => {
     const [patternState, setPatternState] = useState<IPattern>(loadPattern())
     const [showOpenFileDialog, setShowOpenFileDialog] = useState(false)
-    const [showCellStitchType, setShowCellStichType] = useState(true)
+    const [showCellStitchType, setShowCellStitchType] = useState(true)
     const [mirrorVertical, setMirrorVertical] = useState(false)
     const [mirrorHorizontal, setMirrorHorizontal] = useState(false)
-    const [toggleStich, setToggleStich] = useState(true)
+    const [toggleStitch, setToggleStitch] = useState(true)
 
     const savePattern = (pattern: IPattern) => {
         pattern.saved = false
@@ -158,13 +158,13 @@ const PatternContextProvider: FC<IProps> = (props) => {
         setShowOpenFileDialog,
         convertToPng,
         showCellStitchType,
-        setShowCellStichType,
+        setShowCellStitchType,
         mirrorVertical,
         setMirrorVertical,
         mirrorHorizontal,
         setMirrorHorizontal,
-        toggleStich,
-        setToggleStich
+        toggleStitch,
+        setToggleStitch
     }
 
     return (

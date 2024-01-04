@@ -20,10 +20,10 @@ export const PatternComponent: FC = () => {
         savePattern,
         getCellColor,
         showCellStitchType,
-        setShowCellStichType,
+        setShowCellStitchType,
         mirrorVertical,
         mirrorHorizontal,
-        toggleStich
+        toggleStitch
     } = useContext(PatternContext)
 
 
@@ -66,7 +66,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.X:
                 return {
                     ...c,
-                    type: mouseOver || !toggleStich
+                    type: mouseOver || !toggleStitch
                         ? CELL_TYPE.X
                         : c.type === CELL_TYPE.X
                           ? CELL_TYPE.EMPTY
@@ -75,7 +75,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.L:
                 return {
                     ...c,
-                    type: mouseOver || !toggleStich
+                    type: mouseOver || !toggleStitch
                         ? CELL_TYPE.L
                         : c.type === CELL_TYPE.L
                           ? CELL_TYPE.EMPTY
@@ -84,7 +84,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.R:
                 return {
                     ...c,
-                    type: mouseOver || !toggleStich
+                    type: mouseOver || !toggleStitch
                         ? CELL_TYPE.R
                         : c.type === CELL_TYPE.R
                           ? CELL_TYPE.EMPTY
@@ -93,7 +93,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.LR:
                 return {
                     ...c,
-                    type: mouseOver || !toggleStich
+                    type: mouseOver || !toggleStitch
                         ? CELL_TYPE.LR
                         : c.type === CELL_TYPE.LR
                           ? CELL_TYPE.EMPTY
@@ -102,7 +102,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.XR:
                 return {
                     ...c,
-                    type: mouseOver || !toggleStich
+                    type: mouseOver || !toggleStitch
                         ? CELL_TYPE.XR
                         : c.type === CELL_TYPE.XR
                           ? CELL_TYPE.EMPTY
@@ -111,7 +111,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.LX:
                 return {
                     ...c,
-                    type: mouseOver || !toggleStich
+                    type: mouseOver || !toggleStitch
                         ? CELL_TYPE.LX
                         : c.type === CELL_TYPE.LX
                           ? CELL_TYPE.EMPTY
@@ -120,7 +120,7 @@ export const PatternComponent: FC = () => {
             case ACTION_TYPES.LXR:
                 return {
                     ...c,
-                    type: mouseOver || !toggleStich
+                    type: mouseOver || !toggleStitch
                         ? CELL_TYPE.LXR
                         : c.type === CELL_TYPE.LXR
                           ? CELL_TYPE.EMPTY
@@ -231,7 +231,7 @@ export const PatternComponent: FC = () => {
                                 id="flexSwitchCheckDefault"
                                 checked={showCellStitchType}
                                 onChange={(e) => {
-                                    setShowCellStichType(e.target.checked)
+                                    setShowCellStitchType(e.target.checked)
                                 }}
                             />
                             <label
