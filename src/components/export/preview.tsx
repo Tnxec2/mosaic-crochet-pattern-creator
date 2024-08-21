@@ -17,15 +17,15 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   } = useContext(PatternContext)
 
   const [fontSize, setFontSize] = useState<number>(20)
-
+  const [scale, setScale] = useState<number>(1.0)
   const [showCellStitchType, setShowCellStitchType] = useState<boolean>(true)
   const [width, setWidth] = useState<number>(100)
   const [height, setHeight] = useState<number>(100)
-  const [canvas, setCanvas] = useState<HTMLCanvasElement | undefined>()
+  const [canvasToSave, setCanvasToSave] = useState<HTMLCanvasElement | undefined>()
 
   function draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     if (canvas) {
-      setCanvas(canvas)
+      setCanvasToSave(canvas)
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawPattern(canvas, ctx)
     } else {
@@ -34,9 +34,6 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   }
 
   function drawPattern(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
-
-    ctx.clearRect(0, 0, width, height)
-
     const rows = patternState.pattern.length
     const cols = patternState.pattern[0].length
     const max = Math.max(rows, cols)
@@ -51,10 +48,6 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
     setWidth(w)
     let h = cellSize * (rows + 2)
     setHeight(h)
-
-    canvas.width = w
-    canvas.height = h
-
 
     ctx.font = `normal ${fontSize}pt monospace`
 
@@ -136,8 +129,8 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   }
 
   function save() {
-    if (canvas) {
-      var image = canvas.toDataURL();
+    if (canvasToSave) {
+      var image = canvasToSave.toDataURL();
 
       var aDownloadLink = document.createElement('a');
 
@@ -184,6 +177,17 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
               }}
             />
           </InputGroup>
+          <InputGroup className="mb-3">
+            <InputGroup.Text>Scale</InputGroup.Text>
+            <Form.Control
+              type="number"
+              min={-10}
+              max={10}
+              step={0.1}
+              value={scale}
+              onChange={(e) => setScale(Number(e.target.value) || 1)}
+            />
+          </InputGroup>
         </div>
         <div>
           <Button variant="secondary" onClick={onClose}>
@@ -193,9 +197,10 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
           <Button variant="primary" onClick={save}>
             Save
           </Button>
+
+         {scale} 
         </div>
-        <hr />
-        <div style={{ overflow: 'auto' }}>
+        <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left'   }}>
           <Canvas
             id="canvasPreview"
             draw={draw}
