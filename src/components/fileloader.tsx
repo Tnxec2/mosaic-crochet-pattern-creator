@@ -26,7 +26,7 @@ export const FileLoaderComponent: FC<PROPS> = ({ onLoad, onClose }) => {
 
     return (
         <Modal show={true}>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton onHide={onClose}>
                 <Modal.Title>Load file</Modal.Title>
             </Modal.Header>
 

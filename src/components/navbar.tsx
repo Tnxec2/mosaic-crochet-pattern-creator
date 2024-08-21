@@ -7,6 +7,7 @@ import { FileLoaderComponent } from './fileloader'
 import { IPattern, PatternContext } from '../context'
 import { onSave } from '../services/file.service'
 import { VERSION } from '../model/constats'
+import { PreviewComponent } from './export/preview'
 
 function NavbarComponent() {
     const {
@@ -15,7 +16,8 @@ function NavbarComponent() {
         newPattern,
         showOpenFileDialog,
         setShowOpenFileDialog,
-        convertToPng
+        showPreviewDialog,
+        setShowPreviewDialog,
     } = useContext(PatternContext)
 
     const onLoad = (pattern: IPattern) => {
@@ -54,7 +56,7 @@ function NavbarComponent() {
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={convertToPng}
+                                    onClick={() => setShowPreviewDialog(true)}
                                 >
                                     Export
                                 </NavDropdown.Item>
@@ -73,6 +75,12 @@ function NavbarComponent() {
                 <FileLoaderComponent
                     onClose={() => setShowOpenFileDialog(false)}
                     onLoad={onLoad}
+                />
+            )}
+
+            {showPreviewDialog && (
+                <PreviewComponent
+                    onClose={() => setShowPreviewDialog(false)}
                 />
             )}
         </>

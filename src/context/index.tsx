@@ -51,6 +51,8 @@ interface IPatternContext {
     getCellColor: (row: number, col: number) => string
     showOpenFileDialog: boolean
     setShowOpenFileDialog: React.Dispatch<React.SetStateAction<boolean>>
+    showPreviewDialog: boolean
+    setShowPreviewDialog: React.Dispatch<React.SetStateAction<boolean>>
     showCellStitchType: boolean
     setShowCellStitchType: React.Dispatch<React.SetStateAction<boolean>>
     convertToPng: () => void
@@ -69,6 +71,8 @@ const initialState: IPatternContext = {
     setShowOpenFileDialog: () => {},
     showOpenFileDialog: false,
     setShowCellStitchType: () => {},
+    showPreviewDialog: false,
+    setShowPreviewDialog: () => {}, 
     showCellStitchType: true,
     setMirrorHorizontal: () => {},
     mirrorHorizontal: true,
@@ -91,6 +95,7 @@ const PatternContext = createContext(initialState)
 const PatternContextProvider: FC<IProps> = (props) => {
     const [patternState, setPatternState] = useState<IPattern>(loadPattern())
     const [showOpenFileDialog, setShowOpenFileDialog] = useState(false)
+    const [showPreviewDialog, setShowPreviewDialog] = useState(false)
     const [showCellStitchType, setShowCellStitchType] = useState(true)
     const [mirrorVertical, setMirrorVertical] = useState(false)
     const [mirrorHorizontal, setMirrorHorizontal] = useState(false)
@@ -156,6 +161,8 @@ const PatternContextProvider: FC<IProps> = (props) => {
         newPattern,
         showOpenFileDialog,
         setShowOpenFileDialog,
+        showPreviewDialog,
+        setShowPreviewDialog,
         convertToPng,
         showCellStitchType,
         setShowCellStitchType,
