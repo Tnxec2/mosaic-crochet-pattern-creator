@@ -92,13 +92,13 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
     ctx.textBaseline = "top"
 
     for (let r = 1; r <= rows; r++) {
-      let y = (r) * cellSize
+      let y = h - (r+1) * cellSize
       ctx.fillText(r.toString(), 2, y+2) // left
       ctx.fillText(r.toString(), w - cellSize + 2, y+2) // right
     }
 
     for (let c = 1; c <= cols; c++) {
-      let x = (c) * cellSize
+      let x = w - (c+1) * cellSize
       ctx.fillText(c.toString(), x + 2, 2) // top
       ctx.fillText(c.toString(), x + 2, h - cellSize + 2) // bottom
     }
