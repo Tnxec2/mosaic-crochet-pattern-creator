@@ -95,12 +95,12 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
       let y = (r) * cellSize
       ctx.fillText(r.toString(), 2, y+2) // left
       ctx.fillText(r.toString(), w - cellSize + 2, y+2) // right
+    }
 
-      for (let c = 1; c <= cols; c++) {
-        let x = (c) * cellSize
-        ctx.fillText(c.toString(), x + 2, 2) // top
-        ctx.fillText(c.toString(), x + 2, h - cellSize + 2) // bottom
-      }
+    for (let c = 1; c <= cols; c++) {
+      let x = (c) * cellSize
+      ctx.fillText(c.toString(), x + 2, 2) // top
+      ctx.fillText(c.toString(), x + 2, h - cellSize + 2) // bottom
     }
 
     // grid
