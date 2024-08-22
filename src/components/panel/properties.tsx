@@ -23,6 +23,9 @@ export const PropertiesComponent: FC<Props> = () => {
                 />
                 <label
                     className="form-check-label"
+                    onClick={(e) => {
+                        setToggleStitch(!toggleStitch)
+                    }}
                 >
                     toggle stitch
                 </label>
@@ -39,8 +42,11 @@ export const PropertiesComponent: FC<Props> = () => {
                 />
                 <label
                     className="form-check-label"
+                    onClick={(e) => {
+                        setMirrorVertical(!mirrorVertical)
+                    }}
                 >
-                    mirror vertical
+                    ↔️ mirror vertical
                 </label>
             </div>
             <div className="form-check form-switch">
@@ -55,8 +61,11 @@ export const PropertiesComponent: FC<Props> = () => {
                 />
                 <label
                     className="form-check-label"
+                    onClick={(e) => {
+                        setMirrorHorizontal(!mirrorHorizontal)
+                    }}
                 >
-                    mirror horizontal
+                    ↕️ mirror horizontal
                 </label>
             </div>
         </Form.Group> 

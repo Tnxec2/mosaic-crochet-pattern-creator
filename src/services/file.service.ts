@@ -1,8 +1,9 @@
 import { IPattern, initialPattern } from '../context'
-import { KEY_STORAGE } from '../model/constats'
+import { KEY_STORAGE, UNKNOWN_NAME } from '../model/constats'
+import { mug } from '../sampledata/mug'
 
 export const onSave = (patternState: IPattern) => {
-    const fileName = 'pattern'
+    const fileName = patternState.name || UNKNOWN_NAME
     const json = JSON.stringify(patternState, null, 2)
     const blob = new Blob([json], { type: 'application/json' })
     const href = URL.createObjectURL(blob)
@@ -30,8 +31,9 @@ export const loadFile = (
         fr.onload = (e: ProgressEvent<FileReader>) => {
             if (e.target?.result) {
                 let json = e.target.result
-                let j: IPattern = JSON.parse(json.toString())
-                onLoad(j)
+                let pat: IPattern = JSON.parse(json.toString())
+                if (!pat.name) pat.name = UNKNOWN_NAME
+                onLoad(pat)
             }
         }
         fr.readAsText(file)
@@ -41,7 +43,9 @@ export const loadFile = (
 export const loadPattern = () => {
     let saved = localStorage.getItem(KEY_STORAGE)
     if (saved) {
-        return JSON.parse(saved) as IPattern
+        let pattern = JSON.parse(saved) as IPattern
+        if (!pattern.name) pattern.name = UNKNOWN_NAME
+        return pattern
     }
-    return initialPattern
+    return mug
 }

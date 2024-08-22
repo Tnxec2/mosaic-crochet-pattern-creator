@@ -5,7 +5,8 @@ import {
     BACKGROUND_COLOR,
     DEFAULT_COLOR,
     DEFAULT_COLOR_2,
-    KEY_STORAGE
+    KEY_STORAGE,
+    UNKNOWN_NAME
 } from '../model/constats'
 import { loadPattern } from '../services/file.service'
 import { useToPng } from '@hugocxl/react-to-image'
@@ -18,6 +19,7 @@ export interface IPattern {
     selectedAction: ACTION_TYPES
     scaleFactor: number
     saved: boolean
+    name: string
 }
 
 function genpat() {
@@ -41,7 +43,8 @@ const initialPattern: IPattern = {
     selectedColorIndex: 0,
     selectedAction: ACTION_TYPES.NONE,
     scaleFactor: 1,
-    saved: true
+    saved: true,
+    name: UNKNOWN_NAME
 }
 
 interface IPatternContext {

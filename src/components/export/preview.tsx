@@ -5,6 +5,7 @@ import { BACKGROUND_COLOR } from "../../model/constats";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { CELL_TYPE } from "../../model/patterntype.enum";
 import { ScaleFactor } from "../shared/scalefactor";
+import { PatternName } from "../shared/patternname";
 
 
 interface PROPS {
@@ -17,7 +18,7 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
     getCellColor
   } = useContext(PatternContext)
 
-  const [fontSize, setFontSize] = useState<number>(20)
+  const [fontSize, setFontSize] = useState<number>(10)
   const [showCellStitchType, setShowCellStitchType] = useState<boolean>(true)
   const [width, setWidth] = useState<number>(100)
   const [height, setHeight] = useState<number>(100)
@@ -134,7 +135,7 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
 
       var aDownloadLink = document.createElement('a');
 
-      var filename = 'pattern.png';
+      var filename = `${patternState.name}.png` ;
       // Add the name of the file to the link
       aDownloadLink.download = filename;
       // Attach the data to the link
@@ -155,8 +156,10 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
 
         <div>
           <InputGroup className="mb-3">
+            <PatternName />
             <InputGroup.Text>Font size</InputGroup.Text>
             <Form.Control
+              style={{minWidth: 60}}
               type="number"
               min={6}
               placeholder="font size"

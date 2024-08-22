@@ -8,6 +8,7 @@ import { ACTION_TYPES } from '../../model/actiontype.enum'
 import { DropDown } from './dropdown'
 import { PatterCellComponent } from './pattern_cell'
 import { ScaleFactor } from '../shared/scalefactor'
+import { PatternName } from '../shared/patternname'
 
 type TDropDownPos = {
     row?: number
@@ -215,6 +216,7 @@ export const PatternComponent: FC = () => {
                 <Card.Header>
                     <Card.Title>
                         Pattern
+                    
                         <div className="form-check form-switch float-end">
                             <input
                                 className="form-check-input"
@@ -235,12 +237,7 @@ export const PatternComponent: FC = () => {
                         </div>
                     </Card.Title>
                         <InputGroup className="mb-3">
-                            <InputGroup.Text>
-                                Size: {patternState.pattern.length} x{' '}
-                                {patternState.pattern[0]
-                                    ? patternState.pattern[0].length
-                                    : 0}
-                            </InputGroup.Text>
+                            <PatternName />
                             <ScaleFactor />
                         </InputGroup>
                 </Card.Header>

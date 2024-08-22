@@ -8,6 +8,9 @@ import { IPattern, PatternContext } from '../../context'
 import { onSave } from '../../services/file.service'
 import { VERSION } from '../../model/constats'
 import { PreviewComponent } from '../export/preview'
+import { mug } from '../../sampledata/mug'
+import { nya } from '../../sampledata/nya'
+import { infinityBorder } from '../../sampledata/infinityborder'
 
 function NavbarComponent() {
     const {
@@ -58,12 +61,37 @@ function NavbarComponent() {
                                     href=""
                                     onClick={() => setShowPreviewDialog(true)}
                                 >
-                                    Export
+                                    Export Image
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title="Samples" id="samples-nav-dropdown">
+                                <NavDropdown.Header>
+                                    Caution! Your changes
+                                    <br/>
+                                    will be overwritten
+                                </NavDropdown.Header>
+                                <NavDropdown.Item
+                                    href=""
+                                    onClick={() => savePattern(mug)}
+                                >
+                                    Mug
+                                </NavDropdown.Item>
+                                <NavDropdown.Item
+                                    href=""
+                                    onClick={() => savePattern(nya)}
+                                >
+                                    Nya
+                                </NavDropdown.Item>
+                                <NavDropdown.Item
+                                    href=""
+                                    onClick={() => savePattern(infinityBorder)}
+                                >
+                                    Infinity border
                                 </NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     </Navbar>
-                    <Navbar id="menu-navbar-text">
+                    <Navbar id="menu-navbar-version">
                         <Navbar.Text className="justify-content-end ms-3">
                             v. {VERSION}
                         </Navbar.Text>
