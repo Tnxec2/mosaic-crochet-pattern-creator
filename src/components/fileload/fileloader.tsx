@@ -2,8 +2,8 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import { ChangeEvent, FC, useState } from 'react'
-import { IPattern } from '../context'
-import { loadFile } from '../services/file.service'
+import { IPattern } from '../../context'
+import { loadFile } from '../../services/file.service'
 
 interface PROPS {
     onClose: () => void

@@ -1,12 +1,13 @@
 import { FC, MouseEvent, useContext, useState } from 'react'
-import { PatternContext } from '../context'
-import { Button, ButtonGroup, Card } from 'react-bootstrap'
+import { PatternContext } from '../../context'
+import { Card, InputGroup } from 'react-bootstrap'
 import './pattern.css'
-import { CELL_TYPE } from '../model/patterntype.enum'
-import { IPatternCell } from '../model/patterncell.model'
-import { ACTION_TYPES } from '../model/actiontype.enum'
+import { CELL_TYPE } from '../../model/patterntype.enum'
+import { IPatternCell } from '../../model/patterncell.model'
+import { ACTION_TYPES } from '../../model/actiontype.enum'
 import { DropDown } from './dropdown'
 import { PatterCellComponent } from './pattern_cell'
+import { ScaleFactor } from '../shared/scalefactor'
 
 type TDropDownPos = {
     row?: number
@@ -206,16 +207,7 @@ export const PatternComponent: FC = () => {
         setDropDownPos({ row: -1, col: -1, opened: false })
     }
 
-    const changeScale = (increase: boolean) => {
-        let factor = patternState.scaleFactor || 1
 
-        if (!increase && factor > 0.1) {
-            savePattern({ ...patternState, scaleFactor: factor - 0.1 })
-            return
-        }
-        if (increase && factor < 10)
-            savePattern({ ...patternState, scaleFactor: factor + 0.1 })
-    }
 
     return (
         <>
@@ -242,39 +234,15 @@ export const PatternComponent: FC = () => {
                             </label>
                         </div>
                     </Card.Title>
-                    Size: {patternState.pattern.length} x{' '}
-                    {patternState.pattern[0]
-                        ? patternState.pattern[0].length
-                        : 0}
-                    <ButtonGroup className="float-end">
-                        <Button
-                            size="sm"
-                            variant="outline-danger"
-                            onClick={() => {
-                                changeScale(false)
-                            }}
-                        >
-                            ➖
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="outline-secondary"
-                            onClick={() => {
-                                savePattern({ ...patternState, scaleFactor: 1 })
-                            }}
-                        >
-                            ✖ {patternState.scaleFactor.toFixed(2)}
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="outline-success"
-                            onClick={() => {
-                                changeScale(true)
-                            }}
-                        >
-                            ➕
-                        </Button>
-                    </ButtonGroup>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Text>
+                                Size: {patternState.pattern.length} x{' '}
+                                {patternState.pattern[0]
+                                    ? patternState.pattern[0].length
+                                    : 0}
+                            </InputGroup.Text>
+                            <ScaleFactor />
+                        </InputGroup>
                 </Card.Header>
                 <Card.Body className="pattern-container">
                     <div

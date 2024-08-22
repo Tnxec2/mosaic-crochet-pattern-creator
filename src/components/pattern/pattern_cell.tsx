@@ -1,7 +1,7 @@
 import { FC, MouseEvent } from 'react'
-import { CELL_TYPE } from '../model/patterntype.enum'
+import { CELL_TYPE } from '../../model/patterntype.enum'
 import './pattern_cell.css'
-import { IPatternCell } from '../model/patterncell.model'
+import { IPatternCell } from '../../model/patterncell.model'
 
 type propTypes = {
     cell: IPatternCell

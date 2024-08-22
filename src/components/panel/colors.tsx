@@ -1,8 +1,8 @@
 import { ChangeEvent, FC, useContext } from 'react'
 import { Form } from 'react-bootstrap'
-import { PatternContext } from '../context'
-import { DEFAULT_COLOR } from '../model/constats'
-import { ACTION_TYPES } from '../model/actiontype.enum'
+import { PatternContext } from '../../context'
+import { DEFAULT_COLOR } from '../../model/constats'
+import { ACTION_TYPES } from '../../model/actiontype.enum'
 
 type Props = {}
 

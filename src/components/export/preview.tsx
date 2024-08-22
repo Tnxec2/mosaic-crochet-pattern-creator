@@ -1,9 +1,10 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { PatternContext } from "../../context";
 import Canvas from "./canvas"
 import { BACKGROUND_COLOR } from "../../model/constats";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { CELL_TYPE } from "../../model/patterntype.enum";
+import { ScaleFactor } from "../shared/scalefactor";
 
 
 interface PROPS {
@@ -17,7 +18,6 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   } = useContext(PatternContext)
 
   const [fontSize, setFontSize] = useState<number>(20)
-  const [scale, setScale] = useState<number>(1.0)
   const [showCellStitchType, setShowCellStitchType] = useState<boolean>(true)
   const [width, setWidth] = useState<number>(100)
   const [height, setHeight] = useState<number>(100)
@@ -176,17 +176,8 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
                 setShowCellStitchType(e.target.checked)
               }}
             />
-          </InputGroup>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>Scale</InputGroup.Text>
-            <Form.Control
-              type="number"
-              min={-10}
-              max={10}
-              step={0.1}
-              value={scale}
-              onChange={(e) => setScale(Number(e.target.value) || 1)}
-            />
+
+            <ScaleFactor />
           </InputGroup>
         </div>
         <div>
@@ -197,10 +188,8 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
           <Button variant="primary" onClick={save}>
             Save
           </Button>
-
-         {scale} 
         </div>
-        <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left'   }}>
+        <div style={{ transform: `scale(${patternState.scaleFactor})`, transformOrigin: 'top left', marginTop: 10   }}>
           <Canvas
             id="canvasPreview"
             draw={draw}

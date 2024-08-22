@@ -1,5 +1,5 @@
 import { FC, useContext } from "react"
-import { PatternContext } from "../context"
+import { PatternContext } from "../../context"
 import { Form } from "react-bootstrap"
 
 type Props = {}

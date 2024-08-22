@@ -3,11 +3,11 @@ import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { useContext } from 'react'
-import { FileLoaderComponent } from './fileloader'
-import { IPattern, PatternContext } from '../context'
-import { onSave } from '../services/file.service'
-import { VERSION } from '../model/constats'
-import { PreviewComponent } from './export/preview'
+import { FileLoaderComponent } from '../fileload/fileloader'
+import { IPattern, PatternContext } from '../../context'
+import { onSave } from '../../services/file.service'
+import { VERSION } from '../../model/constats'
+import { PreviewComponent } from '../export/preview'
 
 function NavbarComponent() {
     const {

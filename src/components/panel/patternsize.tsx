@@ -1,8 +1,8 @@
 import { FC, useContext, useEffect, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { PatternContext } from '../context'
-import { IPatternCell } from '../model/patterncell.model'
-import { CELL_TYPE } from '../model/patterntype.enum'
+import { PatternContext } from '../../context'
+import { IPatternCell } from '../../model/patterncell.model'
+import { CELL_TYPE } from '../../model/patterntype.enum'
 
 type Props = {}
 export const PatternSizeComponent: FC<Props> = () => {

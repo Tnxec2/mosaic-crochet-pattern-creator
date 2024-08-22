@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react'
 import { Form } from 'react-bootstrap'
-import { PatternContext } from '../context'
-import { ACTION_TYPES } from '../model/actiontype.enum'
+import { PatternContext } from '../../context'
+import { ACTION_TYPES } from '../../model/actiontype.enum'
 import './actions.css'
 
 type Props = {}
