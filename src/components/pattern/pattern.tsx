@@ -141,7 +141,7 @@ export const PatternComponent: FC = () => {
             pattern: patternState.pattern.map((r) => [
                 ...r.slice(0, at + 1),
                 {
-                    colorindex: patternState.selectedColorIndex,
+                    colorindex: r[at].colorindex,
                     type: CELL_TYPE.EMPTY
                 },
                 ...r.slice(at + 1)
