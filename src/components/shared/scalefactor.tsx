@@ -28,6 +28,7 @@ export const ScaleFactor: FC = () => {
             <Button
                 size="sm"
                 variant="outline-danger"
+                title="decrease scale factor"
                 onClick={() => {
                     changeScale(false)
                 }}
@@ -37,6 +38,7 @@ export const ScaleFactor: FC = () => {
             <Button
                 size="sm"
                 variant="outline-secondary"
+                title="reset scale factor to default"
                 onClick={() => {
                     savePattern({ ...patternState, scaleFactor: 1 })
                 }}
@@ -46,6 +48,7 @@ export const ScaleFactor: FC = () => {
             <Button
                 size="sm"
                 variant="outline-success"
+                title="increase scale factor"
                 onClick={() => {
                     changeScale(true)
                 }}
