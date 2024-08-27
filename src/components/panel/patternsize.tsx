@@ -1,23 +1,25 @@
 import { FC, useContext, useEffect, useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, ButtonGroup, Form, InputGroup } from 'react-bootstrap'
 import { PatternContext } from '../../context'
 import { IPatternCell } from '../../model/patterncell.model'
 import { CELL_TYPE } from '../../model/patterntype.enum'
 
 type Props = {}
 export const PatternSizeComponent: FC<Props> = () => {
-    const [ rows, setRows ] = useState(10)
-    const [ cols, setCols ] = useState(10)
+    const [ rowsString, setRowsString ] = useState("10")
+    const [ colsString, setColsString ] = useState("10")
     const { patternState, savePattern } = useContext(PatternContext)
 
     useEffect(() => {
-        setRows(patternState.pattern.length)
-        setCols(patternState.pattern.length > 0
-                ? patternState.pattern[0].length
-                : 0)
+        setRowsString(patternState.pattern.length.toString())
+        setColsString(patternState.pattern.length > 0
+                ? patternState.pattern[0].length.toString()
+                : "1")
     }, [patternState])
 
     const change = () => {
+        const rows = Number(rowsString) || patternState.pattern.length 
+        const cols = Number(colsString)|| patternState.pattern[0].length
         if (rows === patternState.pattern.length && cols === patternState.pattern[0].length) return
 
         if (rows > patternState.pattern.length) {
@@ -45,7 +47,7 @@ export const PatternSizeComponent: FC<Props> = () => {
             }
             savePattern({
                 ...patternState,
-                pattern: [...patternState.pattern.map((row) => changeCols(row)), ...rowsToAppend]
+                pattern: [...patternState.pattern.map((row) => changeCols(row, cols)), ...rowsToAppend]
             })
         } else if (
             rows > 0 &&
@@ -53,17 +55,17 @@ export const PatternSizeComponent: FC<Props> = () => {
         ) {
             savePattern({
                 ...patternState,
-                pattern: [...patternState.pattern.slice(0, rows).map((row) => changeCols(row))]
+                pattern: [...patternState.pattern.slice(0, rows).map((row) => changeCols(row, cols))]
             })
         } else {
             savePattern({
                 ...patternState,
-                pattern: [...patternState.pattern.map((row) => changeCols(row))]
+                pattern: [...patternState.pattern.map((row) => changeCols(row, cols))]
             })
         }
     }
 
-    function changeCols (row: IPatternCell[]): IPatternCell[] {
+    function changeCols (row: IPatternCell[], cols: number): IPatternCell[] {
 
         if (cols > patternState.pattern[0].length) {
             let colsToAppend: IPatternCell[] = []
@@ -92,29 +94,97 @@ export const PatternSizeComponent: FC<Props> = () => {
 
     return (
         <>
-            <Form.Group className="mb-3">
-                <Form.Label>Rows</Form.Label>
+        <InputGroup size="sm">
+            <InputGroup.Text>Rows</InputGroup.Text>
+            <Form.Control
+                type="number"
+                style={{minWidth: 30}}
+                size='sm'
+                min={1}
+                placeholder="rows"
+                value={rowsString}
+                onChange={(e) => setRowsString(e.target.value) }
+            />
+        </InputGroup>
+        <ButtonGroup  className="mt-1 mb-3">
+        <Button
+                size="sm"
+                variant="outline-danger"
+                title="decrease font size"
+                onClick={() => {
+                    setRowsString(Math.max(1, Number(rowsString)-1).toString())
+                }}
+            >
+                ➖
+            </Button>
+            <Button
+                size="sm"
+                variant="outline-secondary"
+                title="reset font size to default"
+                onClick={() => {
+                    setRowsString(patternState.pattern.length.toString())
+                }}
+            >
+                ✖ 
+            </Button>
+            <Button
+                size="sm"
+                variant="outline-success"
+                title="increase font size"
+                onClick={() => {
+                  setRowsString((Number(rowsString)+1).toString())
+                }}
+            >
+                ➕
+            </Button>
+        </ButtonGroup>
+        <InputGroup size="sm">
+                <InputGroup.Text>Cols</InputGroup.Text>
                 <Form.Control
                     type="number"
-                    min={0}
+                    style={{minWidth: 30}}
+                    size='sm'
+                    min={1}
                     placeholder="rows"
-                    value={rows}
-                    onChange={(e) => setRows(Number(e.target.value) || 1)}
+                    value={colsString}
+                    onChange={(e) => setColsString((Number(e.target.value) || 1).toString())}
                 />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Cols</Form.Label>
-                <Form.Control
-                    type="number"
-                    min={0}
-                    placeholder="rows"
-                    value={cols}
-                    onChange={(e) => setCols(Number(e.target.value) || 1)}
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Button onClick={change}>Change</Button>
-            </Form.Group>
+        </InputGroup>
+        <ButtonGroup className='mt-1 mb-3'>
+        <Button
+                size="sm"
+                variant="outline-danger"
+                title="decrease font size"
+                onClick={() => {
+                    setColsString(Math.max(1, Number(colsString)-1).toString())
+                }}
+            >
+                ➖
+            </Button>
+            <Button
+                size="sm"
+                variant="outline-secondary"
+                title="reset font size to default"
+                onClick={() => {
+                    setColsString(patternState.pattern[0].length.toString())
+                }}
+            >
+                ✖ 
+            </Button>
+            <Button
+                size="sm"
+                variant="outline-success"
+                title="increase font size"
+                onClick={() => {
+                  setColsString((Number(colsString)+1).toString())
+                }}
+            >
+                ➕
+            </Button>
+        </ButtonGroup>
+        <Form.Group className="mb-3">
+            <Button onClick={change}>Change</Button>
+        </Form.Group>
         </>
     )
 }
