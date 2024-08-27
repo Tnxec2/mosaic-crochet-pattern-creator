@@ -6,6 +6,7 @@ import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { CELL_TYPE } from "../../model/patterntype.enum";
 import { ScaleFactor } from "../shared/scalefactor";
 import { PatternName } from "../shared/patternname";
+import { DRAW } from "./draw";
 
 
 interface PROPS {
@@ -71,12 +72,8 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
         ctx.fillRect(x, y, cellSize, cellSize)
 
         if (showCellStitchType && row[c].type !== CELL_TYPE.EMPTY) {
-          let image = document.createElement("img");
-          image.setAttribute("src", `./assets/${row[c].type}.svg`);
-
-          image.addEventListener('load', e => {
-            ctx.drawImage(image, x+2, y+2, cellSize-4, cellSize-4);
-          })
+          let image = DRAW.draw(cellSize-4, row[c].type )
+          if (image) ctx.drawImage(image, x+2, y+2)
         }
       }
     }
