@@ -19,7 +19,8 @@ export interface IPattern {
     selectedAction: ACTION_TYPES
     scaleFactor: number
     saved: boolean
-    name: string
+    name: string,
+    previewFontSize?: number
 }
 
 function genpat() {

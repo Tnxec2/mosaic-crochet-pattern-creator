@@ -1,8 +1,8 @@
 import { FC, useContext, useState } from "react";
 import { PatternContext } from "../../context";
 import Canvas from "./canvas"
-import { BACKGROUND_COLOR } from "../../model/constats";
-import { Button, Form, InputGroup, Modal } from "react-bootstrap";
+import { BACKGROUND_COLOR, DEFAULT_FONT_SIZE } from "../../model/constats";
+import { Button, InputGroup, Modal } from "react-bootstrap";
 import { CELL_TYPE } from "../../model/patterntype.enum";
 import { ScaleFactor } from "../shared/scalefactor";
 import { PatternName } from "../shared/patternname";
@@ -13,13 +13,16 @@ interface PROPS {
   onClose: () => void
 }
 
+const MIN_FONT_SIZE = 10
+
 export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   const {
     patternState,
+    savePattern,
     getCellColor
   } = useContext(PatternContext)
 
-  const [fontSize, setFontSize] = useState<number>(10)
+  const [fontSize, setFontSize] = useState<number>(patternState.previewFontSize || MIN_FONT_SIZE )
   const [showCellStitchType, setShowCellStitchType] = useState<boolean>(true)
   const [width, setWidth] = useState<number>(100)
   const [height, setHeight] = useState<number>(100)
@@ -142,6 +145,12 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
     }
   }
 
+  function changeFontSize(size: number) {
+    setFontSize(size)
+  
+    savePattern( {...patternState, previewFontSize: size} )
+  }
+
   return (
     <Modal fullscreen show={true}>
       <Modal.Header closeButton onHide={onClose}>
@@ -155,14 +164,37 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
           <InputGroup className="mb-3">
             <PatternName />
             <InputGroup.Text>Font size</InputGroup.Text>
-            <Form.Control
-              style={{minWidth: 60}}
-              type="number"
-              min={6}
-              placeholder="font size"
-              value={fontSize}
-              onChange={(e) => setFontSize(Number(e.target.value) || 6)}
-            />
+            <Button
+                size="sm"
+                variant="outline-danger"
+                title="decrease font size"
+                onClick={() => {
+                  changeFontSize(Math.max(MIN_FONT_SIZE, fontSize-1))
+                }}
+            >
+                ➖
+            </Button>
+            <Button
+                size="sm"
+                variant="outline-secondary"
+                title="reset font size to default"
+                onClick={() => {
+                    changeFontSize(DEFAULT_FONT_SIZE)
+                }}
+            >
+                ✖ { fontSize }
+            </Button>
+            <Button
+                size="sm"
+                variant="outline-success"
+                title="increase font size"
+                onClick={() => {
+                  changeFontSize(fontSize+1)
+                }}
+            >
+                ➕
+            </Button>
+
             <InputGroup.Text onClick={(e) => {
               setShowCellStitchType(!showCellStitchType)
             }}>show stitch type</InputGroup.Text>
