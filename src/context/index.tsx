@@ -9,7 +9,6 @@ import {
     UNKNOWN_NAME
 } from '../model/constats'
 import { loadPattern } from '../services/file.service'
-import { useToPng } from '@hugocxl/react-to-image'
 import { CELL_TYPE } from '../model/patterntype.enum'
 
 export interface IPattern {
@@ -59,7 +58,6 @@ interface IPatternContext {
     setShowPreviewDialog: React.Dispatch<React.SetStateAction<boolean>>
     showCellStitchType: boolean
     setShowCellStitchType: React.Dispatch<React.SetStateAction<boolean>>
-    convertToPng: () => void
     mirrorVertical: boolean
     setMirrorVertical: React.Dispatch<React.SetStateAction<boolean>>
     mirrorHorizontal: boolean
@@ -87,7 +85,6 @@ const initialState: IPatternContext = {
     getCellColor: (row: number, col: number) => {
         return ''
     },
-    convertToPng: () => {}
 }
 
 interface IProps {
@@ -115,19 +112,7 @@ const PatternContextProvider: FC<IProps> = (props) => {
         savePattern(initialPattern)
     }
 
-    const [_, convertToPng] = useToPng<HTMLDivElement>({
-        selector: '#pattern',
-        quality: 1,
-        backgroundColor: '#fff',
-        skipAutoScale: true,
-        pixelRatio: 1,
-        onSuccess: (data) => {
-            const link = document.createElement('a')
-            link.download = 'pattern.png'
-            link.href = data
-            link.click()
-        }
-    })
+
 
     const getCellColor = (row: number, col: number) => {
         if (
@@ -167,7 +152,6 @@ const PatternContextProvider: FC<IProps> = (props) => {
         setShowOpenFileDialog,
         showPreviewDialog,
         setShowPreviewDialog,
-        convertToPng,
         showCellStitchType,
         setShowCellStitchType,
         mirrorVertical,

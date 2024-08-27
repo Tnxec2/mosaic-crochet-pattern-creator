@@ -1,4 +1,4 @@
-import { IPattern, initialPattern } from '../context'
+import { IPattern } from '../context'
 import { KEY_STORAGE, UNKNOWN_NAME } from '../model/constats'
 import { mug } from '../sampledata/mug'
 
