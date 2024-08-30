@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from 'react'
+import { FC, MouseEvent, ReactNode } from 'react'
 import { CELL_TYPE } from '../../model/patterntype.enum'
 import './pattern_cell.css'
 import { IPatternCell } from '../../model/patterncell.model'
@@ -9,6 +9,7 @@ type propTypes = {
     onClick: (e: MouseEvent<HTMLElement>) => void
     onMouseOver: (e: MouseEvent<HTMLElement>) => void
     showCellCrochetType?: boolean
+    children?: ReactNode
 }
 
 export const PatterCellComponent: FC<propTypes> = ({
@@ -16,7 +17,8 @@ export const PatterCellComponent: FC<propTypes> = ({
     color,
     onClick,
     onMouseOver,
-    showCellCrochetType
+    showCellCrochetType,
+    children
 }) => {
     const renderSwitch = () => {
         if (!showCellCrochetType || cell.type === CELL_TYPE.EMPTY) return <></>
@@ -40,6 +42,7 @@ export const PatterCellComponent: FC<propTypes> = ({
             }}
         >
             {renderSwitch()}
+           {children} 
         </div>
     )
 }

@@ -15,7 +15,7 @@
 
 .cell {
     border: 1px solid #252525;
-    width: 1.5em;
+    min-width: 1.5em;
     height: 1.5em;
     cursor: pointer;
     text-align: center;

@@ -1,5 +1,5 @@
 export enum ACTION_TYPES {
-    NONE = '',
+    NONE = 'empty',
     COLOR = 'color',
     X = 'x',
     L = 'l',

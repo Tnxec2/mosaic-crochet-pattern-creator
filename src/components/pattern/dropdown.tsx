@@ -50,7 +50,7 @@ export const DropDown: FC<Props> = ({ onclose, menu }) => {
     }
 
     return (
-        <div className="dropdown" ref={refDropDownOutside}>
+        <div className="cell-dropdown" ref={refDropDownOutside}>
             <ul className="menu">
                 {menu.map((menuItem, index) => (
                     <li
