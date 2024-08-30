@@ -9,6 +9,7 @@ import { DropDown } from './dropdown'
 import { PatterCellComponent } from './pattern_cell'
 import { ScaleFactor } from '../shared/scalefactor'
 import { PatternName } from '../shared/patternname'
+import { Help } from './help'
 
 type TDropDownPos = {
     row?: number
@@ -267,8 +268,8 @@ export const PatternComponent: FC = () => {
             <Card className="h-100">
                 <Card.Header>
                     <Card.Title>
-                        Pattern
-                    
+                        Pattern                        
+                        <Help />
                         <div className="form-check form-switch float-end">
                             <input
                                 className="form-check-input"
