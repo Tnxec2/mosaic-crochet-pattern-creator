@@ -5,7 +5,7 @@ import './pattern.css'
 import { CELL_TYPE } from '../../model/patterntype.enum'
 import { IPatternCell } from '../../model/patterncell.model'
 import { ACTION_TYPES } from '../../model/actiontype.enum'
-import { DropDown } from './dropdown'
+import { DropDown, MenuItemDivider } from './dropdown'
 import { PatterCellComponent } from './pattern_cell'
 import { ScaleFactor } from '../shared/scalefactor'
 import { PatternName } from '../shared/patternname'
@@ -257,8 +257,9 @@ export const PatternComponent: FC = () => {
         })
     }
 
-    const closeDropDown = () => {
+    const closeDropDown = (e?: MouseEvent<HTMLLIElement>) => {
         setDropDownPos({ row: -1, col: -1, opened: false })
+        e?.stopPropagation()
     }
 
 
@@ -315,13 +316,15 @@ export const PatternComponent: FC = () => {
                                             opened: true
                                         })
                                     }}
+                                    title={`${patternState.pattern[0].length - colIndex}`}
                                 >
                                     {patternState.pattern[0].length - colIndex}
                                     {dropDownPos?.opened &&
                                         dropDownPos.row === -1 &&
                                         dropDownPos.col === colIndex && (
                                             <DropDown
-                                                onclose={() => closeDropDown()}
+                                                scaleFactor={patternState.scaleFactor}
+                                                onclose={(e) => closeDropDown(e)}
                                                 menu={[
                                                     {
                                                         name: '➕ add col',
@@ -333,7 +336,7 @@ export const PatternComponent: FC = () => {
                                                         onClick: () =>
                                                             deleteCol(colIndex)
                                                     },
-                                                    { name: '', divider: true },
+                                                    MenuItemDivider,
                                                     {
                                                         name: 'col fill',
                                                         onClick: () =>
@@ -364,13 +367,15 @@ export const PatternComponent: FC = () => {
                                             opened: true
                                         })
                                     }}
+                                    title={`${patternState.pattern.length - rowIndex}`}
                                 >
                                     {patternState.pattern.length - rowIndex}
                                     {dropDownPos?.opened &&
                                         dropDownPos.row === rowIndex &&
                                         dropDownPos.col === 0 && (
                                             <DropDown
-                                                onclose={() => closeDropDown()}
+                                                scaleFactor={patternState.scaleFactor}
+                                                onclose={(e) => closeDropDown(e)}
                                                 menu={[
                                                     {
                                                         name: '➕ add row',
@@ -382,7 +387,7 @@ export const PatternComponent: FC = () => {
                                                         onClick: () =>
                                                             deleteRow(rowIndex)
                                                     },
-                                                    { name: '', divider: true },
+                                                    MenuItemDivider,
                                                     {
                                                         name: 'row fill',
                                                         onClick: () =>
@@ -416,7 +421,8 @@ export const PatternComponent: FC = () => {
                                                 colIndex
                                             )
                                         }
-                                        
+                                        row={patternState.pattern.length - rowIndex}
+                                        col={row.length - colIndex}
                                         cell={col}
                                         showCellCrochetType={showCellStitchType}
                                     >
@@ -424,6 +430,7 @@ export const PatternComponent: FC = () => {
                                         dropDownPosPatternCell.row === rowIndex &&
                                         dropDownPosPatternCell.col === colIndex &&(
                                             <DropDown
+                                                scaleFactor={patternState.scaleFactor}
                                                 onclose={() => setDropDownPosPatternCell({ row: -1, col: -1, opened: false })}
                                                 menu={[
                                                     {
@@ -440,7 +447,7 @@ export const PatternComponent: FC = () => {
                                                         action: patternState.selectedAction,
                                                         color: patternState.colors[patternState.selectedColorIndex], 
                                                     },
-                                                    { name: '', divider: true },
+                                                    MenuItemDivider,
                                                     { name: 'change action'},
                                                     ...(Object.values(ACTION_TYPES)
                                                     .filter(action => action !== patternState.selectedAction)
@@ -452,7 +459,7 @@ export const PatternComponent: FC = () => {
                                                             onClick: () => savePattern({...patternState, selectedAction: value})
                                                         } 
                                                     } )),
-                                                    { name: '', divider: true },
+                                                    MenuItemDivider,
                                                     { name: 'change color'},
                                                     ...(patternState.colors
                                                         .filter((color, index) => index !== patternState.selectedColorIndex)
@@ -466,12 +473,7 @@ export const PatternComponent: FC = () => {
                                                             } 
                                                         } )
                                                     ),
-                                                    { name: '', divider: true },
-                                                    {
-                                                        name: '❌ close menu',
-                                                        onClick: () =>
-                                                            setDropDownPosPatternCell({ row: -1, col: -1, opened: false }),
-                                                    }
+                                                
                                                 ]}
                                             />
                                         )}
@@ -489,13 +491,15 @@ export const PatternComponent: FC = () => {
                                             opened: true
                                         })
                                     }}
+                                    title={`${patternState.pattern.length - rowIndex}`}
                                 >
                                     {patternState.pattern.length - rowIndex}
                                     {dropDownPos?.opened &&
                                         dropDownPos.row === rowIndex &&
                                         dropDownPos.col === 9999 && (
                                             <DropDown
-                                                onclose={() => closeDropDown()}
+                                                scaleFactor={patternState.scaleFactor}
+                                                onclose={(e) => closeDropDown(e)}
                                                 menu={[
                                                     {
                                                         name: '➕ add row',
@@ -538,13 +542,15 @@ export const PatternComponent: FC = () => {
                                             opened: true
                                         })
                                     }}
+                                    title={`${patternState.pattern[0].length - colIndex}`}
                                 >
                                     {patternState.pattern[0].length - colIndex}
                                     {dropDownPos?.opened &&
                                         dropDownPos.row === 99999 &&
                                         dropDownPos.col === colIndex && (
                                             <DropDown
-                                                onclose={() => closeDropDown()}
+                                                scaleFactor={patternState.scaleFactor}
+                                                onclose={(e) => closeDropDown(e)}
                                                 menu={[
                                                     {
                                                         name: '➕ add col',

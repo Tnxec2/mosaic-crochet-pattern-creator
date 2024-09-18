@@ -1,7 +1,9 @@
 
 .cell-dropdown {
     position: absolute !important;
+    transform-origin: left top;
 } 
+
 .menu {
     /* position: absolute; */
     list-style-type: none;

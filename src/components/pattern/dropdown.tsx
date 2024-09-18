@@ -8,17 +8,20 @@ type MenuItem = {
     action?: ACTION_TYPES
     color?: string
     divider?: boolean
-    onClick?: () => void
+    onClick?: (event?: MouseEvent<HTMLLIElement>) => void
 }
+
+export const MenuItemDivider = { name: '', divider: true }
 
 type Props = {
-    onclose: () => void
-    menu: MenuItem[]
+    onclose: (event?: MouseEvent<HTMLLIElement>) => void
+    menu: MenuItem[],
+    scaleFactor: number
 }
 
-export const DropDown: FC<Props> = ({ onclose, menu }) => {
-    const handleClickOutside = () => {
-        onclose()
+export const DropDown: FC<Props> = ({ onclose, menu, scaleFactor }) => {
+    const handleClickOutside = (e: any) => {
+        onclose(e)
     }
 
     const refDropDownOutside = useOutsideClick(handleClickOutside)
@@ -27,7 +30,7 @@ export const DropDown: FC<Props> = ({ onclose, menu }) => {
         e.preventDefault()
         e.stopPropagation()
         if (menuItem.onClick) menuItem.onClick()
-        onclose()
+        onclose(e)
     }
 
     const renderSwitch = (value?: ACTION_TYPES, color?: string) => {
@@ -50,9 +53,22 @@ export const DropDown: FC<Props> = ({ onclose, menu }) => {
     }
 
     return (
-        <div className="cell-dropdown" ref={refDropDownOutside}>
+        <div 
+            className="cell-dropdown" 
+            ref={refDropDownOutside}                         
+            style={{
+                transform: `scale(${1/scaleFactor})`
+            }}
+        >
             <ul className="menu">
-                {menu.map((menuItem, index) => (
+                {menu.concat([
+                    MenuItemDivider,
+                    {
+                        name: '❌ close menu',
+                        onClick: (e) =>
+                            onclose(e),
+                    }
+                ]).map((menuItem, index) => (
                     <li
                         key={index}
                         className={`menu-item ${

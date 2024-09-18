@@ -4,6 +4,8 @@ import './pattern_cell.css'
 import { IPatternCell } from '../../model/patterncell.model'
 
 type propTypes = {
+    row: number,
+    col: number,
     cell: IPatternCell
     color: string
     onClick: (e: MouseEvent<HTMLElement>) => void
@@ -13,6 +15,8 @@ type propTypes = {
 }
 
 export const PatterCellComponent: FC<propTypes> = ({
+    row, 
+    col,
     cell,
     color,
     onClick,
@@ -26,7 +30,7 @@ export const PatterCellComponent: FC<propTypes> = ({
             return (
                 <img
                     src={`./assets/${cell.type}.svg`}
-                    title={cell.type.toUpperCase()}
+                    title={`${cell.type.toUpperCase()} (${col}:${row})`}
                     alt={cell.type}
                 ></img>
             )
