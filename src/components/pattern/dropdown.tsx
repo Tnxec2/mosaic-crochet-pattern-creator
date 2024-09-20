@@ -14,12 +14,14 @@ type MenuItem = {
 export const MenuItemDivider = { name: '', divider: true }
 
 type Props = {
+    x: number,
+    y: number,
     onclose: (event?: MouseEvent<HTMLLIElement>) => void
     menu: MenuItem[],
     scaleFactor: number
 }
 
-export const DropDown: FC<Props> = ({ onclose, menu, scaleFactor }) => {
+export const DropDown: FC<Props> = ({ x, y, onclose, menu, scaleFactor }) => {
     const handleClickOutside = (e: any) => {
         onclose(e)
     }
@@ -57,7 +59,9 @@ export const DropDown: FC<Props> = ({ onclose, menu, scaleFactor }) => {
             className="cell-dropdown" 
             ref={refDropDownOutside}                         
             style={{
-                transform: `scale(${1/scaleFactor})`
+                transform: `scale(${1/scaleFactor})`,
+                left: x,
+                top: y,
             }}
         >
             <ul className="menu">

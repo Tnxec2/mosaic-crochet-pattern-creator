@@ -1,4 +1,4 @@
-import { FC, Fragment, MouseEvent, useCallback, useContext, useState } from 'react'
+import { FC, Fragment, MouseEvent, useCallback, useContext, useMemo, useState } from 'react'
 import { PatternContext } from '../../context'
 import { Card, InputGroup } from 'react-bootstrap'
 import './pattern.css'
@@ -10,9 +10,11 @@ import { PatternName } from '../shared/patternname'
 import { Help } from './help'
 
 type TDropDownPos = {
-    row?: number
-    col?: number
-    opened?: boolean
+    row: number
+    col: number
+    x: number
+    y: number
+    opened: boolean
 }
 
 export const PatternComponent: FC = () => {
@@ -37,14 +39,144 @@ export const PatternComponent: FC = () => {
     const [dropDownPos, setDropDownPos] = useState<TDropDownPos>({
         row: 0,
         col: 0,
+        x: 0,
+        y: 0,
         opened: false
     })
 
     const [dropDownPosPatternCell, setDropDownPosPatternCell] = useState<TDropDownPos>({
         row: 0,
         col: 0,
+        x: 0,
+        y: 0,
         opened: false
     })
+
+    const closeDropDown = useCallback((e?: MouseEvent<HTMLLIElement>) => {
+        setDropDownPos({ row: -1, col: -1, x: e?.screenX || 0, y: e?.screenY || 0, opened: false })
+        e?.stopPropagation()
+    }, [])
+
+    const dropDownCell = useMemo(() => 
+        <DropDown
+            x={dropDownPosPatternCell.x}
+            y={dropDownPosPatternCell.y}
+            scaleFactor={patternState.scaleFactor}
+            onclose={() => setDropDownPosPatternCell({row: -1, col: -1, x: -1, y: -1, opened: false })}
+            menu={[
+                { name: `Cell ${patternState.pattern[0].length - dropDownPosPatternCell.col}:${patternState.pattern.length - dropDownPosPatternCell.row}`},
+                MenuItemDivider,
+                {
+                    name: '➡️ fill right',
+                    onClick: () =>
+                        fillRight(dropDownPosPatternCell.row, dropDownPosPatternCell.col),
+                    action: patternState.selectedAction,
+                    color: patternState.colors[patternState.selectedColorIndex], 
+                },
+                {
+                    name: '⬅️ fill left',
+                    onClick: () =>
+                        fillLeft(dropDownPosPatternCell.row, dropDownPosPatternCell.col),
+                    action: patternState.selectedAction,
+                    color: patternState.colors[patternState.selectedColorIndex], 
+                },
+                MenuItemDivider,
+                { name: 'change action'},
+                ...(Object.values(ACTION_TYPES)
+                .filter(action => action !== patternState.selectedAction)
+                .map((value) => {
+                    return { 
+                        name: value,
+                        action: value,
+                        color: patternState.colors[patternState.selectedColorIndex], 
+                        onClick: () => savePattern({...patternState, selectedAction: value})
+                    } 
+                } )),
+                MenuItemDivider,
+                { name: 'change color'},
+                ...(patternState.colors
+                    .filter((color, index) => index !== patternState.selectedColorIndex)
+                    .map((color) => {
+                        let colorIndex = patternState.colors.indexOf(color)
+                        return { 
+                            name: `Color ${colorIndex+1}`,
+                            action: ACTION_TYPES.COLOR,
+                            color: color,
+                            onClick: () => savePattern({...patternState, selectedColorIndex: colorIndex})
+                        } 
+                    } )
+                ),
+            
+            ]}
+        />, [dropDownPosPatternCell.col, dropDownPosPatternCell.row, dropDownPosPatternCell.x, dropDownPosPatternCell.y, fillLeft, fillRight, patternState, savePattern])
+
+    const dropDownRow = useMemo(() => 
+        <DropDown
+            x={dropDownPos.x}
+            y={dropDownPos.y}
+            scaleFactor={patternState.scaleFactor}
+            onclose={(e) => closeDropDown(e)}
+            menu={[
+                { name: `Row ${patternState.pattern.length - dropDownPos.row}`},
+                MenuItemDivider,
+                {
+                    name: '➕ add row',
+                    onClick: () =>
+                        addRow(dropDownPos.row)
+                },
+                {
+                    name: '❌ delete row',
+                    onClick: () =>
+                        deleteRow(dropDownPos.row)
+                },
+                MenuItemDivider,
+                {
+                    name: 'row fill',
+                    onClick: () =>
+                        fillRow(dropDownPos.row),
+                    action: patternState.selectedAction,
+                    color: patternState
+                        .colors[
+                        patternState
+                            .selectedColorIndex
+                    ]
+                }
+            ]}
+        />, [dropDownPos.x, dropDownPos.y, dropDownPos.row, patternState.scaleFactor, patternState.pattern.length, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addRow, deleteRow, fillRow])
+
+    const dropDownColumn = useMemo(() => 
+        <DropDown
+            x={dropDownPos.x}
+            y={dropDownPos.y}
+            scaleFactor={patternState.scaleFactor}
+            onclose={(e) => closeDropDown(e)}
+            menu={[
+                { name: `Column ${patternState.pattern[0].length - dropDownPos.col}`},
+                MenuItemDivider,
+                {
+                    name: '➕ add col',
+                    onClick: () =>
+                        addColumn(dropDownPos.col)
+                },
+                {
+                    name: '❌ delete col',
+                    onClick: () =>
+                        deleteColumn(dropDownPos.col)
+                },
+                MenuItemDivider,
+                {
+                    name: 'col fill',
+                    onClick: () =>
+                        fillColumn(dropDownPos.col),
+                    action: patternState.selectedAction,
+                    color: patternState
+                        .colors[
+                        patternState
+                            .selectedColorIndex
+                    ]
+                }
+            ]}
+        />, [dropDownPos.x, dropDownPos.y, dropDownPos.col, patternState.scaleFactor, patternState.pattern, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addColumn, deleteColumn, fillColumn])
 
     const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
         if (dropDownPosPatternCell.opened) {
@@ -52,7 +184,8 @@ export const PatternComponent: FC = () => {
             return
         } 
         if (event.ctrlKey){
-            if (patternState.selectedAction !== ACTION_TYPES.NONE) setDropDownPosPatternCell({row: row, col: col, opened: true})
+            if (patternState.selectedAction !== ACTION_TYPES.NONE) 
+                setDropDownPosPatternCell({row: row, col: col, x: event.clientX, y: event.clientY, opened: true})
             return
         } 
         changeCell(row, col, mouseOver)
@@ -73,13 +206,14 @@ export const PatternComponent: FC = () => {
     }, [handleClick])
 
 
-    const closeDropDown = useCallback((e?: MouseEvent<HTMLLIElement>) => {
-        setDropDownPos({ row: -1, col: -1, opened: false })
-        e?.stopPropagation()
-    }, [])
+
 
     return (
         <>
+            {dropDownPos?.opened && dropDownPos.row === -1 && dropDownColumn}
+            {dropDownPos?.opened && dropDownPos.col === -1 && dropDownRow}
+            {dropDownPosPatternCell?.opened && dropDownCell}
+            
             <Card className="h-100">
                 <Card.Header>
                     <Card.Title>
@@ -123,48 +257,18 @@ export const PatternComponent: FC = () => {
                                 <div
                                     key={`row0-${colIndex}`}
                                     className="cell colnumber"
-                                    onClick={() => {
+                                    onClick={(e) => {
                                         setDropDownPos({
                                             row: -1,
                                             col: colIndex,
+                                            x: e.clientX,
+                                            y: e.clientY,
                                             opened: true
                                         })
                                     }}
                                     title={`${patternState.pattern[0].length - colIndex}`}
                                 >
                                     {patternState.pattern[0].length - colIndex}
-                                    {dropDownPos?.opened &&
-                                        dropDownPos.row === -1 &&
-                                        dropDownPos.col === colIndex && (
-                                            <DropDown
-                                                scaleFactor={patternState.scaleFactor}
-                                                onclose={(e) => closeDropDown(e)}
-                                                menu={[
-                                                    {
-                                                        name: '➕ add col',
-                                                        onClick: () =>
-                                                            addColumn(colIndex)
-                                                    },
-                                                    {
-                                                        name: '❌ delete col',
-                                                        onClick: () =>
-                                                            deleteColumn(colIndex)
-                                                    },
-                                                    MenuItemDivider,
-                                                    {
-                                                        name: 'col fill',
-                                                        onClick: () =>
-                                                            fillColumn(colIndex),
-                                                        action: patternState.selectedAction,
-                                                        color: patternState
-                                                            .colors[
-                                                            patternState
-                                                                .selectedColorIndex
-                                                        ]
-                                                    }
-                                                ]}
-                                            />
-                                        )}
                                 </div>
                             ))}
                             <div className="cell empty rownumber">&nbsp;</div>
@@ -174,48 +278,18 @@ export const PatternComponent: FC = () => {
                                 <div
                                     key={`col0-${rowIndex}`}
                                     className="cell rownumber"
-                                    onClick={() => {
+                                    onClick={(e) => {
                                         setDropDownPos({
                                             row: rowIndex,
-                                            col: 0,
+                                            col: -1,
+                                            x: e.clientX,
+                                            y: e.clientY,
                                             opened: true
                                         })
                                     }}
                                     title={`${patternState.pattern.length - rowIndex}`}
                                 >
                                     {patternState.pattern.length - rowIndex}
-                                    {dropDownPos?.opened &&
-                                        dropDownPos.row === rowIndex &&
-                                        dropDownPos.col === 0 && (
-                                            <DropDown
-                                                scaleFactor={patternState.scaleFactor}
-                                                onclose={(e) => closeDropDown(e)}
-                                                menu={[
-                                                    {
-                                                        name: '➕ add row',
-                                                        onClick: () =>
-                                                            addRow(rowIndex)
-                                                    },
-                                                    {
-                                                        name: '❌ delete row',
-                                                        onClick: () =>
-                                                            deleteRow(rowIndex)
-                                                    },
-                                                    MenuItemDivider,
-                                                    {
-                                                        name: 'row fill',
-                                                        onClick: () =>
-                                                            fillRow(rowIndex),
-                                                        action: patternState.selectedAction,
-                                                        color: patternState
-                                                            .colors[
-                                                            patternState
-                                                                .selectedColorIndex
-                                                        ]
-                                                    }
-                                                ]}
-                                            />
-                                        )}
                                 </div>
                                 {row.map((col, colIndex) => (
                                     <Fragment key={`col-${colIndex}`}>
@@ -240,57 +314,6 @@ export const PatternComponent: FC = () => {
                                         cell={col}
                                         showCellCrochetType={showCellStitchType}
                                     >
-                                    { dropDownPosPatternCell?.opened && 
-                                        dropDownPosPatternCell.row === rowIndex &&
-                                        dropDownPosPatternCell.col === colIndex &&(
-                                            <DropDown
-                                                scaleFactor={patternState.scaleFactor}
-                                                onclose={() => setDropDownPosPatternCell({ row: -1, col: -1, opened: false })}
-                                                menu={[
-                                                    {
-                                                        name: '➡️ fill right',
-                                                        onClick: () =>
-                                                            fillRight(rowIndex, colIndex),
-                                                        action: patternState.selectedAction,
-                                                        color: patternState.colors[patternState.selectedColorIndex], 
-                                                    },
-                                                    {
-                                                        name: '⬅️ fill left',
-                                                        onClick: () =>
-                                                            fillLeft(rowIndex, colIndex),
-                                                        action: patternState.selectedAction,
-                                                        color: patternState.colors[patternState.selectedColorIndex], 
-                                                    },
-                                                    MenuItemDivider,
-                                                    { name: 'change action'},
-                                                    ...(Object.values(ACTION_TYPES)
-                                                    .filter(action => action !== patternState.selectedAction)
-                                                    .map((value) => {
-                                                        return { 
-                                                            name: value,
-                                                            action: value,
-                                                            color: patternState.colors[patternState.selectedColorIndex], 
-                                                            onClick: () => savePattern({...patternState, selectedAction: value})
-                                                        } 
-                                                    } )),
-                                                    MenuItemDivider,
-                                                    { name: 'change color'},
-                                                    ...(patternState.colors
-                                                        .filter((color, index) => index !== patternState.selectedColorIndex)
-                                                        .map((color) => {
-                                                            let colorIndex = patternState.colors.indexOf(color)
-                                                            return { 
-                                                                name: `Color ${colorIndex+1}`,
-                                                                action: ACTION_TYPES.COLOR,
-                                                                color: color,
-                                                                onClick: () => savePattern({...patternState, selectedColorIndex: colorIndex})
-                                                            } 
-                                                        } )
-                                                    ),
-                                                
-                                                ]}
-                                            />
-                                        )}
                                         </PatterCellComponent>
                                     </Fragment>
                                 ))}
@@ -298,48 +321,18 @@ export const PatternComponent: FC = () => {
                                 <div
                                     key={`colend-${rowIndex}`}
                                     className="cell rownumber"
-                                    onClick={() => {
+                                    onClick={(e) => {
                                         setDropDownPos({
                                             row: rowIndex,
-                                            col: 9999,
+                                            col: -1,
+                                            x: e.clientX,
+                                            y: e.clientY,
                                             opened: true
                                         })
                                     }}
                                     title={`${patternState.pattern.length - rowIndex}`}
                                 >
                                     {patternState.pattern.length - rowIndex}
-                                    {dropDownPos?.opened &&
-                                        dropDownPos.row === rowIndex &&
-                                        dropDownPos.col === 9999 && (
-                                            <DropDown
-                                                scaleFactor={patternState.scaleFactor}
-                                                onclose={(e) => closeDropDown(e)}
-                                                menu={[
-                                                    {
-                                                        name: '➕ add row',
-                                                        onClick: () =>
-                                                            addRow(rowIndex)
-                                                    },
-                                                    {
-                                                        name: '❌ delete row',
-                                                        onClick: () =>
-                                                            deleteRow(rowIndex)
-                                                    },
-                                                    { name: '', divider: true },
-                                                    {
-                                                        name: 'row fill',
-                                                        onClick: () =>
-                                                            fillRow(rowIndex),
-                                                        action: patternState.selectedAction,
-                                                        color: patternState
-                                                            .colors[
-                                                            patternState
-                                                                .selectedColorIndex
-                                                        ]
-                                                    }
-                                                ]}
-                                            />
-                                        )}
                                 </div>
                             </div>
                         ))}
@@ -349,48 +342,18 @@ export const PatternComponent: FC = () => {
                                 <div
                                     key={`rowend-${colIndex}`}
                                     className="cell colnumber"
-                                    onClick={() => {
+                                    onClick={(e) => {
                                         setDropDownPos({
-                                            row: 99999,
+                                            row: -1,
                                             col: colIndex,
+                                            x: e.clientX,
+                                            y: e.clientY,
                                             opened: true
                                         })
                                     }}
                                     title={`${patternState.pattern[0].length - colIndex}`}
                                 >
                                     {patternState.pattern[0].length - colIndex}
-                                    {dropDownPos?.opened &&
-                                        dropDownPos.row === 99999 &&
-                                        dropDownPos.col === colIndex && (
-                                            <DropDown
-                                                scaleFactor={patternState.scaleFactor}
-                                                onclose={(e) => closeDropDown(e)}
-                                                menu={[
-                                                    {
-                                                        name: '➕ add col',
-                                                        onClick: () =>
-                                                            addColumn(colIndex)
-                                                    },
-                                                    {
-                                                        name: '❌ delete col',
-                                                        onClick: () =>
-                                                            deleteColumn(colIndex)
-                                                    },
-                                                    { name: '', divider: true },
-                                                    {
-                                                        name: 'col fill',
-                                                        onClick: () =>
-                                                            fillColumn(colIndex),
-                                                        action: patternState.selectedAction,
-                                                        color: patternState
-                                                            .colors[
-                                                            patternState
-                                                                .selectedColorIndex
-                                                        ]
-                                                    }
-                                                ]}
-                                            />
-                                        )}
                                 </div>
                             ))}
                             <div className="cell empty rownumber">&nbsp;</div>

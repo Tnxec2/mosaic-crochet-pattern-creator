@@ -24,29 +24,23 @@ export const PatterCellComponent: FC<propTypes> = ({
     showCellCrochetType,
     children
 }) => {
-    const renderSwitch = useMemo(() => {
-        if (!showCellCrochetType || cell.type === CELL_TYPE.EMPTY) return <></>
-        else
-            return (
-                <img
-                    src={`./assets/${cell.type}.svg`}
-                    title={`${cell.type.toUpperCase()} (${col}:${row})`}
-                    alt={cell.type}
-                ></img>
-            )
-    },[cell.type, col, row, showCellCrochetType])
-
     return (
         <div
             className="cell"
             onClick={onClick}
-            onMouseOver={onMouseOver}
+            //onMouseOver={onMouseOver}
+            title={`${cell.type.toUpperCase()} (${col}:${row})`}
             style={{
-                backgroundColor: color
+                backgroundColor: color,
             }}
         >
-            {renderSwitch}
-           {children} 
+            <div 
+            className="stichtype"
+            style={{
+                backgroundImage: showCellCrochetType && cell.type !== CELL_TYPE.EMPTY ? `url('./assets/${cell.type}.svg')` : '',
+            }}>
+                {children} 
+            </div>
         </div>
     )
 }

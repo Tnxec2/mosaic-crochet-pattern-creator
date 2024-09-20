@@ -2,6 +2,7 @@
 .cell-dropdown {
     position: absolute !important;
     transform-origin: left top;
+    z-index: 99999;
 } 
 
 .menu {
