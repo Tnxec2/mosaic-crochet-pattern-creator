@@ -61,7 +61,6 @@ export const PatternComponent: FC = () => {
         <DropDown
             x={dropDownPosPatternCell.x}
             y={dropDownPosPatternCell.y}
-            scaleFactor={patternState.scaleFactor}
             onclose={() => setDropDownPosPatternCell({row: -1, col: -1, x: -1, y: -1, opened: false })}
             menu={[
                 { name: `Cell ${patternState.pattern[0].length - dropDownPosPatternCell.col}:${patternState.pattern.length - dropDownPosPatternCell.row}`},
@@ -114,7 +113,6 @@ export const PatternComponent: FC = () => {
         <DropDown
             x={dropDownPos.x}
             y={dropDownPos.y}
-            scaleFactor={patternState.scaleFactor}
             onclose={(e) => closeDropDown(e)}
             menu={[
                 { name: `Row ${patternState.pattern.length - dropDownPos.row}`},
@@ -148,7 +146,6 @@ export const PatternComponent: FC = () => {
         <DropDown
             x={dropDownPos.x}
             y={dropDownPos.y}
-            scaleFactor={patternState.scaleFactor}
             onclose={(e) => closeDropDown(e)}
             menu={[
                 { name: `Column ${patternState.pattern[0].length - dropDownPos.col}`},

@@ -17,11 +17,10 @@ type Props = {
     x: number,
     y: number,
     onclose: (event?: MouseEvent<HTMLLIElement>) => void
-    menu: MenuItem[],
-    scaleFactor: number
+    menu: MenuItem[]
 }
 
-export const DropDown: FC<Props> = ({ x, y, onclose, menu, scaleFactor }) => {
+export const DropDown: FC<Props> = ({ x, y, onclose, menu }) => {
     const handleClickOutside = (e: any) => {
         onclose(e)
     }
@@ -59,7 +58,6 @@ export const DropDown: FC<Props> = ({ x, y, onclose, menu, scaleFactor }) => {
             className="cell-dropdown" 
             ref={refDropDownOutside}                         
             style={{
-                transform: `scale(${1/scaleFactor})`,
                 left: x,
                 top: y,
             }}
