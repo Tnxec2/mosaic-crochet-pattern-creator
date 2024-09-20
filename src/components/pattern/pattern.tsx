@@ -140,7 +140,7 @@ export const PatternComponent: FC = () => {
                     ]
                 }
             ]}
-        />, [dropDownPos.x, dropDownPos.y, dropDownPos.row, patternState.scaleFactor, patternState.pattern.length, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addRow, deleteRow, fillRow])
+        />, [ dropDownPos.x, dropDownPos.y, dropDownPos.row, patternState.pattern.length, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addRow, deleteRow, fillRow])
 
     const dropDownColumn = useMemo(() => 
         <DropDown
@@ -173,7 +173,7 @@ export const PatternComponent: FC = () => {
                     ]
                 }
             ]}
-        />, [dropDownPos.x, dropDownPos.y, dropDownPos.col, patternState.scaleFactor, patternState.pattern, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addColumn, deleteColumn, fillColumn])
+        />, [dropDownPos.x, dropDownPos.y, dropDownPos.col, patternState.pattern, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addColumn, deleteColumn, fillColumn])
 
     const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
         if (dropDownPosPatternCell.opened) {
