@@ -1,6 +1,6 @@
 
 .cell-dropdown {
-    position: absolute !important;
+    position: fixed !important;
     transform-origin: left top;
     z-index: 99999;
 } 
