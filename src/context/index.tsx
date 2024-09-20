@@ -10,6 +10,7 @@ import {
 } from '../model/constats'
 import { loadPattern } from '../services/file.service'
 import { CELL_TYPE } from '../model/patterntype.enum'
+import { getNewCell } from '../components/pattern/getNetCell'
 
 export interface IPattern {
     pattern: IPatternCell[][]
@@ -50,6 +51,15 @@ const initialPattern: IPattern = {
 interface IPatternContext {
     patternState: IPattern
     savePattern: (pattern: IPattern) => void
+    addColumn: (at: number) => void
+    addRow: (at: number) => void
+    fillColumn: (col: number) => void
+    changeCell: (row: number, col: number, mouseOver: boolean) => void
+    deleteColumn: (col: number) => void
+    deleteRow: (row: number) => void
+    fillRow: (row: number) => void
+    fillRight: (row: number, col: number) => void
+    fillLeft: (row: number, col: number) => void
     newPattern: () => void
     getCellColor: (row: number, col: number) => string
     showOpenFileDialog: boolean
@@ -69,6 +79,15 @@ interface IPatternContext {
 const initialState: IPatternContext = {
     patternState: initialPattern,
     savePattern: (pattern: IPattern) => {},
+    addColumn: (at: number) => {},
+    addRow: (at: number) => {},
+    fillColumn: (col: number) => {},
+    changeCell: (row: number, col: number, mouseOver: boolean) => {},
+    deleteColumn: (col: number) => {},
+    deleteRow: (row: number) => {},
+    fillRow: (row: number) => {},
+    fillRight: (row: number, col: number) => {},
+    fillLeft: (row: number, col: number) => {},
     newPattern: () => {},
     setShowOpenFileDialog: () => {},
     showOpenFileDialog: false,
@@ -143,10 +162,138 @@ const PatternContextProvider: FC<IProps> = (props) => {
             : BACKGROUND_COLOR
     }
 
+    const addColumn = (at: number) => {
+        savePattern({
+            ...patternState,
+            pattern: patternState.pattern.map((r) => [
+                ...r.slice(0, at + 1),
+                {
+                    colorindex: r[at].colorindex,
+                    type: CELL_TYPE.EMPTY
+                },
+                ...r.slice(at + 1)
+            ])
+        })
+    }
+
+    const addRow = (atRow: number) => {
+        let newRow: IPatternCell[] = []
+        for (let index = 0; index < patternState.pattern[0].length; index++) {
+            newRow.push({
+                colorindex: patternState.selectedColorIndex,
+                type: CELL_TYPE.EMPTY
+            })
+        }
+        savePattern({
+            ...patternState,
+            pattern: [
+                ...patternState.pattern.slice(0, atRow + 1),
+                newRow,
+                ...patternState.pattern.slice(atRow + 1)
+            ]
+        })
+    }
+
+    const fillColumn = (col: number) => {
+        savePattern({
+            ...patternState,
+            pattern: patternState.pattern.map((r) =>
+                r.map((c, i) => (i !== col ? c : getNewCell(c, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch)))
+            )
+        })
+    }
+
+    const changeCell = (row: number, col: number, mouseOver: boolean) => {
+        savePattern({
+            ...patternState,
+            pattern: patternState.pattern.map((r, rowI) =>
+                rowI === row || (mirrorHorizontal && rowI === patternState.pattern.length - row - 1)
+                    ? r.map((c, colI) =>
+                          colI === col || (mirrorVertical && colI === r.length - col - 1) ? getNewCell(c, patternState.selectedAction, patternState.selectedColorIndex, mouseOver, toggleStitch) : c
+                      )
+                    : r
+            )
+        })
+    }
+
+    const deleteColumn = (col: number) => {
+        if (!window.confirm(`Do you really want to delete whole column ${col}?`)) return
+        savePattern({
+            ...patternState,
+            pattern: patternState.pattern.map((r) =>
+                r.filter((_c, i) => i !== col)
+            )
+        })
+    }
+
+    const deleteRow = (row: number) => {
+        if (!window.confirm(`Do you really want to delete whole row ${row}?`)) return
+        savePattern({
+            ...patternState,
+            pattern: patternState.pattern.filter((_r, i) => i !== row)
+        })
+    }
+
+    const fillRow = (row: number) => {
+        savePattern({
+            ...patternState,
+            pattern: patternState.pattern.map((r, i) =>
+                i !== row ? r : r.map((c) => getNewCell(c, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch))
+            )
+        })
+    }
+
+    const fillRowLeft = (r: IPatternCell[], row: number, col: number): IPatternCell[]  => {
+        let result = [...r] 
+        for (let index = col-1; index >= 0; index--){
+           const cell = result[index];
+           if (cell.type !== CELL_TYPE.EMPTY) return result
+           result[index] = getNewCell(cell, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch)
+        }
+        return result
+    }
+
+    const fillLeft = (row: number, col: number) => {
+        savePattern({
+            ...patternState,
+            pattern: patternState.pattern.map((r, i) =>
+                i !== row ? r : mirrorVertical ? fillRowLeft(fillRowRight(r, row, r.length - col - 1), row, col) : fillRowLeft(r, row, col)
+            )
+        })
+    }
+
+    const fillRowRight = (r: IPatternCell[], row: number, col: number): IPatternCell[]  => {
+        let result = [...r] 
+        for (let index = col+1; index < r.length; index++){
+           const cell = result[index];
+           if (cell.type !== CELL_TYPE.EMPTY) return result
+           result[index] = getNewCell(cell, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch)
+        }
+        return result
+    }
+
+    const fillRight = (row: number, col: number) => {
+        savePattern({
+            ...patternState,
+            pattern: patternState.pattern.map((r, i) =>
+                i !== row ? r : mirrorVertical ? fillRowRight(fillRowLeft(r, row, r.length - col - 1), row, col) : fillRowRight(r, row, col)
+            )
+        })
+    }
+
     const value = {
         patternState,
         savePattern,
+        addColumn,
+        addRow,
+        fillColumn,
         getCellColor,
+        changeCell,
+        deleteColumn,
+        deleteRow,
+        fillRow,
+        fillRight,
+        fillLeft,
         newPattern,
         showOpenFileDialog,
         setShowOpenFileDialog,

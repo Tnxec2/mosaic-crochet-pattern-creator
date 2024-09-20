@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode } from 'react'
+import { FC, MouseEvent, ReactNode, useMemo } from 'react'
 import { CELL_TYPE } from '../../model/patterntype.enum'
 import './pattern_cell.css'
 import { IPatternCell } from '../../model/patterncell.model'
@@ -24,7 +24,7 @@ export const PatterCellComponent: FC<propTypes> = ({
     showCellCrochetType,
     children
 }) => {
-    const renderSwitch = () => {
+    const renderSwitch = useMemo(() => {
         if (!showCellCrochetType || cell.type === CELL_TYPE.EMPTY) return <></>
         else
             return (
@@ -34,7 +34,7 @@ export const PatterCellComponent: FC<propTypes> = ({
                     alt={cell.type}
                 ></img>
             )
-    }
+    },[cell.type, col, row, showCellCrochetType])
 
     return (
         <div
@@ -45,7 +45,7 @@ export const PatterCellComponent: FC<propTypes> = ({
                 backgroundColor: color
             }}
         >
-            {renderSwitch()}
+            {renderSwitch}
            {children} 
         </div>
     )

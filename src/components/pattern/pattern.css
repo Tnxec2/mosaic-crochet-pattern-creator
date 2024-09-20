@@ -20,6 +20,19 @@
     cursor: pointer;
     text-align: center;
 }
+
+
+.rownumber {
+    width: 3em;
+    text-align: center;
+}
+
+.colnumber {
+    height: 3em;
+    text-align: center;
+}
+
+
 .empty {
     cursor: unset;
     border: unset;

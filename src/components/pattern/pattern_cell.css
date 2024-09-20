@@ -3,4 +3,10 @@
     height: 100%;
     vertical-align: unset;
     border: 1px solid rgb(150, 150, 150);
+
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }

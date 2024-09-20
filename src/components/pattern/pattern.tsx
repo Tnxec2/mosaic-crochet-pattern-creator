@@ -1,9 +1,7 @@
-import { FC, Fragment, MouseEvent, useContext, useState } from 'react'
+import { FC, Fragment, MouseEvent, useCallback, useContext, useState } from 'react'
 import { PatternContext } from '../../context'
 import { Card, InputGroup } from 'react-bootstrap'
 import './pattern.css'
-import { CELL_TYPE } from '../../model/patterntype.enum'
-import { IPatternCell } from '../../model/patterncell.model'
 import { ACTION_TYPES } from '../../model/actiontype.enum'
 import { DropDown, MenuItemDivider } from './dropdown'
 import { PatterCellComponent } from './pattern_cell'
@@ -21,12 +19,18 @@ export const PatternComponent: FC = () => {
     const {
         patternState,
         savePattern,
+        addColumn,
+        addRow,
+        fillColumn,
         getCellColor,
+        changeCell,
+        deleteColumn,
+        deleteRow,
+        fillRow,
+        fillRight,
+        fillLeft,
         showCellStitchType,
         setShowCellStitchType,
-        mirrorVertical,
-        mirrorHorizontal,
-        toggleStitch
     } = useContext(PatternContext)
 
 
@@ -42,7 +46,7 @@ export const PatternComponent: FC = () => {
         opened: false
     })
 
-    const handleClick = (row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
+    const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
         if (dropDownPosPatternCell.opened) {
             setDropDownPosPatternCell({...dropDownPosPatternCell, opened: false})
             return
@@ -51,19 +55,11 @@ export const PatternComponent: FC = () => {
             if (patternState.selectedAction !== ACTION_TYPES.NONE) setDropDownPosPatternCell({row: row, col: col, opened: true})
             return
         } 
-        savePattern({
-            ...patternState,
-            pattern: patternState.pattern.map((r, rowI) =>
-                rowI === row || (mirrorHorizontal && rowI === patternState.pattern.length - row - 1)
-                    ? r.map((c, colI) =>
-                          colI === col || (mirrorVertical && colI === r.length - col - 1) ? getnewcell(c, mouseOver) : c
-                      )
-                    : r
-            )
-        })
-    }
+        changeCell(row, col, mouseOver)
+    }, [changeCell, dropDownPosPatternCell, patternState.selectedAction])
 
-    const handleMouseOver = (
+
+    const handleMouseOver = useCallback((
         e: MouseEvent<HTMLElement>,
         row: number,
         col: number
@@ -74,195 +70,13 @@ export const PatternComponent: FC = () => {
         if (e.buttons === 1) {
             handleClick(row, col, true, e)
         }
-    }
+    }, [handleClick])
 
-    const getnewcell = (c: IPatternCell, mouseOver?: boolean): IPatternCell => {
-        switch (patternState.selectedAction) {
-            case ACTION_TYPES.COLOR:
-                return { ...c, colorindex: patternState.selectedColorIndex }
-            case ACTION_TYPES.X:
-                return {
-                    ...c,
-                    type: mouseOver || !toggleStitch
-                        ? CELL_TYPE.X
-                        : c.type === CELL_TYPE.X
-                          ? CELL_TYPE.EMPTY
-                          : CELL_TYPE.X
-                }
-            case ACTION_TYPES.L:
-                return {
-                    ...c,
-                    type: mouseOver || !toggleStitch
-                        ? CELL_TYPE.L
-                        : c.type === CELL_TYPE.L
-                          ? CELL_TYPE.EMPTY
-                          : CELL_TYPE.L
-                }
-            case ACTION_TYPES.R:
-                return {
-                    ...c,
-                    type: mouseOver || !toggleStitch
-                        ? CELL_TYPE.R
-                        : c.type === CELL_TYPE.R
-                          ? CELL_TYPE.EMPTY
-                          : CELL_TYPE.R
-                }
-            case ACTION_TYPES.LR:
-                return {
-                    ...c,
-                    type: mouseOver || !toggleStitch
-                        ? CELL_TYPE.LR
-                        : c.type === CELL_TYPE.LR
-                          ? CELL_TYPE.EMPTY
-                          : CELL_TYPE.LR
-                }
-            case ACTION_TYPES.XR:
-                return {
-                    ...c,
-                    type: mouseOver || !toggleStitch
-                        ? CELL_TYPE.XR
-                        : c.type === CELL_TYPE.XR
-                          ? CELL_TYPE.EMPTY
-                          : CELL_TYPE.XR
-                }
-            case ACTION_TYPES.LX:
-                return {
-                    ...c,
-                    type: mouseOver || !toggleStitch
-                        ? CELL_TYPE.LX
-                        : c.type === CELL_TYPE.LX
-                          ? CELL_TYPE.EMPTY
-                          : CELL_TYPE.LX
-                }
-            case ACTION_TYPES.LXR:
-                return {
-                    ...c,
-                    type: mouseOver || !toggleStitch
-                        ? CELL_TYPE.LXR
-                        : c.type === CELL_TYPE.LXR
-                          ? CELL_TYPE.EMPTY
-                          : CELL_TYPE.LXR
-                }
-            case ACTION_TYPES.NONE:
-                return { ...c, type: CELL_TYPE.EMPTY }
-            default:
-                return { ...c }
-        }
-    }
 
-    const addCol = (at: number) => {
-        savePattern({
-            ...patternState,
-            pattern: patternState.pattern.map((r) => [
-                ...r.slice(0, at + 1),
-                {
-                    colorindex: r[at].colorindex,
-                    type: CELL_TYPE.EMPTY
-                },
-                ...r.slice(at + 1)
-            ])
-        })
-    }
-
-    const deleteCol = (col: number) => {
-        if (!window.confirm('Do you really want to delete whole column?'))
-            return
-        savePattern({
-            ...patternState,
-            pattern: patternState.pattern.map((r) =>
-                r.filter((_c, i) => i !== col)
-            )
-        })
-    }
-
-    const deleteRow = (row: number) => {
-        if (!window.confirm('Do you really want to delete whole row?')) return
-        savePattern({
-            ...patternState,
-            pattern: patternState.pattern.filter((_r, i) => i !== row)
-        })
-    }
-
-    const fillCol = (col: number) => {
-        savePattern({
-            ...patternState,
-            pattern: patternState.pattern.map((r) =>
-                r.map((c, i) => (i !== col ? c : getnewcell(c)))
-            )
-        })
-    }
-
-    const fillRow = (row: number) => {
-        savePattern({
-            ...patternState,
-            pattern: patternState.pattern.map((r, i) =>
-                i !== row ? r : r.map((c) => getnewcell(c))
-            )
-        })
-    }
-
-    const fillLeft = (row: number, col: number) => {
-        savePattern({
-            ...patternState,
-            pattern: patternState.pattern.map((r, i) =>
-                i !== row ? r : fillRowLeft(r, row, col)
-            )
-        })
-    }
-
-    const fillRowLeft = (r: IPatternCell[], row: number, col: number): IPatternCell[]  => {
-        let result = [...r] 
-        for (let index = col-1; index >= 0; index--){
-           const cell = result[index];
-           if (cell.type !== CELL_TYPE.EMPTY) return result
-           result[index] = getnewcell(cell)
-        }
-        return result
-    } 
-
-    const fillRight = (row: number, col: number) => {
-        savePattern({
-            ...patternState,
-            pattern: patternState.pattern.map((r, i) =>
-                i !== row ? r : fillRowRight(r, row, col)
-            )
-        })
-    }  
-
-    const fillRowRight = (r: IPatternCell[], row: number, col: number): IPatternCell[]  => {
-        let result = [...r] 
-        for (let index = col+1; index < r.length; index++){
-           const cell = result[index];
-           if (cell.type !== CELL_TYPE.EMPTY) return result
-           result[index] = getnewcell(cell)
-        }
-        return result
-    } 
-
-    const addRow = (atRow: number) => {
-        let newRow: IPatternCell[] = []
-        for (let index = 0; index < patternState.pattern[0].length; index++) {
-            newRow.push({
-                colorindex: patternState.selectedColorIndex,
-                type: CELL_TYPE.EMPTY
-            })
-        }
-        savePattern({
-            ...patternState,
-            pattern: [
-                ...patternState.pattern.slice(0, atRow + 1),
-                newRow,
-                ...patternState.pattern.slice(atRow + 1)
-            ]
-        })
-    }
-
-    const closeDropDown = (e?: MouseEvent<HTMLLIElement>) => {
+    const closeDropDown = useCallback((e?: MouseEvent<HTMLLIElement>) => {
         setDropDownPos({ row: -1, col: -1, opened: false })
         e?.stopPropagation()
-    }
-
-
+    }, [])
 
     return (
         <>
@@ -304,11 +118,11 @@ export const PatternComponent: FC = () => {
                         }}
                     >
                         <div className="r">
-                            <div className="cell empty">&nbsp;</div>
+                            <div className="cell empty rownumber">&nbsp;</div>
                             {patternState.pattern[0].map((col, colIndex) => (
                                 <div
                                     key={`row0-${colIndex}`}
-                                    className="cell"
+                                    className="cell colnumber"
                                     onClick={() => {
                                         setDropDownPos({
                                             row: -1,
@@ -329,18 +143,18 @@ export const PatternComponent: FC = () => {
                                                     {
                                                         name: '➕ add col',
                                                         onClick: () =>
-                                                            addCol(colIndex)
+                                                            addColumn(colIndex)
                                                     },
                                                     {
                                                         name: '❌ delete col',
                                                         onClick: () =>
-                                                            deleteCol(colIndex)
+                                                            deleteColumn(colIndex)
                                                     },
                                                     MenuItemDivider,
                                                     {
                                                         name: 'col fill',
                                                         onClick: () =>
-                                                            fillCol(colIndex),
+                                                            fillColumn(colIndex),
                                                         action: patternState.selectedAction,
                                                         color: patternState
                                                             .colors[
@@ -353,13 +167,13 @@ export const PatternComponent: FC = () => {
                                         )}
                                 </div>
                             ))}
-                            <div className="cell empty">&nbsp;</div>
+                            <div className="cell empty rownumber">&nbsp;</div>
                         </div>
                         {patternState.pattern.map((row, rowIndex) => (
                             <div key={`row-${rowIndex}`} className="r">
                                 <div
                                     key={`col0-${rowIndex}`}
-                                    className="cell"
+                                    className="cell rownumber"
                                     onClick={() => {
                                         setDropDownPos({
                                             row: rowIndex,
@@ -483,7 +297,7 @@ export const PatternComponent: FC = () => {
                                     
                                 <div
                                     key={`colend-${rowIndex}`}
-                                    className="cell"
+                                    className="cell rownumber"
                                     onClick={() => {
                                         setDropDownPos({
                                             row: rowIndex,
@@ -530,11 +344,11 @@ export const PatternComponent: FC = () => {
                             </div>
                         ))}
                         <div className="r">
-                            <div className="cell empty">&nbsp;</div>
+                            <div className="cell empty rownumber">&nbsp;</div>
                             {patternState.pattern[0].map((col, colIndex) => (
                                 <div
                                     key={`rowend-${colIndex}`}
-                                    className="cell"
+                                    className="cell colnumber"
                                     onClick={() => {
                                         setDropDownPos({
                                             row: 99999,
@@ -555,18 +369,18 @@ export const PatternComponent: FC = () => {
                                                     {
                                                         name: '➕ add col',
                                                         onClick: () =>
-                                                            addCol(colIndex)
+                                                            addColumn(colIndex)
                                                     },
                                                     {
                                                         name: '❌ delete col',
                                                         onClick: () =>
-                                                            deleteCol(colIndex)
+                                                            deleteColumn(colIndex)
                                                     },
                                                     { name: '', divider: true },
                                                     {
                                                         name: 'col fill',
                                                         onClick: () =>
-                                                            fillCol(colIndex),
+                                                            fillColumn(colIndex),
                                                         action: patternState.selectedAction,
                                                         color: patternState
                                                             .colors[
@@ -579,7 +393,7 @@ export const PatternComponent: FC = () => {
                                         )}
                                 </div>
                             ))}
-                            <div className="cell empty">&nbsp;</div>
+                            <div className="cell empty rownumber">&nbsp;</div>
                         </div>
                     </div>
                 </Card.Body>
