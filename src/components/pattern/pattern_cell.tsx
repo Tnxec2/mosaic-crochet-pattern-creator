@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode, useMemo } from 'react'
+import { FC, MouseEvent, ReactNode } from 'react'
 import { CELL_TYPE } from '../../model/patterntype.enum'
 import './pattern_cell.css'
 import { IPatternCell } from '../../model/patterncell.model'
@@ -28,7 +28,7 @@ export const PatterCellComponent: FC<propTypes> = ({
         <div
             className="cell"
             onClick={onClick}
-            //onMouseOver={onMouseOver}
+            onMouseOver={onMouseOver}
             title={`${cell.type.toUpperCase()} (${col}:${row})`}
             style={{
                 backgroundColor: color,
