@@ -74,6 +74,11 @@ interface IPatternContext {
     setMirrorHorizontal: React.Dispatch<React.SetStateAction<boolean>>
     toggleStitch: boolean
     setToggleStitch: React.Dispatch<React.SetStateAction<boolean>>
+    changeColor: (newColor: string, index: number) => void
+    addColor: () => void
+    setSelectedColor: (index: number) => void
+    deleteColor: (index: number) => void
+
 }
 
 const initialState: IPatternContext = {
@@ -104,6 +109,11 @@ const initialState: IPatternContext = {
     getCellColor: (row: number, col: number) => {
         return ''
     },
+    changeColor: (newColor: string, index: number) => {},
+    addColor: () => {},
+    setSelectedColor: (index: number) => {},
+    deleteColor: (index: number) => {}
+
 }
 
 interface IProps {
@@ -281,6 +291,44 @@ const PatternContextProvider: FC<IProps> = (props) => {
         })
     }
 
+    const changeColor = (newColor: string, index: number) => {
+        if (patternState.colors.includes(newColor)) return
+
+        savePattern({
+            ...patternState,
+            pattern: patternState.pattern.map((r) =>
+                r.map((c) =>
+                    c.colorindex === index ? { ...c, colorindex: index } : c
+                )
+            ),
+            colors: patternState.colors.map((c, i) =>
+                i === index ? newColor : c
+            )
+        })
+    }
+
+    const addColor = () => {
+        savePattern({
+            ...patternState,
+            colors: [...patternState.colors, DEFAULT_COLOR]
+        })
+    }
+
+    const setSelectedColor = (index: number) => {
+        savePattern({
+            ...patternState,
+            selectedColorIndex: index,
+            selectedAction: ACTION_TYPES.COLOR
+        })
+    }
+
+    const deleteColor = (index: number) => {
+        savePattern({
+            ...patternState,
+            colors: patternState.colors.filter((c, i) => i !== index)
+        })
+    }
+
     const value = {
         patternState,
         savePattern,
@@ -306,7 +354,11 @@ const PatternContextProvider: FC<IProps> = (props) => {
         mirrorHorizontal,
         setMirrorHorizontal,
         toggleStitch,
-        setToggleStitch
+        setToggleStitch,
+        changeColor,
+        addColor,
+        setSelectedColor,
+        deleteColor,
     }
 
     return (
