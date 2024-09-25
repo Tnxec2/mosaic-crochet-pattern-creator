@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import { FileLoaderComponent } from '../fileload/fileloader'
 import { IPattern, PatternContext } from '../../context'
 import { onSave } from '../../services/file.service'
@@ -23,10 +23,10 @@ function NavbarComponent() {
         setShowPreviewDialog,
     } = useContext(PatternContext)
 
-    const onLoad = (pattern: IPattern) => {
+    const onLoad = useCallback((pattern: IPattern) => {
         savePattern(pattern)
         setShowOpenFileDialog(false)
-    }
+    }, [savePattern, setShowOpenFileDialog])
 
     return (
         <>

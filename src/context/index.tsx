@@ -1,19 +1,18 @@
 import React, { FC, createContext, useState } from 'react'
-import { IPatternCell } from '../model/patterncell.model'
+import { IPatternCell, IPatternGrid } from '../model/patterncell.model'
 import { ACTION_TYPES } from '../model/actiontype.enum'
 import {
-    BACKGROUND_COLOR,
     DEFAULT_COLOR,
     DEFAULT_COLOR_2,
-    KEY_STORAGE,
     UNKNOWN_NAME
 } from '../model/constats'
-import { loadPattern } from '../services/file.service'
+import { loadPattern, saveLocalDebounced } from '../services/file.service'
 import { CELL_TYPE } from '../model/patterntype.enum'
 import { getNewCell } from '../components/pattern/getNetCell'
 
+
 export interface IPattern {
-    pattern: IPatternCell[][]
+    pattern: IPatternGrid
     colors: string[]
     selectedColorIndex: number
     selectedAction: ACTION_TYPES
@@ -24,13 +23,28 @@ export interface IPattern {
 }
 
 function genpat() {
-    let newpat: IPatternCell[][] = []
+    let newpat: IPatternGrid = []
     for (let row = 0; row < 10; row++) {
         const r: IPatternCell[] = []
         for (let col = 0; col < 10; col++) {
             r.push({
                 colorindex: row % 2 > 0 ? 0 : 1,
                 type: CELL_TYPE.EMPTY
+            })
+        }
+        newpat.push(r)
+    }
+    return newpat
+}
+
+function genpatHuge() {
+    let newpat: IPatternGrid = []
+    for (let row = 0; row < 200; row++) {
+        const r: IPatternCell[] = []
+        for (let col = 0; col < 200; col++) {
+            r.push({
+                colorindex: row % 2 > 0 ? 0 : 1,
+                type: CELL_TYPE.X
             })
         }
         newpat.push(r)
@@ -61,7 +75,6 @@ interface IPatternContext {
     fillRight: (row: number, col: number) => void
     fillLeft: (row: number, col: number) => void
     newPattern: () => void
-    getCellColor: (row: number, col: number) => string
     showOpenFileDialog: boolean
     setShowOpenFileDialog: React.Dispatch<React.SetStateAction<boolean>>
     showPreviewDialog: boolean
@@ -78,6 +91,10 @@ interface IPatternContext {
     addColor: () => void
     setSelectedColor: (index: number) => void
     deleteColor: (index: number) => void
+    saveFontSize: (fontSize: number) => void
+    setAction: (action: ACTION_TYPES) => void
+    changeScale: (increase: boolean) => void
+    resetScale: () => void
 
 }
 
@@ -106,13 +123,14 @@ const initialState: IPatternContext = {
     mirrorVertical: true,
     setToggleStitch: () => {},
     toggleStitch: true,
-    getCellColor: (row: number, col: number) => {
-        return ''
-    },
     changeColor: (newColor: string, index: number) => {},
     addColor: () => {},
     setSelectedColor: (index: number) => {},
-    deleteColor: (index: number) => {}
+    deleteColor: (index: number) => {},
+    saveFontSize: (fontSize: number) => {},
+    setAction: (action: ACTION_TYPES) => {},
+    changeScale: (increase: boolean) => {},
+    resetScale: () => {}
 
 }
 
@@ -132,44 +150,12 @@ const PatternContextProvider: FC<IProps> = (props) => {
     const [toggleStitch, setToggleStitch] = useState(true)
 
     const savePattern = (pattern: IPattern) => {
-        pattern.saved = false
-        localStorage.setItem(KEY_STORAGE, JSON.stringify(pattern))
-        setPatternState(pattern)
+        saveLocalDebounced(pattern) 
+        setPatternState({...pattern})
     }
 
     const newPattern = () => {
         savePattern(initialPattern)
-    }
-
-
-
-    const getCellColor = (row: number, col: number) => {
-        if (
-            patternState.pattern[row - 1] &&
-            patternState.pattern[row - 1][col - 1] &&
-            patternState.pattern[row - 1][col - 1].type.includes('r')
-        ) {
-            return getColor(row - 1, col - 1)
-        } else if (
-            patternState.pattern[row - 1] &&
-            patternState.pattern[row - 1][col + 1] &&
-            patternState.pattern[row - 1][col + 1].type.includes('l')
-        ) {
-            return getColor(row - 1, col + 1)
-        } else if (
-            patternState.pattern[row - 1] &&
-            patternState.pattern[row - 1][col] &&
-            patternState.pattern[row - 1][col].type.includes('x')
-        ) {
-            return getColor(row - 1, col)
-        }
-        return getColor(row, col)
-    }
-
-    const getColor = (row: number, col: number) => {
-        return patternState.pattern[row][col].colorindex >= 0
-            ? patternState.colors[patternState.pattern[row][col].colorindex]
-            : BACKGROUND_COLOR
     }
 
     const addColumn = (at: number) => {
@@ -329,13 +315,38 @@ const PatternContextProvider: FC<IProps> = (props) => {
         })
     }
 
+    const saveFontSize = (fontSize: number) => {
+        savePattern({
+            ...patternState,
+            previewFontSize: fontSize
+        })
+    }
+
+    const setAction = (action: ACTION_TYPES) => {
+        savePattern({ ...patternState, selectedAction: action })
+    }
+
+    const changeScale = (increase: boolean) => {
+        let factor = patternState.scaleFactor || 1
+
+        if (!increase && factor > 0.1) {
+            savePattern({ ...patternState, scaleFactor: factor - 0.1 })
+            return
+        }
+        if (increase && factor < 10)
+            savePattern({ ...patternState, scaleFactor: factor + 0.1 })
+    }
+
+    const resetScale = () => {
+        savePattern({ ...patternState, scaleFactor: 1 })
+    }
+
     const value = {
         patternState,
         savePattern,
         addColumn,
         addRow,
         fillColumn,
-        getCellColor,
         changeCell,
         deleteColumn,
         deleteRow,
@@ -359,6 +370,10 @@ const PatternContextProvider: FC<IProps> = (props) => {
         addColor,
         setSelectedColor,
         deleteColor,
+        saveFontSize,
+        setAction,
+        changeScale,
+        resetScale,
     }
 
     return (

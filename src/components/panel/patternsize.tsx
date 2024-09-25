@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from 'react'
+import { FC, useCallback, useContext, useEffect, useState } from 'react'
 import { Button, ButtonGroup, Form, InputGroup } from 'react-bootstrap'
 import { PatternContext } from '../../context'
 import { IPatternCell } from '../../model/patterncell.model'
@@ -17,7 +17,33 @@ export const PatternSizeComponent: FC<Props> = () => {
                 : "1")
     }, [patternState])
 
-    const change = () => {
+    const changeCols = useCallback( (row: IPatternCell[], cols: number): IPatternCell[] => {
+        if (cols > patternState.pattern[0].length) {
+            let colsToAppend: IPatternCell[] = []
+            while (
+                colsToAppend.length <
+                cols - patternState.pattern[0].length
+            ) {
+                colsToAppend.push({
+                    colorindex: row[row.length-1].colorindex,
+                    type: CELL_TYPE.EMPTY
+                })
+            }
+            return [
+                    ...row,
+                    ...colsToAppend
+                ]
+        } else if (
+            cols > 0 &&
+            cols < patternState.pattern[0].length
+        ) {
+            return row.slice(0, cols)
+        } else {
+            return [...row]
+        }
+    }, [patternState.pattern])
+
+    const change = useCallback(() => {
         const rows = Number(rowsString) || patternState.pattern.length 
         const cols = Number(colsString)|| patternState.pattern[0].length
         if (rows === patternState.pattern.length && cols === patternState.pattern[0].length) return
@@ -63,34 +89,7 @@ export const PatternSizeComponent: FC<Props> = () => {
                 pattern: [...patternState.pattern.map((row) => changeCols(row, cols))]
             })
         }
-    }
-
-    function changeCols (row: IPatternCell[], cols: number): IPatternCell[] {
-
-        if (cols > patternState.pattern[0].length) {
-            let colsToAppend: IPatternCell[] = []
-            while (
-                colsToAppend.length <
-                cols - patternState.pattern[0].length
-            ) {
-                colsToAppend.push({
-                    colorindex: row[row.length-1].colorindex,
-                    type: CELL_TYPE.EMPTY
-                })
-            }
-            return [
-                    ...row,
-                    ...colsToAppend
-                ]
-        } else if (
-            cols > 0 &&
-            cols < patternState.pattern[0].length
-        ) {
-            return row.slice(0, cols)
-        } else {
-            return [...row]
-        }
-    }
+    }, [changeCols, colsString, patternState, rowsString, savePattern])
 
     return (
         <>

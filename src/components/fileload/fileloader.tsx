@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
-import { ChangeEvent, FC, useState } from 'react'
+import { ChangeEvent, FC, useCallback, useState } from 'react'
 import { IPattern } from '../../context'
 import { loadFile } from '../../services/file.service'
 
@@ -13,16 +13,12 @@ interface PROPS {
 export const FileLoaderComponent: FC<PROPS> = ({ onLoad, onClose }) => {
     const [file, setFile] = useState<File>()
 
-    const loadFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const loadFileInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         let file = e.target.files?.item(0)
         if (file) {
             setFile(file)
         }
-    }
-
-    const load = () => {
-        loadFile(file, onLoad)
-    }
+    }, [])
 
     return (
         <Modal show={true}>
@@ -44,7 +40,7 @@ export const FileLoaderComponent: FC<PROPS> = ({ onLoad, onClose }) => {
                 <Button variant="secondary" onClick={onClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={load}>
+                <Button variant="primary" onClick={() => loadFile(file, onLoad)}>
                     Load
                 </Button>
             </Modal.Footer>

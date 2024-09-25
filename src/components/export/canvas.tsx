@@ -13,7 +13,7 @@ const Canvas = (props: any) => {
       draw(canvas, context);
       setDrawing(false)
     } 
-  }, [draw]);
+  }, [draw, drawing]);
 
   return <canvas className={className} ref={canvasRef} {...rest} />;
 };

@@ -1,6 +1,7 @@
 import { IPattern } from '../context'
 import { KEY_STORAGE, UNKNOWN_NAME } from '../model/constats'
 import { mug } from '../sampledata/mug'
+import { debounce } from './debounce'
 
 export const onSave = (patternState: IPattern) => {
     const fileName = patternState.name || UNKNOWN_NAME
@@ -39,6 +40,13 @@ export const loadFile = (
         fr.readAsText(file)
     }
 }
+
+export const saveLocalDebounced = debounce(
+    (pattern: IPattern) => {
+        localStorage.setItem(KEY_STORAGE, JSON.stringify(pattern)) },
+    1000
+)
+
 
 export const loadPattern = () => {
     let saved = localStorage.getItem(KEY_STORAGE)

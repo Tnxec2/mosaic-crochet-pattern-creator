@@ -1,5 +1,9 @@
 import { CELL_TYPE } from './patterntype.enum'
 
+export type IPatternRow = IPatternCell[]
+export type IPatternGrid = IPatternRow[]
+
+
 export interface IPatternCell {
     colorindex: number
     type: CELL_TYPE

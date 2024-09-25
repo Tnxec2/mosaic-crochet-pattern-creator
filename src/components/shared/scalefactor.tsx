@@ -7,19 +7,9 @@ import { PatternContext } from "../../context"
 export const ScaleFactor: FC = () => {
     const {
         patternState,
-        savePattern,
+        changeScale,
+        resetScale
     } = useContext(PatternContext)
-
-    const changeScale = (increase: boolean) => {
-        let factor = patternState.scaleFactor || 1
-
-        if (!increase && factor > 0.1) {
-            savePattern({ ...patternState, scaleFactor: factor - 0.1 })
-            return
-        }
-        if (increase && factor < 10)
-            savePattern({ ...patternState, scaleFactor: factor + 0.1 })
-    }
 
     return (
         <>
@@ -40,7 +30,7 @@ export const ScaleFactor: FC = () => {
                 variant="outline-secondary"
                 title="reset scale factor to default"
                 onClick={() => {
-                    savePattern({ ...patternState, scaleFactor: 1 })
+                    resetScale()
                 }}
             >
                 ✖ { patternState.scaleFactor.toFixed(2)}

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useStateDebounced } from "../../services/debounce";
 
 type Props = {
@@ -13,14 +13,9 @@ type Props = {
 
 export const ColorItemComponent: FC<Props> = ({colorIndex, color, changeColor, setSelectedColor, deleteColor, selected, canByDeleted}) => {
 
-const [value, debouncedValue, setValue] = useStateDebounced(color, 300);
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
+const [value, debouncedValue, setValue] = useStateDebounced(color, 1000);
 
   useEffect(() => changeColor(debouncedValue, colorIndex), [changeColor, colorIndex, debouncedValue])
-
 
   return <div key={`color-${colorIndex}`} className="input-group">
   <input
@@ -28,7 +23,9 @@ const [value, debouncedValue, setValue] = useStateDebounced(color, 300);
       className="form-control form-control-sm"
       title="color"
       value={value}
-      onChange={handleInputChange}
+      onChange={(e) => {
+        setValue(e.target.value);
+      }}
   />
   <button
       type="button"

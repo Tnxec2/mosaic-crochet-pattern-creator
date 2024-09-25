@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-const debounce = (fn: any, delay: number) => {
+export const debounce = (fn: any, delay: number) => {
   let timeout: NodeJS.Timeout | undefined = undefined;
   return (...args: any[]) => {
     if (timeout) {

@@ -21,7 +21,7 @@ export const PatternName: FC = () => {
         } else {
             if (patternState.name.trim() === '') savePattern({...patternState, name: UNKNOWN_NAME})
         } 
-    }, [edit])
+    }, [edit, patternState, savePattern])
 
 
     return (

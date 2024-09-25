@@ -14,6 +14,7 @@ export const ColorsComponent: FC<Props> = () => {
                 <Form.Label>Colors</Form.Label>
                 {patternState.colors.map((color, index) => 
                     <ColorItemComponent 
+                    key={`${patternState.name}-${index}`}
                     colorIndex={index}
                     color={color}
                     changeColor={changeColor}

@@ -27,13 +27,6 @@ export const DropDown: FC<Props> = ({ x, y, onclose, menu }) => {
 
     const refDropDownOutside = useOutsideClick(handleClickOutside)
 
-    const handleClick = (e: MouseEvent<HTMLLIElement>, menuItem: MenuItem) => {
-        e.preventDefault()
-        e.stopPropagation()
-        if (menuItem.onClick) menuItem.onClick()
-        onclose(e)
-    }
-
     const renderSwitch = (value?: ACTION_TYPES, color?: string) => {
         switch (value) {
             case undefined:
@@ -76,7 +69,12 @@ export const DropDown: FC<Props> = ({ x, y, onclose, menu }) => {
                         className={`menu-item ${
                             menuItem.divider ? 'divider' : ''
                         }`}
-                        onClick={(e) => handleClick(e, menuItem)}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            if (menuItem.onClick) menuItem.onClick()
+                            onclose(e)
+                        }}
                     >
                         {renderSwitch(menuItem.action, menuItem.color)}
                         {menuItem.name}

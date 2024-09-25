@@ -6,11 +6,7 @@ import './actions.css'
 
 type Props = {}
 export const ActionsComponent: FC<Props> = () => {
-    const { patternState, savePattern } = useContext(PatternContext)
-
-    const setAction = (action: ACTION_TYPES) => {
-        savePattern({ ...patternState, selectedAction: action })
-    }
+    const { patternState, setAction } = useContext(PatternContext)
 
     const renderSwitch = (value: ACTION_TYPES) => {
         switch (value) {

@@ -8,6 +8,7 @@ import { PatterCellComponent } from './pattern_cell'
 import { ScaleFactor } from '../shared/scalefactor'
 import { PatternName } from '../shared/patternname'
 import { Help } from './help'
+import { PatternDraw } from '../shared/patterndraw'
 
 type TDropDownPos = {
     row: number
@@ -24,7 +25,6 @@ export const PatternComponent: FC = () => {
         addColumn,
         addRow,
         fillColumn,
-        getCellColor,
         changeCell,
         deleteColumn,
         deleteRow,
@@ -298,7 +298,7 @@ export const PatternComponent: FC = () => {
                                                 e.preventDefault()
                                             handleClick(rowIndex, colIndex, false, e)
                                         }}
-                                        color={getCellColor(rowIndex, colIndex)}
+                                        color={PatternDraw.getCellColor(patternState.pattern, patternState.colors, rowIndex, colIndex)}
                                         onMouseOver={(e) =>
                                             handleMouseOver(
                                                 e,
