@@ -23,7 +23,7 @@ export const onSave = (patternState: IPattern) => {
     URL.revokeObjectURL(href)
 }
 
-export const loadFile = (
+export const loadJsonFile = (
     file: File | undefined,
     onLoad: (pattern: IPattern) => void
 ) => {
@@ -47,6 +47,13 @@ export const saveLocalDebounced = debounce(
     1000
 )
 
+export const baseName = (str: string) => {
+   var base = str.substring(str.lastIndexOf('/') + 1); 
+    if(base.lastIndexOf(".") !== -1)       
+        base = base.substring(0, base.lastIndexOf("."));
+   return base;
+}
+
 
 export const loadPattern = () => {
     let saved = localStorage.getItem(KEY_STORAGE)
@@ -57,3 +64,22 @@ export const loadPattern = () => {
     }
     return mug
 }
+
+const fillTransparentPixelsWithWhite = (imageData: ImageData) => {
+    // Get image data
+    const data = imageData.data;
+  
+    for (let i = 0; i < data.length; i += 4) {
+      const alpha = data[i + 3]; // Alpha channel
+      if (alpha === 0) {
+        // Check if pixel is fully transparent
+        data[i] = 255; // Red
+        data[i + 1] = 255; // Green
+        data[i + 2] = 255; // Blue
+        data[i + 3] = 255; // Set alpha to fully opaque
+      }
+    }
+  
+    // Put image data back
+    return imageData;
+  }

@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import { FileLoaderComponent } from '../fileload/fileloader'
 import { IPattern, PatternContext } from '../../context'
 import { onSave } from '../../services/file.service'
@@ -11,6 +11,8 @@ import { PreviewComponent } from '../export/preview'
 import { mug } from '../../sampledata/mug'
 import { nya } from '../../sampledata/nya'
 import { infinityBorder } from '../../sampledata/infinityborder'
+import { ImageFileLoaderComponent } from '../import/fileloader'
+import { ImportImageComponent } from '../import/importImage'
 
 function NavbarComponent() {
     const {
@@ -28,6 +30,9 @@ function NavbarComponent() {
         setShowOpenFileDialog(false)
     }, [savePattern, setShowOpenFileDialog])
 
+    const [showOpenImageDialog, setShowOpenImageDialog] = useState(false)
+    const [fileImage, setFileImage] = useState<File | undefined>()
+
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary">
@@ -42,26 +47,33 @@ function NavbarComponent() {
                                     href=""
                                     onClick={() => newPattern()}
                                 >
-                                    New
+                                    New Pattern
                                 </NavDropdown.Item>
                                 <NavDropdown.Item
                                     href=""
                                     onClick={() => setShowOpenFileDialog(true)}
                                 >
-                                    Load
+                                    Load Pattern
                                 </NavDropdown.Item>
                                 <NavDropdown.Item
                                     href=""
                                     onClick={() => onSave(patternState)}
                                 >
-                                    Save
+                                    Save Pattern
                                 </NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item
                                     href=""
                                     onClick={() => setShowPreviewDialog(true)}
                                 >
-                                    Export Image
+                                    Export Pattern to Image
+                                </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item
+                                    href=""
+                                    onClick={() => setShowOpenImageDialog(true)}
+                                >
+                                    Import Image to Pattern
                                 </NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title="Samples" id="samples-nav-dropdown">
@@ -148,6 +160,25 @@ function NavbarComponent() {
             {showPreviewDialog && (
                 <PreviewComponent
                     onClose={() => setShowPreviewDialog(false)}
+                />
+            )}
+
+
+            {showOpenImageDialog && (
+                <ImageFileLoaderComponent
+                    onClose={() => setShowOpenImageDialog(false)}
+                    onLoad={ (data) => {
+                            setShowOpenImageDialog(false)
+                            setFileImage(data)
+                        }
+                    }
+                />
+            )}
+
+            {fileImage && (
+                <ImportImageComponent
+                    file={fileImage}
+                    onClose={() => setFileImage(undefined)}
                 />
             )}
         </>

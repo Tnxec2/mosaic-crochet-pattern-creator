@@ -2,15 +2,13 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import { ChangeEvent, FC, useCallback, useState } from 'react'
-import { IPattern } from '../../context'
-import { loadJsonFile } from '../../services/file.service'
 
 interface PROPS {
     onClose: () => void
-    onLoad: (pattern: IPattern) => void
+    onLoad: (file: File | undefined) => void
 }
 
-export const FileLoaderComponent: FC<PROPS> = ({ onLoad, onClose }) => {
+export const ImageFileLoaderComponent: FC<PROPS> = ({ onLoad, onClose }) => {
     const [file, setFile] = useState<File>()
 
     const loadFileInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -23,14 +21,14 @@ export const FileLoaderComponent: FC<PROPS> = ({ onLoad, onClose }) => {
     return (
         <Modal show={true}>
             <Modal.Header closeButton onHide={onClose}>
-                <Modal.Title>Load Pattern</Modal.Title>
+                <Modal.Title>Load Image</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                <p>Select pattern json file to load.</p>
+                <p>Select image file to load.</p>
                 <Form.Control
                     type="file"
-                    accept="application/json"
+                    accept="image/*"
                     onChange={loadFileInput}
                 />
             </Modal.Body>
@@ -39,7 +37,7 @@ export const FileLoaderComponent: FC<PROPS> = ({ onLoad, onClose }) => {
                 <Button variant="secondary" onClick={onClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={() => loadJsonFile(file, onLoad)}>
+                <Button variant="primary" onClick={() => onLoad(file)}>
                     Load
                 </Button>
             </Modal.Footer>
