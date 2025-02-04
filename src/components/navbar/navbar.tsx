@@ -117,7 +117,7 @@ function NavbarComponent() {
                                 <img 
                                 alt='crochettimer'
                                 style={{border:0, height:36}} 
-                                src="https://img.icons8.com/plasticine/100/counter.png"/>
+                                src="https://tnxec2.github.io/crochettimer/icon-192.png"/>
                         </a>
                         
                         <a href="https://www.buymeacoffee.com/tnxec2" 
