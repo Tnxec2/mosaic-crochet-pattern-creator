@@ -106,11 +106,23 @@ function NavbarComponent() {
                     <Navbar id="menu-navbar-version">
                         <Navbar.Text className="justify-content-end ms-3">
                             v. {VERSION}
+
+
+                        <a href='https://tnxec2.github.io/crochettimer/' 
+                                target="_blank"
+                             rel="noreferrer"
+                             style={{marginLeft: 20}}
+                             title='Row counter & timer' 
+                             >
+                                <img 
+                                alt='crochettimer'
+                                style={{border:0, height:36}} 
+                                src="https://img.icons8.com/plasticine/100/counter.png"/>
+                        </a>
                         
                         <a href="https://www.buymeacoffee.com/tnxec2" 
                             target="_blank"
                              rel="noreferrer"
-                             style={{marginLeft: 20}}
                              title='Buy Me a Coffee at buymeacoffee.com' 
                             >
                             <svg width="40" 
