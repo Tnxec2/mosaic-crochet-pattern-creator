@@ -1,4 +1,4 @@
-import React, { FC, createContext, useState } from 'react'
+import React, { FC, createContext, useCallback, useState } from 'react'
 import { IPatternCell, IPatternGrid } from '../model/patterncell.model'
 import { ACTION_TYPES } from '../model/actiontype.enum'
 import {
@@ -302,13 +302,13 @@ const PatternContextProvider: FC<IProps> = (props) => {
         })
     }
 
-    const setSelectedColor = (index: number) => {
+    const setSelectedColor = useCallback((index: number) => {
         savePattern({
             ...patternState,
             selectedColorIndex: index,
             selectedAction: ACTION_TYPES.COLOR
         })
-    }
+    }, [patternState])
 
     const deleteColor = (index: number) => {
         savePattern({
@@ -324,9 +324,9 @@ const PatternContextProvider: FC<IProps> = (props) => {
         })
     }
 
-    const setAction = (action: ACTION_TYPES) => {
+    const setAction = useCallback((action: ACTION_TYPES) => {
         savePattern({ ...patternState, selectedAction: action })
-    }
+    },[patternState])
 
     const changeScale = (increase: boolean) => {
         let factor = patternState.scaleFactor || 1
@@ -343,14 +343,13 @@ const PatternContextProvider: FC<IProps> = (props) => {
         savePattern({ ...patternState, scaleFactor: 1 })
     }
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
         const key = e.key;
         console.log(key);
         
         switch (key) {
            case '1':
-               if (patternState.colors.length > 0)
-                   setSelectedColor(0)
+               if (patternState.colors.length > 0) setSelectedColor(0)
                break;
            case '2':
                if (patternState.colors.length > 1) setSelectedColor(1)
@@ -410,8 +409,7 @@ const PatternContextProvider: FC<IProps> = (props) => {
            default:
                break;
         }
-        
-   };
+   },[patternState.colors, setAction, setSelectedColor]);
 
     const value = {
         patternState,

@@ -17,7 +17,7 @@ export const ActionsComponent: FC<Props> = () => {
         return () => {
             window.removeEventListener('keydown', handleKey);
         };
-    }, []);
+    }, [handleKeyDown]);
 
     const renderSwitch = (value: ACTION_TYPES) => {
         switch (value) {
