@@ -95,7 +95,7 @@ interface IPatternContext {
     setAction: (action: ACTION_TYPES) => void
     changeScale: (increase: boolean) => void
     resetScale: () => void
-
+    handleKeyDown: (event: KeyboardEvent) => void
 }
 
 const initialState: IPatternContext = {
@@ -130,7 +130,8 @@ const initialState: IPatternContext = {
     saveFontSize: (fontSize: number) => {},
     setAction: (action: ACTION_TYPES) => {},
     changeScale: (increase: boolean) => {},
-    resetScale: () => {}
+    resetScale: () => {},
+    handleKeyDown: () => {}
 
 }
 
@@ -342,6 +343,76 @@ const PatternContextProvider: FC<IProps> = (props) => {
         savePattern({ ...patternState, scaleFactor: 1 })
     }
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+        const key = e.key;
+        console.log(key);
+        
+        switch (key) {
+           case '1':
+               if (patternState.colors.length > 0)
+                   setSelectedColor(0)
+               break;
+           case '2':
+               if (patternState.colors.length > 1) setSelectedColor(1)
+               break;
+           case '3':
+               if (patternState.colors.length > 2) setSelectedColor(2)
+               break;
+           case '4':
+               if (patternState.colors.length > 3) setSelectedColor(3)
+               break;
+           case '5':
+               if (patternState.colors.length > 4) setSelectedColor(4)
+               break;
+           case '6':
+               if (patternState.colors.length > 5) setSelectedColor(5)
+               break;
+           case '7':
+               if (patternState.colors.length > 6) setSelectedColor(6)
+               break;
+           case '8':
+               if (patternState.colors.length > 7) setSelectedColor(7)
+               break;
+           case '9':
+               if (patternState.colors.length > 8) setSelectedColor(8)
+               break;
+           case '0':
+               if (patternState.colors.length > 9) setSelectedColor(9)
+               break;
+           case 'x':
+               setAction(ACTION_TYPES.X) 
+               break;
+           case 'X':
+               setAction(ACTION_TYPES.LXR)
+               break;
+           case 'b':
+               setAction(ACTION_TYPES.LR)
+               break
+           case 'l':
+               setAction(ACTION_TYPES.L)
+               break;
+           case 'L':
+               setAction(ACTION_TYPES.LX)
+               break;
+           case 'r':
+               setAction(ACTION_TYPES.R)
+               break;
+           case 'R':
+               setAction(ACTION_TYPES.XR)
+               break;
+           case 'c':
+               setAction(ACTION_TYPES.COLOR)
+               break;
+           case 'Escape':
+           case 'e':
+               setAction(ACTION_TYPES.NONE)
+               break;
+           default:
+               break;
+        }
+        
+   };
+
     const value = {
         patternState,
         savePattern,
@@ -375,7 +446,8 @@ const PatternContextProvider: FC<IProps> = (props) => {
         setAction,
         changeScale,
         resetScale,
-    }
+        handleKeyDown
+    }    
 
     return (
         <PatternContext.Provider value={value}>
