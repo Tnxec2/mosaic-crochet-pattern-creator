@@ -181,7 +181,7 @@ export const PatternComponent: FC = () => {
             return
         } 
         if (event.ctrlKey){
-            if (patternState.selectedAction !== ACTION_TYPES.NONE) 
+            // if (patternState.selectedAction !== ACTION_TYPES.NONE) 
                 setDropDownPosPatternCell({row: row, col: col, x: event.clientX, y: event.clientY, opened: true})
             return
         } 

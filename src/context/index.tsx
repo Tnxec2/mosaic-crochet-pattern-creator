@@ -7,7 +7,7 @@ import {
     UNKNOWN_NAME
 } from '../model/constats'
 import { loadPattern, saveLocalDebounced } from '../services/file.service'
-import { CELL_TYPE } from '../model/patterntype.enum'
+import { actionToCellType, CELL_TYPE } from '../model/patterntype.enum'
 import { getNewCell } from '../components/pattern/getNetCell'
 
 
@@ -243,7 +243,8 @@ const PatternContextProvider: FC<IProps> = (props) => {
         let result = [...r] 
         for (let index = col-1; index >= 0; index--){
            const cell = result[index];
-           if (cell.type !== CELL_TYPE.EMPTY) return result
+
+           if (cell.type === actionToCellType(patternState.selectedAction, cell.type)) return result
            result[index] = getNewCell(cell, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch)
         }
         return result
@@ -262,7 +263,7 @@ const PatternContextProvider: FC<IProps> = (props) => {
         let result = [...r] 
         for (let index = col+1; index < r.length; index++){
            const cell = result[index];
-           if (cell.type !== CELL_TYPE.EMPTY) return result
+           if (cell.type === actionToCellType(patternState.selectedAction, cell.type)) return result
            result[index] = getNewCell(cell, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch)
         }
         return result
