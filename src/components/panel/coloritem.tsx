@@ -18,6 +18,7 @@ const [value, debouncedValue, setValue] = useStateDebounced(color, 1000);
   useEffect(() => changeColor(debouncedValue, colorIndex), [changeColor, colorIndex, debouncedValue])
 
   return <div key={`color-${colorIndex}`} className="input-group">
+    <span>{colorIndex+1}&nbsp;&nbsp;</span>
   <input
       type="color"
       className="form-control form-control-sm"
