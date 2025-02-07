@@ -1,16 +1,14 @@
-import { FC, Fragment, MouseEvent, useCallback, useContext, useMemo, useState } from 'react'
+import { FC, MouseEvent, useCallback, useContext, useMemo, useState } from 'react'
 import { PatternContext } from '../../context'
-import { Card, InputGroup } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 import './pattern.css'
 import { ACTION_TYPES } from '../../model/actiontype.enum'
 import { DropDown, MenuItemDivider } from './dropdown'
-import { PatterCellComponent } from './pattern_cell'
-import { ScaleFactor } from '../shared/scalefactor'
-import { PatternName } from '../shared/patternname'
-import { Help } from './help'
-import { PatternDraw } from '../shared/patterndraw'
+import { PatternHeaderComponent } from './pattern.header'
+import { PatternRowHeaderComponent } from './pattern.rowheader'
+import { PatternRowComponent } from './pattern.row'
 
-type TDropDownPos = {
+export type TDropDownPos = {
     row: number
     col: number
     x: number
@@ -25,14 +23,11 @@ export const PatternComponent: FC = () => {
         addColumn,
         addRow,
         fillColumn,
-        changeCell,
         deleteColumn,
         deleteRow,
         fillRow,
         fillRight,
         fillLeft,
-        showCellStitchType,
-        setShowCellStitchType,
     } = useContext(PatternContext)
 
 
@@ -175,35 +170,6 @@ export const PatternComponent: FC = () => {
             ]}
         />, [dropDownPos.x, dropDownPos.y, dropDownPos.col, patternState.pattern, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addColumn, deleteColumn, fillColumn])
 
-    const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
-        if (dropDownPosPatternCell.opened) {
-            setDropDownPosPatternCell({...dropDownPosPatternCell, opened: false})
-            return
-        } 
-        if (event.ctrlKey){
-            // if (patternState.selectedAction !== ACTION_TYPES.NONE) 
-                setDropDownPosPatternCell({row: row, col: col, x: event.clientX, y: event.clientY, opened: true})
-            return
-        } 
-        changeCell(row, col, mouseOver)
-    }, [changeCell, dropDownPosPatternCell, patternState.selectedAction])
-
-
-    const handleMouseOver = useCallback((
-        e: MouseEvent<HTMLElement>,
-        row: number,
-        col: number
-    ) => {
-        if (e.stopPropagation) e.stopPropagation()
-        if (e.preventDefault) e.preventDefault()
-
-        if (e.buttons === 1) {
-            handleClick(row, col, true, e)
-        }
-    }, [handleClick])
-
-
-
 
     return (
         <>
@@ -212,34 +178,7 @@ export const PatternComponent: FC = () => {
             {dropDownPosPatternCell?.opened && dropDownCell}
             
             <Card className="h-100">
-                <Card.Header>
-                    <Card.Title>
-                        Pattern                        
-                        <Help />
-                        <div className="form-check form-switch float-end">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                role="switch"
-                                id="flexSwitchCheckDefault"
-                                checked={showCellStitchType}
-                                onChange={(e) => {
-                                    setShowCellStitchType(e.target.checked)
-                                }}
-                            />
-                            <label
-                                className="form-check-label"
-                                htmlFor="flexSwitchCheckDefault"
-                            >
-                                show stitch type
-                            </label>
-                        </div>
-                    </Card.Title>
-                        <InputGroup className="mb-3">
-                            <PatternName />
-                            <ScaleFactor />
-                        </InputGroup>
-                </Card.Header>
+                <PatternHeaderComponent />
                 <Card.Body className="pattern-container">
                     <div
                         className="noselect"
@@ -248,113 +187,18 @@ export const PatternComponent: FC = () => {
                             transform: `scale(${patternState.scaleFactor})`
                         }}
                     >
-                        <div className="r">
-                            <div className="cell empty rownumber">&nbsp;</div>
-                            {patternState.pattern[0].map((col, colIndex) => (
-                                <div
-                                    key={`row0-${colIndex}`}
-                                    className="cell colnumber"
-                                    onClick={(e) => {
-                                        setDropDownPos({
-                                            row: -1,
-                                            col: colIndex,
-                                            x: e.clientX,
-                                            y: e.clientY,
-                                            opened: true
-                                        })
-                                    }}
-                                    title={`${patternState.pattern[0].length - colIndex}`}
-                                >
-                                    {patternState.pattern[0].length - colIndex}
-                                </div>
-                            ))}
-                            <div className="cell empty rownumber">&nbsp;</div>
-                        </div>
+                        <PatternRowHeaderComponent setDropDownPos={setDropDownPos} />
+                        
                         {patternState.pattern.map((row, rowIndex) => (
-                            <div key={`row-${rowIndex}`} className="r">
-                                <div
-                                    key={`col0-${rowIndex}`}
-                                    className="cell rownumber"
-                                    onClick={(e) => {
-                                        setDropDownPos({
-                                            row: rowIndex,
-                                            col: -1,
-                                            x: e.clientX,
-                                            y: e.clientY,
-                                            opened: true
-                                        })
-                                    }}
-                                    title={`${patternState.pattern.length - rowIndex}`}
-                                >
-                                    {patternState.pattern.length - rowIndex}
-                                </div>
-                                {row.map((col, colIndex) => (
-                                    <Fragment key={`col-${colIndex}`}>
-                                    <PatterCellComponent
-                                        onClick={(e) => {
-                                            if (e.stopPropagation)
-                                                e.stopPropagation()
-                                            if (e.preventDefault)
-                                                e.preventDefault()
-                                            handleClick(rowIndex, colIndex, false, e)
-                                        }}
-                                        color={PatternDraw.getCellColor(patternState.pattern, patternState.colors, rowIndex, colIndex)}
-                                        onMouseOver={(e) =>
-                                            handleMouseOver(
-                                                e,
-                                                rowIndex,
-                                                colIndex
-                                            )
-                                        }
-                                        row={patternState.pattern.length - rowIndex}
-                                        col={row.length - colIndex}
-                                        cell={col}
-                                        showCellCrochetType={showCellStitchType}
-                                    >
-                                        </PatterCellComponent>
-                                    </Fragment>
-                                ))}
-                                    
-                                <div
-                                    key={`colend-${rowIndex}`}
-                                    className="cell rownumber"
-                                    onClick={(e) => {
-                                        setDropDownPos({
-                                            row: rowIndex,
-                                            col: -1,
-                                            x: e.clientX,
-                                            y: e.clientY,
-                                            opened: true
-                                        })
-                                    }}
-                                    title={`${patternState.pattern.length - rowIndex}`}
-                                >
-                                    {patternState.pattern.length - rowIndex}
-                                </div>
-                            </div>
+                            <PatternRowComponent key={`row-${rowIndex}`}
+                                row={row}
+                                rowIndex={rowIndex}
+                                dropDownPosPatternCell={dropDownPosPatternCell}
+                                setDropDownPos={setDropDownPos}
+                                setDropDownPosPatternCell={setDropDownPosPatternCell}
+                            />
                         ))}
-                        <div className="r">
-                            <div className="cell empty rownumber">&nbsp;</div>
-                            {patternState.pattern[0].map((col, colIndex) => (
-                                <div
-                                    key={`rowend-${colIndex}`}
-                                    className="cell colnumber"
-                                    onClick={(e) => {
-                                        setDropDownPos({
-                                            row: -1,
-                                            col: colIndex,
-                                            x: e.clientX,
-                                            y: e.clientY,
-                                            opened: true
-                                        })
-                                    }}
-                                    title={`${patternState.pattern[0].length - colIndex}`}
-                                >
-                                    {patternState.pattern[0].length - colIndex}
-                                </div>
-                            ))}
-                            <div className="cell empty rownumber">&nbsp;</div>
-                        </div>
+                        <PatternRowHeaderComponent setDropDownPos={setDropDownPos} />
                     </div>
                 </Card.Body>
             </Card>
