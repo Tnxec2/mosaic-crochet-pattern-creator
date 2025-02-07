@@ -1,6 +1,7 @@
 import NavbarComponent from './components/navbar/navbar'
 import { PanelComponent } from './components/panel/panel'
 import { PatternComponent } from './components/pattern/pattern'
+import { PatternWindowComponent } from './components/pattern/windowed/pattern'
 import { PatternContextProvider } from './context'
 import { Col, Row } from 'react-bootstrap'
 
@@ -13,7 +14,7 @@ function App() {
                     <PanelComponent />
                 </Col>
                 <Col sm={10}>
-                    <PatternComponent />
+                    <PatternWindowComponent />
                 </Col>
             </Row>
         </PatternContextProvider>

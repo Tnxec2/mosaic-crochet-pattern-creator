@@ -1,6 +1,6 @@
 .pattern-container {
         overflow: auto;
-        margin-bottom: 500px;
+        /* margin-bottom: 500px; */
 }
 
 #pattern {
@@ -16,10 +16,13 @@
 
 .cell {
     border: 1px solid #252525;
-    width: 1.5em;
-    height: 1.5em;
+    width: 1.2em;
+    height: 1.2em;
     cursor: pointer;
     text-align: center;
+    line-height: 1em;
+    font-size: small;
+    background-repeat: unset;
 }
 
 
