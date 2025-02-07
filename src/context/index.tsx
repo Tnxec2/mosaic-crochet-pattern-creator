@@ -406,10 +406,19 @@ const PatternContextProvider: FC<IProps> = (props) => {
            case 'e':
                setAction(ACTION_TYPES.NONE)
                break;
+            case 'v':
+                setMirrorVertical(!mirrorVertical)
+                break;
+            case 'h':
+                setMirrorHorizontal(!mirrorHorizontal)
+                break;
+            case 't':
+                setToggleStitch(!toggleStitch)
+                break;
            default:
                break;
         }
-   },[patternState.colors, setAction, setSelectedColor]);
+   },[patternState.colors, setAction, setSelectedColor, mirrorHorizontal, mirrorVertical, toggleStitch]);
 
     const value = {
         patternState,
