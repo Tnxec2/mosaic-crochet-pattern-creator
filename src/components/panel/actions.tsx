@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 import { PatternContext } from '../../context'
-import { ACTION_TYPES } from '../../model/actiontype.enum'
+import { ACTION_TYPES, actionTitle } from '../../model/actiontype.enum'
 import './actions.css'
 
 type Props = {}
@@ -26,7 +26,7 @@ export const ActionsComponent: FC<Props> = () => {
                     <img
                         src={`./assets/empty.svg`}
                         alt={value}
-                        title="Empty"
+                        title={actionTitle(value)}
                     ></img>
                 )
             case ACTION_TYPES.COLOR:
@@ -34,7 +34,7 @@ export const ActionsComponent: FC<Props> = () => {
                     <img
                         src={`./assets/empty.svg`}
                         alt={value}
-                        title="Color"
+                        title={actionTitle(value)}
                         style={{
                             backgroundColor:
                                 patternState.colors[
@@ -48,7 +48,7 @@ export const ActionsComponent: FC<Props> = () => {
                     <img
                         src={`./assets/${value}.svg`}
                         alt={value}
-                        title={value.toUpperCase()}
+                        title={actionTitle(value)}
                     ></img>
                 )
         }

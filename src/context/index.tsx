@@ -1,6 +1,6 @@
 import React, { FC, createContext, useCallback, useState } from 'react'
 import { IPatternCell, IPatternGrid } from '../model/patterncell.model'
-import { ACTION_TYPES } from '../model/actiontype.enum'
+import { ACTION_TYPES, actionTypesToKey } from '../model/actiontype.enum'
 import {
     DEFAULT_COLOR,
     DEFAULT_COLOR_2,
@@ -378,32 +378,31 @@ const PatternContextProvider: FC<IProps> = (props) => {
            case '0':
                if (patternState.colors.length > 9) setSelectedColor(9)
                break;
-           case 'x':
+           case actionTypesToKey(ACTION_TYPES.X):
                setAction(ACTION_TYPES.X) 
                break;
-           case 'X':
+           case actionTypesToKey(ACTION_TYPES.LXR):
                setAction(ACTION_TYPES.LXR)
                break;
-           case 'b':
+           case actionTypesToKey(ACTION_TYPES.LR):
                setAction(ACTION_TYPES.LR)
                break
-           case 'l':
+           case actionTypesToKey(ACTION_TYPES.L):
                setAction(ACTION_TYPES.L)
                break;
-           case 'L':
+           case actionTypesToKey(ACTION_TYPES.LX):
                setAction(ACTION_TYPES.LX)
                break;
-           case 'r':
+           case actionTypesToKey(ACTION_TYPES.R):
                setAction(ACTION_TYPES.R)
                break;
-           case 'R':
+           case actionTypesToKey(ACTION_TYPES.XR):
                setAction(ACTION_TYPES.XR)
                break;
-           case 'c':
+           case actionTypesToKey(ACTION_TYPES.COLOR):
                setAction(ACTION_TYPES.COLOR)
                break;
-           case 'Escape':
-           case 'e':
+           case actionTypesToKey(ACTION_TYPES.NONE):
                setAction(ACTION_TYPES.NONE)
                break;
             case 'v':
