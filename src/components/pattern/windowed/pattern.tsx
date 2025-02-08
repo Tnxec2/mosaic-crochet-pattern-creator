@@ -1,6 +1,6 @@
 import { FC, MouseEvent, useCallback, useContext, useMemo, useState, WheelEvent } from 'react'
 import { PatternContext } from '../../../context'
-import { Button, Card, Form, InputGroup } from 'react-bootstrap'
+import { Card, Form, InputGroup } from 'react-bootstrap'
 import '../pattern.css'
 import { ACTION_TYPES } from '../../../model/actiontype.enum'
 import { DropDown, MenuItemDivider } from '../dropdown'
@@ -8,6 +8,8 @@ import { PatternHeaderComponent } from './pattern.header'
 import { PatternRowHeaderComponent } from './pattern.rowheader'
 import { PatternRowComponent } from './pattern.row'
 import { HoldButton } from './holdbutton'
+import { VIEWBOX_MIN_SIZE } from '../../../model/constats'
+import { saveViewBoxDebounced } from '../../../services/file.service'
 
 export type TDropDownPos = {
     row: number
@@ -17,14 +19,12 @@ export type TDropDownPos = {
     opened: boolean
 }
 
-export type POS = {
+export type TVIEWBOX_SIZE = {
     row: number,
     col: number,
     wx: number,
     wy: number
 }
-
-const MIN_SIZE = 10
 
 export const PatternWindowComponent: FC = () => {
     const {
@@ -40,7 +40,7 @@ export const PatternWindowComponent: FC = () => {
         fillLeft,
     } = useContext(PatternContext)
 
-    const [pos, setPos] = useState<POS>({
+    const [pos, setPos] = useState<TVIEWBOX_SIZE>({
         row: 0,
         col: 0,
         wx: 30,
@@ -48,42 +48,73 @@ export const PatternWindowComponent: FC = () => {
     })
 
     const onUp = useCallback(() => {
-        setPos((old) => { return { ...old, row: Math.max(0, old.row - 1) } })
+
+        setPos((old) => {
+            const newState = { ...old, row: Math.max(0, old.row - 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
     }, [])
 
     const onDown = useCallback(() => {
-        setPos((old) => { return { ...old, row: Math.min(patternState.pattern.length - pos.wy - 1, old.row + 1) } })
+        setPos((old) => {
+            const newState = { ...old, row: Math.min(patternState.pattern.length - pos.wy - 1, old.row + 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
     }, [patternState.pattern.length, pos.wy])
 
     const onLeft = useCallback(() => {
-        setPos((old) => { return { ...old, col: Math.max(0, old.col - 1) } })
+        setPos((old) => {
+            const newState = { ...old, col: Math.max(0, old.col - 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
     }, [])
 
     const onRight = useCallback(() => {
-        setPos((old) => { return { ...old, col: Math.min(patternState.pattern[0].length - pos.wx - 1, old.col + 1) } })
+        setPos((old) => {
+            const newState = { ...old, col: Math.min(patternState.pattern[0].length - pos.wx - 1, old.col + 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
     }, [patternState.pattern, pos.wx])
 
     const onShrinkWidth = useCallback(() => {
-        setPos((old) => { return { ...old, wx: Math.max(MIN_SIZE, old.wx - 1) } })
+        setPos((old) => {
+            const newState = { ...old, wx: Math.max(VIEWBOX_MIN_SIZE, old.wx - 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
     }, [])
 
     const onGrowWidth = useCallback(() => {
-        setPos((old) => { return { ...old, wx: Math.min(patternState.pattern[0].length, old.wx + 1) } })
+        setPos((old) => {
+            const newState = { ...old, wx: Math.min(patternState.pattern[0].length, old.wx + 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
     }, [patternState.pattern])
 
     const onShrinkHeight = useCallback(() => {
-        setPos((old) => { return { ...old, wy: Math.max(MIN_SIZE, old.wy - 1) } })
+        setPos((old) => {
+            const newState = { ...old, wy: Math.max(VIEWBOX_MIN_SIZE, old.wy - 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
     }, [])
 
     const onGrowHeight = useCallback(() => {
-        setPos((old) => { return { ...old, wy: Math.min(patternState.pattern.length, old.wy + 1) } })
+        setPos((old) => {
+            const newState = { ...old, wy: Math.min(patternState.pattern.length, old.wy + 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
     }, [patternState.pattern.length])
 
     const handleOnWheel = useCallback((e: WheelEvent<HTMLDivElement>) => {
-        e.preventDefault()
-        e.stopPropagation()
-        const {deltaY, shiftKey} = e
-        
+        const { deltaY, shiftKey } = e
+
         if (shiftKey) {
             if (deltaY > 0) {
                 onRight()
@@ -252,15 +283,17 @@ export const PatternWindowComponent: FC = () => {
                 <Card.Body className="pattern-container">
                     <div className='mb-3'>
                         <InputGroup>
+                            <InputGroup.Text><strong>Viewbox</strong></InputGroup.Text>
                             <InputGroup.Text>width</InputGroup.Text>
-                            <Form.Control type='number' min={MIN_SIZE} max={patternState.pattern[0].length} value={pos.wx} onChange={(e) => setPos((old) => { return { ...old, wx: Number(e.target.value) } })} />
-                            <HoldButton className='btn btn-outline-secondary' onFire={onShrinkWidth}>-</HoldButton>
-                            <HoldButton className='btn btn-outline-secondary' onFire={onGrowWidth}>+</HoldButton>
-                            
+                            <Form.Control type='number' min={VIEWBOX_MIN_SIZE} max={patternState.pattern[0].length} value={pos.wx} onChange={(e) => setPos((old) => { return { ...old, wx: Number(e.target.value) } })} />
+                            <HoldButton className='btn btn-outline-danger' onFire={onShrinkWidth}>-</HoldButton>
+                            <HoldButton className='btn btn-outline-success' onFire={onGrowWidth}>+</HoldButton>
+
+                            <InputGroup.Text>✖️</InputGroup.Text>
                             <InputGroup.Text>height</InputGroup.Text>
-                            <Form.Control type='number' min={MIN_SIZE} max={patternState.pattern.length} value={pos.wy} onChange={(e) => setPos((old) => { return { ...old, wy: Number(e.target.value) } })} />
-                            <HoldButton className='btn btn-outline-secondary' onFire={onShrinkHeight}>-</HoldButton>
-                            <HoldButton className='btn btn-outline-secondary' onFire={onGrowHeight}>+</HoldButton>
+                            <Form.Control type='number' min={VIEWBOX_MIN_SIZE} max={patternState.pattern.length} value={pos.wy} onChange={(e) => setPos((old) => { return { ...old, wy: Number(e.target.value) } })} />
+                            <HoldButton className='btn btn-outline-danger' onFire={onShrinkHeight}>-</HoldButton>
+                            <HoldButton className='btn btn-outline-success' onFire={onGrowHeight}>+</HoldButton>
                         </InputGroup>
                     </div>
                     <div
@@ -272,15 +305,15 @@ export const PatternWindowComponent: FC = () => {
                             flexDirection: 'column'
                         }}
                     >
-                        <HoldButton className='btn-outline-secondary m-3' onFire={onUp}>🔼</HoldButton>
+                        <HoldButton className='btn-outline-secondary mb-1' onFire={onUp}>🔼</HoldButton>
                         <div style={{
                             display: 'flex',
                             flexDirection: 'row',
                             overflow: 'auto'
                         }}>
-                            <HoldButton className='btn-outline-secondary m-3' onFire={onLeft}>◀️</HoldButton>
+                            <HoldButton className='btn-outline-secondary me-1' onFire={onLeft}>◀️</HoldButton>
 
-                            <div onWheel={handleOnWheel} style={{overflow: 'auto', overscrollBehavior: 'contain'}}>
+                            <div onWheel={handleOnWheel} style={{ overflow: 'auto', overscrollBehavior: 'contain' }}>
                                 <PatternRowHeaderComponent setDropDownPos={setDropDownPos} pos={pos} />
                                 {patternState.pattern
                                     .filter((_, rowIndex) => rowIndex >= pos.row && rowIndex <= pos.row + pos.wy)
@@ -297,9 +330,9 @@ export const PatternWindowComponent: FC = () => {
                                     ))}
                                 <PatternRowHeaderComponent setDropDownPos={setDropDownPos} pos={pos} />
                             </div>
-                            <HoldButton className='btn-outline-secondary m-3' onFire={onRight}>▶️</HoldButton>
+                            <HoldButton className='btn-outline-secondary ms-1' onFire={onRight}>▶️</HoldButton>
                         </div>
-                        <HoldButton className='btn-outline-secondary m-3' onFire={onDown}>🔽</HoldButton>
+                        <HoldButton className='btn-outline-secondary mt-1' onFire={onDown}>🔽</HoldButton>
                     </div>
                 </Card.Body>
             </Card>

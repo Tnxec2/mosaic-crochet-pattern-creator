@@ -1,10 +1,10 @@
 import { FC, useContext } from "react"
 import { PatternContext } from "../../../context"
-import { POS, TDropDownPos } from "./pattern"
+import { TVIEWBOX_SIZE, TDropDownPos } from "./pattern"
 
 type PROPS = {
     setDropDownPos: (pos: TDropDownPos) => void
-    pos?: POS
+    pos?: TVIEWBOX_SIZE
 }
 
 export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos, pos }) => {

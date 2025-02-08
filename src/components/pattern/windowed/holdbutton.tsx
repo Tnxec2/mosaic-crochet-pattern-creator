@@ -13,24 +13,16 @@ export const HoldButton: FC<PROPS> = ({ onFire, children, scrollDuration = 100, 
     const intervalRef = useRef<NodeJS.Timer>();
 
     const startFire = useCallback(() => {
-        console.log('startFire');
-        
         if (intervalRef.current) {
             clearInterval(intervalRef.current)
         }
         intervalRef.current = setInterval(() => {
-            console.log('onFire');
-            
             onFire();
         }, scrollDuration);
     }, [onFire, scrollDuration]);
 
     const stopFire = useCallback(() => {
-        console.log('stopFire');
-        
-        if (intervalRef.current) {
-            console.log('clear');
-            
+        if (intervalRef.current) {            
             clearInterval(intervalRef.current);
         }
     }, []);

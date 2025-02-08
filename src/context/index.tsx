@@ -345,7 +345,7 @@ const PatternContextProvider: FC<IProps> = (props) => {
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         const key = e.key;
-        console.log(key);
+        //console.log(key);
         
         switch (key) {
            case '1':

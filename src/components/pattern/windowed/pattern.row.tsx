@@ -1,6 +1,6 @@
 import { FC, Fragment, MouseEvent, useCallback, useContext } from "react"
 import { PatternContext } from "../../../context"
-import { POS, TDropDownPos } from "./pattern"
+import { TVIEWBOX_SIZE, TDropDownPos } from "./pattern"
 import { IPatternRow } from "../../../model/patterncell.model"
 import { PatterCellComponent } from "../pattern_cell"
 import { PatternDraw } from "../../shared/patterndraw"
@@ -11,7 +11,7 @@ type PROPS = {
     dropDownPosPatternCell: TDropDownPos,
     setDropDownPos: (pos: TDropDownPos) => void,
     setDropDownPosPatternCell: (pos: TDropDownPos) => void,
-    pos?: POS,
+    pos?: TVIEWBOX_SIZE,
 }
 
 export const PatternRowComponent: FC<PROPS> = ({ pos, row, rowIndex, dropDownPosPatternCell, setDropDownPos, setDropDownPosPatternCell }) => {

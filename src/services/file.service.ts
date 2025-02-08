@@ -1,5 +1,6 @@
+import { TVIEWBOX_SIZE } from '../components/pattern/windowed/pattern'
 import { IPattern } from '../context'
-import { KEY_STORAGE, UNKNOWN_NAME } from '../model/constats'
+import { KEY_STORAGE, KEY_STORAGE_VIEWBOX, UNKNOWN_NAME } from '../model/constats'
 import { mug } from '../sampledata/mug'
 import { debounce } from './debounce'
 
@@ -83,3 +84,10 @@ const fillTransparentPixelsWithWhite = (imageData: ImageData) => {
     // Put image data back
     return imageData;
   }
+
+
+export const saveViewBoxDebounced = debounce(
+    (viewBox: TVIEWBOX_SIZE) => {
+        localStorage.setItem(KEY_STORAGE_VIEWBOX, JSON.stringify(viewBox)) },
+    1000
+)
