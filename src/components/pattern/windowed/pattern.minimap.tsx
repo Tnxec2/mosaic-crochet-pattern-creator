@@ -66,8 +66,17 @@ export const PatternMinimapComponent: FC = () => {
         
         if (ref) {
             const rect = ref.getBoundingClientRect()
-            const col = e.clientX - rect.x - Math.floor(viewBox.wx / 2)
-            const row = e.clientY - rect.y - Math.floor(viewBox.wy / 2)
+            const xFactor = rect.width / (e.clientX - rect.x)
+            const yFactor = rect.height / (e.clientY - rect.y)
+
+            var row = Math.floor(patternState.pattern.length / yFactor - viewBox.wy / 2)
+            var col = Math.floor(patternState.pattern[0].length / xFactor - viewBox.wx / 2)
+
+            if (patternState.pattern.length - row < viewBox.wy ) row = patternState.pattern.length - viewBox.wy - 1
+            if (patternState.pattern[0].length - col < viewBox.wx ) col = patternState.pattern[0].length - viewBox.wx - 1
+
+            console.log(xFactor, yFactor, row, col);
+            
            
             gotoViewBox(row, col);
         }

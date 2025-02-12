@@ -28,7 +28,7 @@ function NavbarComponent() {
 
     const onLoad = useCallback((pattern: IPattern) => {
         savePattern(pattern)
-        resetViewBox()
+        resetViewBox(patternState)
         setShowOpenFileDialog(false)
     }, [savePattern, setShowOpenFileDialog])
 
@@ -86,19 +86,19 @@ function NavbarComponent() {
                                 </NavDropdown.Header>
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={() => savePattern(mug)}
+                                    onClick={() => {savePattern(mug); resetViewBox(mug); }}
                                 >
                                     Mug
                                 </NavDropdown.Item>
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={() => savePattern(nya)}
+                                    onClick={() => {savePattern(nya); resetViewBox(nya); } }
                                 >
                                     Nya
                                 </NavDropdown.Item>
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={() => savePattern(infinityBorder)}
+                                    onClick={() => {savePattern(infinityBorder); resetViewBox(infinityBorder); }}
                                 >
                                     Infinity border
                                 </NavDropdown.Item>

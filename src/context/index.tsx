@@ -109,7 +109,7 @@ interface IPatternContext {
     onShrinkViewBoxHeight: () => void
     onGrowViewBoxWidth: () => void
     onShrinkViewBoxWidth: () => void
-    resetViewBox: () => void
+    resetViewBox: (pattern: IPattern) => void
     onChageViewBoxWidth: (width: number) => void
     onChageViewBoxHeight: (height: number) => void
 }
@@ -157,7 +157,7 @@ const initialState: IPatternContext = {
     onShrinkViewBoxHeight: () => { },
     onGrowViewBoxWidth: () => { },
     onShrinkViewBoxWidth: () => { },
-    resetViewBox: () => { },
+    resetViewBox: (pattern: IPattern) => { },
     onChageViewBoxWidth: (width: number) => { },
     onChageViewBoxHeight: (height: number) => { },
     viewBox: DEFAULT_VIEWBOX
@@ -452,8 +452,8 @@ const PatternContextProvider: FC<IProps> = (props) => {
 
         setViewBox((old) => {
             const point = {
-                row: Math.min(patternState.pattern.length-1, Math.max(0, Math.floor(row))), 
-                col: Math.min(patternState.pattern[0].length-1, Math.max(0, Math.floor(col))) 
+                row: Math.min(patternState.pattern.length-1, Math.max(0, row)), 
+                col: Math.min(patternState.pattern[0].length-1, Math.max(0, col)) 
             }
             console.log(
                 point
@@ -464,16 +464,20 @@ const PatternContextProvider: FC<IProps> = (props) => {
                 row: point.row, 
                 col: point.col 
             }
+            console.log(newState);
+            
             saveViewBoxDebounced(newState)
             return newState
         })
     }, [patternState.pattern])
 
-    const resetViewBox = useCallback(() => {
+    const resetViewBox = useCallback((pattern: IPattern) => {
         setViewBox((old) => {
             const newState = { ...old, 
                 row: 0, 
                 col: 0, 
+                wx: Math.min(DEFAULT_VIEWBOX.wx, pattern.pattern[0].length),
+                wy: Math.min(DEFAULT_VIEWBOX.wy, pattern.pattern.length),
             }
             saveViewBoxDebounced(newState)
             return newState

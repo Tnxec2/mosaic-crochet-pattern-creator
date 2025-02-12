@@ -1203,5 +1203,6 @@ export const mug: IPattern = {
     "selectedAction": ACTION_TYPES.NONE,
     "scaleFactor": 1,
     "saved": false,
-    "name": "Mug rug"
+    "name": "Mug rug",
+    
   }

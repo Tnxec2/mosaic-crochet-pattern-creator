@@ -2365,7 +2365,7 @@ export const nya: IPattern = {
     ],
     "selectedColorIndex": 1,
     "selectedAction": ACTION_TYPES.NONE,
-    "scaleFactor": 0.8,
+    "scaleFactor": 1.0,
     "saved": false,
     "name": "Nya Infinity Mosaic by lillabjorncrochet.com "
   }
