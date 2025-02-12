@@ -464,7 +464,6 @@ const PatternContextProvider: FC<IProps> = (props) => {
                 row: point.row, 
                 col: point.col 
             }
-            console.log(newState);
             
             saveViewBoxDebounced(newState)
             return newState

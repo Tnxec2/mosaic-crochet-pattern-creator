@@ -1,10 +1,12 @@
-import { FC, MouseEvent, useCallback, useContext, useEffect } from "react"
+import { FC, MouseEvent, useCallback, useContext, useEffect, useRef } from "react"
 import { PatternContext } from "../../../context"
 import './pattern.minimap.css'
 import { PatternDraw } from "../../shared/patterndraw"
 import { useStateDebounced } from "../../../services/debounce"
 import Canvas from "../../export/canvas"
-import { BACKGROUND_COLOR } from "../../../model/constats"
+import { BACKGROUND_COLOR, MINMAP_FRAME } from "../../../model/constats"
+import { Form } from "react-bootstrap"
+
 
 
 export const PatternMinimapComponent: FC = () => {
@@ -15,6 +17,8 @@ export const PatternMinimapComponent: FC = () => {
     } = useContext(PatternContext)
 
     const [drawState, debouncedDrawState, setDrawState] = useStateDebounced<string[][]>([], 1000)
+
+    const minimapCanvasRef = useRef<HTMLCanvasElement | null>(null)
 
 
     useEffect(()=> {
@@ -33,12 +37,12 @@ export const PatternMinimapComponent: FC = () => {
     }, [patternState])
 
     const draw = useCallback((canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D)  => {
+        minimapCanvasRef.current = canvas
+
         const mapWidth = debouncedDrawState[0]?.length | 0
         const mapHeight = debouncedDrawState.length
 
         const scaleFactor = 1
-
-        console.log(mapWidth, mapHeight, scaleFactor);
         
         if (scaleFactor) {
         
@@ -60,6 +64,26 @@ export const PatternMinimapComponent: FC = () => {
         
     }, [debouncedDrawState])
 
+    const drawFrame = useCallback((canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D)  => {
+        if (minimapCanvasRef.current) {
+            const mapWidth = minimapCanvasRef.current?.width
+            const mapHeight = minimapCanvasRef.current?.height
+
+            const scaleFactor = 1
+            
+            if (scaleFactor) {
+                canvas.width = mapWidth * scaleFactor
+                canvas.height = mapHeight * scaleFactor
+
+                ctx.strokeStyle = MINMAP_FRAME
+                ctx.lineWidth = 2
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                ctx.strokeRect(viewBox.col*scaleFactor, viewBox.row*scaleFactor, viewBox.wx*scaleFactor, viewBox.wy*scaleFactor)
+            }
+        }
+        
+    }, [viewBox, minimapCanvasRef])
+
 
     const handleClick = (e: MouseEvent<HTMLElement>, ref: HTMLCanvasElement) => {
         e.preventDefault()
@@ -74,23 +98,27 @@ export const PatternMinimapComponent: FC = () => {
 
             if (patternState.pattern.length - row < viewBox.wy ) row = patternState.pattern.length - viewBox.wy - 1
             if (patternState.pattern[0].length - col < viewBox.wx ) col = patternState.pattern[0].length - viewBox.wx - 1
-
-            console.log(xFactor, yFactor, row, col);
             
-           
             gotoViewBox(row, col);
         }
-        
     }
         
     return <div className="minimap-container">
-        <h2 title="click map to navigate">Minimap</h2>
-        <Canvas
-            id="canvasMinimap"
-            draw={draw}
-            className="canva-minimap"
-            onClick={handleClick}
-            style={{maxWidth: '100%', border: '1px solid #ccc', padding: '3px'}}
-          />     
+        <Form.Label>Minimap</Form.Label>
+        <div className="wrapper-minmap" >
+            <Canvas
+                id="canvasMinimap"
+                draw={draw}
+                className="canvas-minimap"
+                onClick={handleClick}
+            /> 
+            <Canvas
+                id="canvasMinimapFrame"
+                draw={drawFrame}
+                className="canvas-minimap-frame"
+                onClick={handleClick}
+            /> 
+        </div>
+    
     </div>
 }

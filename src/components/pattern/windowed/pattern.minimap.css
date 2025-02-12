@@ -12,3 +12,22 @@
     height: 1pt;
     cursor: crosshair;
 }
+
+.wrapper-minmap {
+    position: relative;
+    border: 1px solid #ccc;
+    padding: 3px;
+}
+
+.canvas-minimap {
+    position: relative;
+    max-width: 100%;
+}
+
+.canvas-minimap-frame {
+    position: absolute;
+    max-width: 100%;
+    padding: 3px;
+    left: 0;
+    top: 0;
+}

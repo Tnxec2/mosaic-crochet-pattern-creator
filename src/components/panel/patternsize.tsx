@@ -93,6 +93,7 @@ export const PatternSizeComponent: FC<Props> = () => {
 
     return (
         <>
+        <Form.Label>Size of pattern</Form.Label>
         <InputGroup size="sm">
             <InputGroup.Text>Rows</InputGroup.Text>
             <Form.Control

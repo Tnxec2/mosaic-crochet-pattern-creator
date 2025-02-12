@@ -1,6 +1,7 @@
 export const BACKGROUND_COLOR = '#ffffff'
 export const DEFAULT_COLOR = '#ffffff'
 export const DEFAULT_COLOR_2 = '#FF0000'
+export const MINMAP_FRAME = '#000'
 export const KEY_STORAGE = 'com.kontranik.mosaiccrochetpattern.state'
 export const KEY_STORAGE_VIEWBOX = 'com.kontranik.mosaiccrochetpattern.viewbox'
 export const VERSION = '1.2.6'
