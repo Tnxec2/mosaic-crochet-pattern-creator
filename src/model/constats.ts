@@ -7,3 +7,9 @@ export const VERSION = '1.2.6'
 export const UNKNOWN_NAME = 'unnamed pattern'
 export const DEFAULT_FONT_SIZE = 10
 export const VIEWBOX_MIN_SIZE = 10
+export const DEFAULT_VIEWBOX = {
+        row: 0,
+        col: 0,
+        wx: 30,
+        wy: 20,
+    }

@@ -1,6 +1,6 @@
 import { TVIEWBOX_SIZE } from '../components/pattern/windowed/pattern'
 import { IPattern } from '../context'
-import { KEY_STORAGE, KEY_STORAGE_VIEWBOX, UNKNOWN_NAME } from '../model/constats'
+import { DEFAULT_COLOR, DEFAULT_VIEWBOX, KEY_STORAGE, KEY_STORAGE_VIEWBOX, UNKNOWN_NAME } from '../model/constats'
 import { mug } from '../sampledata/mug'
 import { debounce } from './debounce'
 
@@ -91,3 +91,17 @@ export const saveViewBoxDebounced = debounce(
         localStorage.setItem(KEY_STORAGE_VIEWBOX, JSON.stringify(viewBox)) },
     1000
 )
+
+export const loadViewBox = () => {
+    const saved = localStorage.getItem(KEY_STORAGE_VIEWBOX)
+    if (saved) {
+        let viewBox = JSON.parse(saved) as TVIEWBOX_SIZE
+
+        if (!viewBox.row || viewBox.row < 0) viewBox.row = DEFAULT_VIEWBOX.row
+        if (!viewBox.col || viewBox.col < 0) viewBox.col = DEFAULT_VIEWBOX.col
+        if (!viewBox.wx || viewBox.wx < 1) viewBox.wx = DEFAULT_VIEWBOX.wx
+        if (!viewBox.wy || viewBox.wy < 1) viewBox.wy = DEFAULT_VIEWBOX.wy
+        return viewBox
+    } 
+    return DEFAULT_VIEWBOX
+}

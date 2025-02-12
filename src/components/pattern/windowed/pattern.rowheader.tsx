@@ -4,7 +4,7 @@ import { TVIEWBOX_SIZE, TDropDownPos } from "./pattern"
 
 type PROPS = {
     setDropDownPos: (pos: TDropDownPos) => void
-    pos?: TVIEWBOX_SIZE
+    pos: TVIEWBOX_SIZE
 }
 
 export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos, pos }) => {
@@ -30,9 +30,9 @@ export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos, pos }) =>
                             opened: true
                         })
                     }}
-                    title={`${patternState.pattern[0].length - colIndex}`}
+                    title={`${patternState.pattern[0].length - colIndex - pos.col }`}
                 >
-                    {patternState.pattern[0].length - colIndex}
+                    {patternState.pattern[0].length - colIndex - pos.col }
                 </div>
             ))}
             <div className="cell empty rownumber">&nbsp;</div>

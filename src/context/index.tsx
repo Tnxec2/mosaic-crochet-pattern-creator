@@ -4,11 +4,14 @@ import { ACTION_TYPES, actionTypesToKey } from '../model/actiontype.enum'
 import {
     DEFAULT_COLOR,
     DEFAULT_COLOR_2,
-    UNKNOWN_NAME
+    DEFAULT_VIEWBOX,
+    UNKNOWN_NAME,
+    VIEWBOX_MIN_SIZE
 } from '../model/constats'
-import { loadPattern, saveLocalDebounced } from '../services/file.service'
+import { loadPattern, loadViewBox, saveLocalDebounced, saveViewBoxDebounced } from '../services/file.service'
 import { actionToCellType, CELL_TYPE } from '../model/patterntype.enum'
 import { getNewCell } from '../components/pattern/getNetCell'
+import { TVIEWBOX_SIZE } from '../components/pattern/windowed/pattern'
 
 
 export interface IPattern {
@@ -53,7 +56,7 @@ function genpatHuge() {
 }
 
 const initialPattern: IPattern = {
-    pattern: genpat(),
+    pattern: genpatHuge(),
     colors: [DEFAULT_COLOR, DEFAULT_COLOR_2],
     selectedColorIndex: 0,
     selectedAction: ACTION_TYPES.NONE,
@@ -96,43 +99,68 @@ interface IPatternContext {
     changeScale: (increase: boolean) => void
     resetScale: () => void
     handleKeyDown: (event: KeyboardEvent) => void
+    viewBox: TVIEWBOX_SIZE
+    gotoViewBox: (row: number, col: number) => void
+    gotoViewBoxUp: () => void
+    gotoViewBoxDown: () => void
+    gotoViewBoxLeft: () => void
+    gotoViewBoxRight: () => void
+    onGrowViewBoxHeight: () => void
+    onShrinkViewBoxHeight: () => void
+    onGrowViewBoxWidth: () => void
+    onShrinkViewBoxWidth: () => void
+    resetViewBox: () => void
+    onChageViewBoxWidth: (width: number) => void
+    onChageViewBoxHeight: (height: number) => void
 }
 
 const initialState: IPatternContext = {
     patternState: initialPattern,
-    savePattern: (pattern: IPattern) => {},
-    addColumn: (at: number) => {},
-    addRow: (at: number) => {},
-    fillColumn: (col: number) => {},
-    changeCell: (row: number, col: number, mouseOver: boolean) => {},
-    deleteColumn: (col: number) => {},
-    deleteRow: (row: number) => {},
-    fillRow: (row: number) => {},
-    fillRight: (row: number, col: number) => {},
-    fillLeft: (row: number, col: number) => {},
-    newPattern: () => {},
-    setShowOpenFileDialog: () => {},
+    savePattern: (pattern: IPattern) => { },
+    addColumn: (at: number) => { },
+    addRow: (at: number) => { },
+    fillColumn: (col: number) => { },
+    changeCell: (row: number, col: number, mouseOver: boolean) => { },
+    deleteColumn: (col: number) => { },
+    deleteRow: (row: number) => { },
+    fillRow: (row: number) => { },
+    fillRight: (row: number, col: number) => { },
+    fillLeft: (row: number, col: number) => { },
+    newPattern: () => { },
+    setShowOpenFileDialog: () => { },
     showOpenFileDialog: false,
-    setShowCellStitchType: () => {},
+    setShowCellStitchType: () => { },
     showPreviewDialog: false,
-    setShowPreviewDialog: () => {}, 
+    setShowPreviewDialog: () => { },
     showCellStitchType: true,
-    setMirrorHorizontal: () => {},
+    setMirrorHorizontal: () => { },
     mirrorHorizontal: true,
-    setMirrorVertical: () => {},
+    setMirrorVertical: () => { },
     mirrorVertical: true,
-    setToggleStitch: () => {},
+    setToggleStitch: () => { },
     toggleStitch: true,
-    changeColor: (newColor: string, index: number) => {},
-    addColor: () => {},
-    setSelectedColor: (index: number) => {},
-    deleteColor: (index: number) => {},
-    saveFontSize: (fontSize: number) => {},
-    setAction: (action: ACTION_TYPES) => {},
-    changeScale: (increase: boolean) => {},
-    resetScale: () => {},
-    handleKeyDown: () => {}
-
+    changeColor: (newColor: string, index: number) => { },
+    addColor: () => { },
+    setSelectedColor: (index: number) => { },
+    deleteColor: (index: number) => { },
+    saveFontSize: (fontSize: number) => { },
+    setAction: (action: ACTION_TYPES) => { },
+    changeScale: (increase: boolean) => { },
+    resetScale: () => { },
+    handleKeyDown: () => { },
+    gotoViewBox: () => { },
+    gotoViewBoxUp: () => { },
+    gotoViewBoxDown: () => { },
+    gotoViewBoxLeft: () => { },
+    gotoViewBoxRight: () => { },
+    onGrowViewBoxHeight: () => { },
+    onShrinkViewBoxHeight: () => { },
+    onGrowViewBoxWidth: () => { },
+    onShrinkViewBoxWidth: () => { },
+    resetViewBox: () => { },
+    onChageViewBoxWidth: (width: number) => { },
+    onChageViewBoxHeight: (height: number) => { },
+    viewBox: DEFAULT_VIEWBOX
 }
 
 interface IProps {
@@ -149,10 +177,11 @@ const PatternContextProvider: FC<IProps> = (props) => {
     const [mirrorVertical, setMirrorVertical] = useState(false)
     const [mirrorHorizontal, setMirrorHorizontal] = useState(false)
     const [toggleStitch, setToggleStitch] = useState(true)
+    const [viewBox, setViewBox] = useState<TVIEWBOX_SIZE>(loadViewBox())
 
     const savePattern = (pattern: IPattern) => {
-        saveLocalDebounced(pattern) 
-        setPatternState({...pattern})
+        saveLocalDebounced(pattern)
+        setPatternState({ ...pattern })
     }
 
     const newPattern = () => {
@@ -206,8 +235,8 @@ const PatternContextProvider: FC<IProps> = (props) => {
             pattern: patternState.pattern.map((r, rowI) =>
                 rowI === row || (mirrorHorizontal && rowI === patternState.pattern.length - row - 1)
                     ? r.map((c, colI) =>
-                          colI === col || (mirrorVertical && colI === r.length - col - 1) ? getNewCell(c, patternState.selectedAction, patternState.selectedColorIndex, mouseOver, toggleStitch) : c
-                      )
+                        colI === col || (mirrorVertical && colI === r.length - col - 1) ? getNewCell(c, patternState.selectedAction, patternState.selectedColorIndex, mouseOver, toggleStitch) : c
+                    )
                     : r
             )
         })
@@ -240,13 +269,13 @@ const PatternContextProvider: FC<IProps> = (props) => {
         })
     }
 
-    const fillRowLeft = (r: IPatternCell[], row: number, col: number): IPatternCell[]  => {
-        let result = [...r] 
-        for (let index = col-1; index >= 0; index--){
-           const cell = result[index];
+    const fillRowLeft = (r: IPatternCell[], row: number, col: number): IPatternCell[] => {
+        let result = [...r]
+        for (let index = col - 1; index >= 0; index--) {
+            const cell = result[index];
 
-           if (cell.type === actionToCellType(patternState.selectedAction, cell.type)) return result
-           result[index] = getNewCell(cell, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch)
+            if (cell.type === actionToCellType(patternState.selectedAction, cell.type)) return result
+            result[index] = getNewCell(cell, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch)
         }
         return result
     }
@@ -260,12 +289,12 @@ const PatternContextProvider: FC<IProps> = (props) => {
         })
     }
 
-    const fillRowRight = (r: IPatternCell[], row: number, col: number): IPatternCell[]  => {
-        let result = [...r] 
-        for (let index = col+1; index < r.length; index++){
-           const cell = result[index];
-           if (cell.type === actionToCellType(patternState.selectedAction, cell.type)) return result
-           result[index] = getNewCell(cell, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch)
+    const fillRowRight = (r: IPatternCell[], row: number, col: number): IPatternCell[] => {
+        let result = [...r]
+        for (let index = col + 1; index < r.length; index++) {
+            const cell = result[index];
+            if (cell.type === actionToCellType(patternState.selectedAction, cell.type)) return result
+            result[index] = getNewCell(cell, patternState.selectedAction, patternState.selectedColorIndex, false, toggleStitch)
         }
         return result
     }
@@ -326,7 +355,7 @@ const PatternContextProvider: FC<IProps> = (props) => {
 
     const setAction = useCallback((action: ACTION_TYPES) => {
         savePattern({ ...patternState, selectedAction: action })
-    },[patternState])
+    }, [patternState])
 
     const changeScale = (increase: boolean) => {
         let factor = patternState.scaleFactor || 1
@@ -346,65 +375,65 @@ const PatternContextProvider: FC<IProps> = (props) => {
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         const key = e.key;
         //console.log(key);
-        
+
         switch (key) {
-           case '1':
-               if (patternState.colors.length > 0) setSelectedColor(0)
-               break;
-           case '2':
-               if (patternState.colors.length > 1) setSelectedColor(1)
-               break;
-           case '3':
-               if (patternState.colors.length > 2) setSelectedColor(2)
-               break;
-           case '4':
-               if (patternState.colors.length > 3) setSelectedColor(3)
-               break;
-           case '5':
-               if (patternState.colors.length > 4) setSelectedColor(4)
-               break;
-           case '6':
-               if (patternState.colors.length > 5) setSelectedColor(5)
-               break;
-           case '7':
-               if (patternState.colors.length > 6) setSelectedColor(6)
-               break;
-           case '8':
-               if (patternState.colors.length > 7) setSelectedColor(7)
-               break;
-           case '9':
-               if (patternState.colors.length > 8) setSelectedColor(8)
-               break;
-           case '0':
-               if (patternState.colors.length > 9) setSelectedColor(9)
-               break;
-           case actionTypesToKey(ACTION_TYPES.X):
-               setAction(ACTION_TYPES.X) 
-               break;
-           case actionTypesToKey(ACTION_TYPES.LXR):
-               setAction(ACTION_TYPES.LXR)
-               break;
-           case actionTypesToKey(ACTION_TYPES.LR):
-               setAction(ACTION_TYPES.LR)
-               break
-           case actionTypesToKey(ACTION_TYPES.L):
-               setAction(ACTION_TYPES.L)
-               break;
-           case actionTypesToKey(ACTION_TYPES.LX):
-               setAction(ACTION_TYPES.LX)
-               break;
-           case actionTypesToKey(ACTION_TYPES.R):
-               setAction(ACTION_TYPES.R)
-               break;
-           case actionTypesToKey(ACTION_TYPES.XR):
-               setAction(ACTION_TYPES.XR)
-               break;
-           case actionTypesToKey(ACTION_TYPES.COLOR):
-               setAction(ACTION_TYPES.COLOR)
-               break;
-           case actionTypesToKey(ACTION_TYPES.NONE):
-               setAction(ACTION_TYPES.NONE)
-               break;
+            case '1':
+                if (patternState.colors.length > 0) setSelectedColor(0)
+                break;
+            case '2':
+                if (patternState.colors.length > 1) setSelectedColor(1)
+                break;
+            case '3':
+                if (patternState.colors.length > 2) setSelectedColor(2)
+                break;
+            case '4':
+                if (patternState.colors.length > 3) setSelectedColor(3)
+                break;
+            case '5':
+                if (patternState.colors.length > 4) setSelectedColor(4)
+                break;
+            case '6':
+                if (patternState.colors.length > 5) setSelectedColor(5)
+                break;
+            case '7':
+                if (patternState.colors.length > 6) setSelectedColor(6)
+                break;
+            case '8':
+                if (patternState.colors.length > 7) setSelectedColor(7)
+                break;
+            case '9':
+                if (patternState.colors.length > 8) setSelectedColor(8)
+                break;
+            case '0':
+                if (patternState.colors.length > 9) setSelectedColor(9)
+                break;
+            case actionTypesToKey(ACTION_TYPES.X):
+                setAction(ACTION_TYPES.X)
+                break;
+            case actionTypesToKey(ACTION_TYPES.LXR):
+                setAction(ACTION_TYPES.LXR)
+                break;
+            case actionTypesToKey(ACTION_TYPES.LR):
+                setAction(ACTION_TYPES.LR)
+                break
+            case actionTypesToKey(ACTION_TYPES.L):
+                setAction(ACTION_TYPES.L)
+                break;
+            case actionTypesToKey(ACTION_TYPES.LX):
+                setAction(ACTION_TYPES.LX)
+                break;
+            case actionTypesToKey(ACTION_TYPES.R):
+                setAction(ACTION_TYPES.R)
+                break;
+            case actionTypesToKey(ACTION_TYPES.XR):
+                setAction(ACTION_TYPES.XR)
+                break;
+            case actionTypesToKey(ACTION_TYPES.COLOR):
+                setAction(ACTION_TYPES.COLOR)
+                break;
+            case actionTypesToKey(ACTION_TYPES.NONE):
+                setAction(ACTION_TYPES.NONE)
+                break;
             case 'v':
                 setMirrorVertical(!mirrorVertical)
                 break;
@@ -414,15 +443,127 @@ const PatternContextProvider: FC<IProps> = (props) => {
             case 't':
                 setToggleStitch(!toggleStitch)
                 break;
-           default:
-               break;
+            default:
+                break;
         }
-   },[patternState.colors, setAction, setSelectedColor, mirrorHorizontal, mirrorVertical, toggleStitch]);
+    }, [patternState.colors, setAction, setSelectedColor, mirrorHorizontal, mirrorVertical, toggleStitch]);
+
+    const gotoViewBox = useCallback((row: number, col: number) => {
+
+        setViewBox((old) => {
+            const point = {
+                row: Math.min(patternState.pattern.length-1, Math.max(0, Math.floor(row))), 
+                col: Math.min(patternState.pattern[0].length-1, Math.max(0, Math.floor(col))) 
+            }
+            console.log(
+                point
+            );
+            
+            
+            const newState = { ...old, 
+                row: point.row, 
+                col: point.col 
+            }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }, [patternState.pattern])
+
+    const resetViewBox = useCallback(() => {
+        setViewBox((old) => {
+            const newState = { ...old, 
+                row: 0, 
+                col: 0, 
+            }
+            saveViewBoxDebounced(newState)
+            return newState
+        });
+    }, [])
+
+    const gotoViewBoxUp = useCallback(() => {
+        setViewBox((old) => {
+            const newState = { ...old, row: Math.max(0, old.row - 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }, [])
+
+    const gotoViewBoxDown = useCallback(() => {
+        setViewBox((old) => {
+            const newState = { ...old, row: Math.min(patternState.pattern.length - viewBox.wy - 1, old.row + 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }, [patternState.pattern.length, viewBox.wy])
+
+    const gotoViewBoxLeft = useCallback(() => {
+        setViewBox((old) => {
+            const newState = { ...old, col: Math.max(0, old.col - 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }, [])
+
+    const gotoViewBoxRight = useCallback(() => {
+        setViewBox((old) => {
+            const newState = { ...old, col: Math.min(patternState.pattern[0].length - viewBox.wx - 1, old.col + 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }, [patternState.pattern, viewBox.wx])
+
+    const onShrinkViewBoxWidth = useCallback(() => {
+        setViewBox((old) => {
+            const newState = { ...old, wx: Math.max(VIEWBOX_MIN_SIZE, old.wx - 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }, [])
+
+    const onGrowViewBoxWidth = useCallback(() => {
+        setViewBox((old) => {
+            const newState = { ...old, wx: Math.min(patternState.pattern[0].length, old.wx + 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }, [patternState.pattern])
+
+    const onShrinkViewBoxHeight = useCallback(() => {
+        setViewBox((old) => {
+            const newState = { ...old, wy: Math.max(VIEWBOX_MIN_SIZE, old.wy - 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }, [])
+
+    const onGrowViewBoxHeight = useCallback(() => {
+        setViewBox((old) => {
+            const newState = { ...old, wy: Math.min(patternState.pattern.length, old.wy + 1) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }, [patternState.pattern.length])
+
+    const onChageViewBoxWidth = (widht: number) => {
+        setViewBox((old) => {
+            const newState = { ...old, wx: Number(widht) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }
+
+    const onChageViewBoxHeight = (height: number) => {
+        setViewBox((old) => {
+            const newState = { ...old, wy: Number(height) }
+            saveViewBoxDebounced(newState)
+            return newState
+        })
+    }
 
     const value = {
-        patternState,
-        savePattern,
-        addColumn,
+        patternState: patternState,
+        savePattern: savePattern,
+        addColumn: addColumn,
         addRow,
         fillColumn,
         changeCell,
@@ -445,15 +586,30 @@ const PatternContextProvider: FC<IProps> = (props) => {
         toggleStitch,
         setToggleStitch,
         changeColor,
-        addColor,
-        setSelectedColor,
-        deleteColor,
-        saveFontSize,
-        setAction,
-        changeScale,
-        resetScale,
-        handleKeyDown
-    }    
+        addColor: addColor,
+        setSelectedColor: setSelectedColor,
+        deleteColor: deleteColor,
+        saveFontSize: saveFontSize,
+        setAction: setAction,
+        changeScale: changeScale,
+        resetScale: resetScale,
+        handleKeyDown: handleKeyDown,
+        gotoViewBoxUp: gotoViewBoxUp,
+        gotoViewBoxDown: gotoViewBoxDown,
+        gotoViewBoxLeft: gotoViewBoxLeft,
+        gotoViewBoxRight: gotoViewBoxRight,
+        onGrowViewBoxHeight: onGrowViewBoxHeight,
+        onShrinkViewBoxHeight: onShrinkViewBoxHeight,
+        onGrowViewBoxWidth: onGrowViewBoxWidth,
+        onShrinkViewBoxWidth: onShrinkViewBoxWidth,
+        onChageViewBoxWidth: onChageViewBoxWidth,
+        onChageViewBoxHeight: onChageViewBoxHeight,
+        gotoViewBox: gotoViewBox,
+        resetViewBox: resetViewBox,
+        viewBox: viewBox
+    }
+
+
 
     return (
         <PatternContext.Provider value={value}>

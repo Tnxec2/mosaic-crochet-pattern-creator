@@ -85,7 +85,7 @@ export const PatternRowComponent: FC<PROPS> = ({ pos, row, rowIndex, dropDownPos
                             )
                         }
                         row={patternState.pattern.length - rowIndex}
-                        col={row.length - colIndex + (pos?.col||0)}
+                        col={row.length - colIndex - (pos?.col||0)}
                         cell={col}
                         showCellCrochetType={showCellStitchType}
                     >

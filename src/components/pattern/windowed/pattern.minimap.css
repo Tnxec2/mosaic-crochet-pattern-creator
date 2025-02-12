@@ -1,0 +1,14 @@
+.pattern-container {
+        
+        /* margin-bottom: 500px; */
+}
+
+.minimap-row {
+    display: flex;
+}
+
+.minimap-cell {
+    width: 1pt;
+    height: 1pt;
+    cursor: crosshair;
+}

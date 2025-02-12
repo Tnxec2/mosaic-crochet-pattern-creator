@@ -18,7 +18,7 @@
     border: 1px solid #252525;
     width: 1.2em;
     height: 1.2em;
-    cursor: pointer;
+    cursor: default;
     text-align: center;
     line-height: 1em;
     font-size: small;

@@ -23,10 +23,12 @@ function NavbarComponent() {
         setShowOpenFileDialog,
         showPreviewDialog,
         setShowPreviewDialog,
+        resetViewBox,
     } = useContext(PatternContext)
 
     const onLoad = useCallback((pattern: IPattern) => {
         savePattern(pattern)
+        resetViewBox()
         setShowOpenFileDialog(false)
     }, [savePattern, setShowOpenFileDialog])
 
