@@ -16,6 +16,4 @@ export const DEFAULT_VIEWBOX: TVIEWBOX_SIZE = {
         col: 0,
         wx: 30,
         wy: 20,
-        patternWidth: 30,
-        patternHeight: 20
     }

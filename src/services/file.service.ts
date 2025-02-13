@@ -92,8 +92,6 @@ export const loadViewBoxMigrate = () => {
         if (!viewBox.col || viewBox.col < 0) viewBox.col = DEFAULT_VIEWBOX.col
         if (!viewBox.wx || viewBox.wx < 1) viewBox.wx = DEFAULT_VIEWBOX.wx
         if (!viewBox.wy || viewBox.wy < 1) viewBox.wy = DEFAULT_VIEWBOX.wy
-        if (!viewBox.patternWidth || viewBox.patternWidth <= 0) viewBox.patternWidth = DEFAULT_VIEWBOX.patternWidth
-        if (!viewBox.patternHeight || viewBox.patternHeight <= 0) viewBox.patternHeight = DEFAULT_VIEWBOX.patternHeight
         return viewBox
     }
     // TODO: 

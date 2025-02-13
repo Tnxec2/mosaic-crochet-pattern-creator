@@ -47,6 +47,4 @@ export type TVIEWBOX_SIZE = {
     col: number,
     wx: number,
     wy: number,
-    patternWidth: number,
-    patternHeight: number,
 }

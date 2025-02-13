@@ -100,7 +100,8 @@ const createPatternSlice: StateCreator<
     setMirrorHorizontal: (s: boolean) => set((state) => ({mirrorHorizontal: s})),
     savePattern: (pattern: IPattern) => set((state) => ({ patternState: pattern })),
     newPattern: () => set((state) => ({ patternState: initialPattern })),
-    addColumn: (at: number) => set((state) => ({
+    addColumn: (at: number) => {
+        set((state) => ({
         patternState: {
             ...state.patternState, pattern: state.patternState.pattern.map((row) => [
                 ...row.slice(0, at + 1),
@@ -111,7 +112,8 @@ const createPatternSlice: StateCreator<
                 ...row.slice(at + 1)
             ])
         }
-    })),
+    }))
+    },
     addRow: (atRow: number) => {
         let newRow: IPatternCell[] = []
         for (let index = 0; index < get().patternState.pattern[0].length; index++) {
@@ -346,13 +348,13 @@ PatternSlice & VieboxSlice,
 [],
 [],
 VieboxSlice
-> = (set) => ({
+> = (set, get) => ({
     viewBox: DEFAULT_VIEWBOX,
     gotoViewBox: (row: number, col: number) => set((state) => ({
         viewBox: {
             ...state.viewBox,
-            row: Math.min(state.viewBox.patternHeight - 1, Math.max(0, row)),
-            col: Math.min(state.viewBox.patternWidth - 1, Math.max(0, col))
+            row: Math.min(get().patternState.pattern.length - 1, Math.max(0, row)),
+            col: Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col))
         }
     })
     ),
@@ -360,22 +362,22 @@ VieboxSlice
         viewBox: { ...state.viewBox, row: Math.max(0, state.viewBox.row - 1) }
     })),
     gotoViewBoxDown: () => set((state) => ({
-        viewBox: { ...state.viewBox, row: Math.min(state.viewBox.patternHeight - state.viewBox.wy, state.viewBox.row + 1) }
+        viewBox: { ...state.viewBox, row: Math.min(get().patternState.pattern.length - state.viewBox.wy, state.viewBox.row + 1) }
     })),
     gotoViewBoxLeft: () => set((state) => ({
         viewBox: { ...state.viewBox, col: Math.max(0, state.viewBox.col - 1) }
     })),
     gotoViewBoxRight: () => set((state) => ({
-        viewBox: { ...state.viewBox, col: Math.min(state.viewBox.patternWidth - state.viewBox.wx, state.viewBox.col + 1) }
+        viewBox: { ...state.viewBox, col: Math.min(get().patternState.pattern[0].length - state.viewBox.wx, state.viewBox.col + 1) }
     })),
     onGrowViewBoxHeight: () => set((state) => ({
-        viewBox: { ...state.viewBox, wy: Math.min(state.viewBox.patternHeight, state.viewBox.wy + 1) }
+        viewBox: { ...state.viewBox, wy: Math.min(get().patternState.pattern.length, state.viewBox.wy + 1) }
     })),
     onShrinkViewBoxHeight: () => set((state) => ({
         viewBox: { ...state.viewBox, wy: Math.max(VIEWBOX_MIN_SIZE, state.viewBox.wy - 1) }
     })),
     onGrowViewBoxWidth: () => set((state) => ({
-        viewBox: { ...state.viewBox, wx: Math.min(state.viewBox.patternWidth, state.viewBox.wx + 1) }
+        viewBox: { ...state.viewBox, wx: Math.min(get().patternState.pattern[0].length, state.viewBox.wx + 1) }
     })),
     onShrinkViewBoxWidth: () => set((state) => ({
         viewBox: { ...state.viewBox, wx: Math.max(VIEWBOX_MIN_SIZE, state.viewBox.wx - 1) }
