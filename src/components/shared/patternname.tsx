@@ -1,6 +1,6 @@
-import { FC, useContext, useEffect, useRef, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
 import { ButtonGroup, Button, Form, InputGroup } from "react-bootstrap"
-import { PatternContext } from "../../context"
+import { useStore } from "../../context"
 import { UNKNOWN_NAME } from "../../model/constats"
 
 
@@ -9,7 +9,7 @@ export const PatternName: FC = () => {
     const {
         patternState,
         savePattern,
-    } = useContext(PatternContext)
+    } = useStore((state) => state)
 
     const [edit, setEdit] = useState(false)
     const inputRef = useRef<HTMLInputElement | null>(null);

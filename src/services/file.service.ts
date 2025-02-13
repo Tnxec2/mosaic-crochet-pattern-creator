@@ -1,8 +1,8 @@
-import { TVIEWBOX_SIZE } from '../components/pattern/windowed/pattern'
+
 import { IPattern } from '../context'
-import { DEFAULT_COLOR, DEFAULT_VIEWBOX, KEY_STORAGE, KEY_STORAGE_VIEWBOX, UNKNOWN_NAME } from '../model/constats'
+import { DEFAULT_VIEWBOX, KEY_STORAGE, KEY_STORAGE_VIEWBOX, UNKNOWN_NAME } from '../model/constats'
+import { TVIEWBOX_SIZE } from '../model/patterntype.enum'
 import { mug } from '../sampledata/mug'
-import { debounce } from './debounce'
 
 export const onSave = (patternState: IPattern) => {
     const fileName = patternState.name || UNKNOWN_NAME
@@ -42,11 +42,6 @@ export const loadJsonFile = (
     }
 }
 
-export const saveLocalDebounced = debounce(
-    (pattern: IPattern) => {
-        localStorage.setItem(KEY_STORAGE, JSON.stringify(pattern)) },
-    1000
-)
 
 export const baseName = (str: string) => {
    var base = str.substring(str.lastIndexOf('/') + 1); 
@@ -56,13 +51,15 @@ export const baseName = (str: string) => {
 }
 
 
-export const loadPattern = () => {
+export const loadPatternMigrate = () => {
     let saved = localStorage.getItem(KEY_STORAGE)
     if (saved) {
         let pattern = JSON.parse(saved) as IPattern
         if (!pattern.name) pattern.name = UNKNOWN_NAME
         return pattern
     }
+    // TODO: 
+    //localStorage.removeItem(KEY_STORAGE)
     return mug
 }
 
@@ -86,13 +83,7 @@ const fillTransparentPixelsWithWhite = (imageData: ImageData) => {
   }
 
 
-export const saveViewBoxDebounced = debounce(
-    (viewBox: TVIEWBOX_SIZE) => {
-        localStorage.setItem(KEY_STORAGE_VIEWBOX, JSON.stringify(viewBox)) },
-    1000
-)
-
-export const loadViewBox = () => {
+export const loadViewBoxMigrate = () => {
     const saved = localStorage.getItem(KEY_STORAGE_VIEWBOX)
     if (saved) {
         let viewBox = JSON.parse(saved) as TVIEWBOX_SIZE
@@ -101,7 +92,11 @@ export const loadViewBox = () => {
         if (!viewBox.col || viewBox.col < 0) viewBox.col = DEFAULT_VIEWBOX.col
         if (!viewBox.wx || viewBox.wx < 1) viewBox.wx = DEFAULT_VIEWBOX.wx
         if (!viewBox.wy || viewBox.wy < 1) viewBox.wy = DEFAULT_VIEWBOX.wy
+        if (!viewBox.patternWidth || viewBox.patternWidth <= 0) viewBox.patternWidth = DEFAULT_VIEWBOX.patternWidth
+        if (!viewBox.patternHeight || viewBox.patternHeight <= 0) viewBox.patternHeight = DEFAULT_VIEWBOX.patternHeight
         return viewBox
-    } 
+    }
+    // TODO: 
+    //localStorage.removeItem(KEY_STORAGE_VIEWBOX)
     return DEFAULT_VIEWBOX
 }

@@ -1,5 +1,5 @@
-import { FC, useCallback, useContext, useEffect, useState } from "react";
-import { IPattern, PatternContext } from "../../context";
+import { FC, useCallback, useEffect, useState } from "react";
+import { IPattern, useStore } from "../../context";
 import Canvas from "./canvas"
 import { Button, Modal } from "react-bootstrap";
 
@@ -15,9 +15,7 @@ interface PROPS {
 }
 
 export const ImportImageComponent: FC<PROPS> = ({ file, onClose }) => {
-  const {
-    savePattern
-  } = useContext(PatternContext)
+  const savePattern = useStore((state) => state.savePattern)
 
   const [image, setImage] = useState<string>()
   const [imageName] = useState<string>(file.name)

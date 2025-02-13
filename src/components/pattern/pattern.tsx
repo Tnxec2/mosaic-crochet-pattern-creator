@@ -1,5 +1,5 @@
-import { FC, MouseEvent, useCallback, useContext, useMemo, useState } from 'react'
-import { PatternContext } from '../../context'
+import { FC, MouseEvent, useCallback, useMemo, useState } from 'react'
+
 import { Card } from 'react-bootstrap'
 import './pattern.css'
 import { ACTION_TYPES } from '../../model/actiontype.enum'
@@ -7,14 +7,10 @@ import { DropDown, MenuItemDivider } from './dropdown'
 import { PatternHeaderComponent } from './pattern.header'
 import { PatternRowHeaderComponent } from './pattern.rowheader'
 import { PatternRowComponent } from './pattern.row'
+import { useStore } from '../../context'
+import { TDropDownPos } from '../../model/patterntype.enum'
 
-export type TDropDownPos = {
-    row: number
-    col: number
-    x: number
-    y: number
-    opened: boolean
-}
+
 
 export const PatternComponent: FC = () => {
     const {
@@ -28,7 +24,7 @@ export const PatternComponent: FC = () => {
         fillRow,
         fillRight,
         fillLeft,
-    } = useContext(PatternContext)
+    } = useStore((state) => state)
 
 
     const [dropDownPos, setDropDownPos] = useState<TDropDownPos>({

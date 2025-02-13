@@ -1,6 +1,6 @@
-import { FC, useCallback, useContext, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { Button, ButtonGroup, Form, InputGroup } from 'react-bootstrap'
-import { PatternContext } from '../../context'
+import { useStore } from '../../context'
 import { IPatternCell } from '../../model/patterncell.model'
 import { CELL_TYPE } from '../../model/patterntype.enum'
 
@@ -8,7 +8,7 @@ type Props = {}
 export const PatternSizeComponent: FC<Props> = () => {
     const [ rowsString, setRowsString ] = useState("10")
     const [ colsString, setColsString ] = useState("10")
-    const { patternState, savePattern } = useContext(PatternContext)
+    const { patternState, savePattern } = useStore((state) => state)
 
     useEffect(() => {
         setRowsString(patternState.pattern.length.toString())

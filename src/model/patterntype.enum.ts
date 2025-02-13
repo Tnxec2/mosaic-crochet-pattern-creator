@@ -33,3 +33,20 @@ export function actionToCellType(action: ACTION_TYPES, type: CELL_TYPE): CELL_TY
             return type;
     }
 }
+
+export type TDropDownPos = {
+    row: number
+    col: number
+    x: number
+    y: number
+    opened: boolean
+}
+
+export type TVIEWBOX_SIZE = {
+    row: number,
+    col: number,
+    wx: number,
+    wy: number,
+    patternWidth: number,
+    patternHeight: number,
+}

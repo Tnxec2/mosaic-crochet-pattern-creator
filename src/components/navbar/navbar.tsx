@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { useCallback, useContext, useState } from 'react'
 import { FileLoaderComponent } from '../fileload/fileloader'
-import { IPattern, PatternContext } from '../../context'
+import { IPattern, useStore } from '../../context'
 import { onSave } from '../../services/file.service'
 import { VERSION } from '../../model/constats'
 import { PreviewComponent } from '../export/preview'
@@ -13,6 +13,7 @@ import { nya } from '../../sampledata/nya'
 import { infinityBorder } from '../../sampledata/infinityborder'
 import { ImageFileLoaderComponent } from '../import/fileloader'
 import { ImportImageComponent } from '../import/importImage'
+import { initialPattern } from '../../model/patterncell.model'
 
 function NavbarComponent() {
     const {
@@ -20,17 +21,17 @@ function NavbarComponent() {
         savePattern,
         newPattern,
         showOpenFileDialog,
-        setShowOpenFileDialog,
         showPreviewDialog,
+        setShowOpenFileDialog,
         setShowPreviewDialog,
         resetViewBox,
-    } = useContext(PatternContext)
+    } = useStore((state) => state)
 
     const onLoad = useCallback((pattern: IPattern) => {
         savePattern(pattern)
-        resetViewBox(patternState)
+        resetViewBox(pattern.pattern)
         setShowOpenFileDialog(false)
-    }, [savePattern, setShowOpenFileDialog])
+    }, [resetViewBox, savePattern, setShowOpenFileDialog])
 
     const [showOpenImageDialog, setShowOpenImageDialog] = useState(false)
     const [fileImage, setFileImage] = useState<File | undefined>()
@@ -47,7 +48,10 @@ function NavbarComponent() {
                             <NavDropdown title="File" id="file-nav-dropdown">
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={() => newPattern()}
+                                    onClick={() => {
+                                        newPattern()
+                                        resetViewBox(initialPattern.pattern)
+                                    }}
                                 >
                                     New Pattern
                                 </NavDropdown.Item>
@@ -86,19 +90,19 @@ function NavbarComponent() {
                                 </NavDropdown.Header>
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={() => {savePattern(mug); resetViewBox(mug); }}
+                                    onClick={() => {savePattern(mug); resetViewBox(mug.pattern); }}
                                 >
                                     Mug
                                 </NavDropdown.Item>
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={() => {savePattern(nya); resetViewBox(nya); } }
+                                    onClick={() => {savePattern(nya); resetViewBox(nya.pattern); } }
                                 >
                                     Nya
                                 </NavDropdown.Item>
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={() => {savePattern(infinityBorder); resetViewBox(infinityBorder); }}
+                                    onClick={() => {savePattern(infinityBorder); resetViewBox(infinityBorder.pattern); }}
                                 >
                                     Infinity border
                                 </NavDropdown.Item>

@@ -1,5 +1,5 @@
-import { FC, MouseEvent, useCallback, useContext, useMemo, useState, WheelEvent } from 'react'
-import { PatternContext } from '../../../context'
+import { FC, MouseEvent, useCallback, useMemo, useState, WheelEvent } from 'react'
+
 import { Card, Form, InputGroup } from 'react-bootstrap'
 import '../pattern.css'
 import { ACTION_TYPES } from '../../../model/actiontype.enum'
@@ -9,21 +9,11 @@ import { PatternRowHeaderComponent } from './pattern.rowheader'
 import { PatternRowComponent } from './pattern.row'
 import { HoldButton } from './holdbutton'
 import { VIEWBOX_MIN_SIZE } from '../../../model/constats'
+import { useStore } from '../../../context'
+import { TDropDownPos } from '../../../model/patterntype.enum'
 
-export type TDropDownPos = {
-    row: number
-    col: number
-    x: number
-    y: number
-    opened: boolean
-}
 
-export type TVIEWBOX_SIZE = {
-    row: number,
-    col: number,
-    wx: number,
-    wy: number
-}
+
 
 export const PatternWindowComponent: FC = () => {
     const {
@@ -48,7 +38,7 @@ export const PatternWindowComponent: FC = () => {
         onShrinkViewBoxHeight,
         onChageViewBoxWidth,
         onChageViewBoxHeight
-    } = useContext(PatternContext)
+    } = useStore()
 
     const handleOnWheel = useCallback((e: WheelEvent<HTMLDivElement>) => {
         const { deltaY, shiftKey } = e

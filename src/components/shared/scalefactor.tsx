@@ -1,6 +1,6 @@
-import { FC, useContext } from "react"
+import { FC } from "react"
 import { Button, ButtonGroup, InputGroup } from "react-bootstrap"
-import { PatternContext } from "../../context"
+import { useStore } from "../../context"
 
 
 
@@ -9,7 +9,7 @@ export const ScaleFactor: FC = () => {
         patternState,
         changeScale,
         resetScale
-    } = useContext(PatternContext)
+    } = useStore((state) => state)
 
     return (
         <>

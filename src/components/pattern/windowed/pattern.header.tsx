@@ -1,5 +1,5 @@
-import { FC, useContext } from "react"
-import { PatternContext } from "../../../context"
+import { FC } from "react"
+import { useStore } from "../../../context"
 import { Help } from "../help"
 import { Card, InputGroup } from "react-bootstrap"
 import { PatternName } from "../../shared/patternname"
@@ -9,7 +9,7 @@ export const PatternHeaderComponent: FC = () => {
     const {
         showCellStitchType,
         setShowCellStitchType,
-    } = useContext(PatternContext)
+    } = useStore((state) => state)
 
     return (
         <Card.Header>
