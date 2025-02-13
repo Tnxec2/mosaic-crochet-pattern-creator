@@ -273,7 +273,7 @@ const createPatternSlice: StateCreator<
     resetScale: () => set((state) => ({ patternState: { ...state.patternState, scaleFactor: 1 } })),
     handleKeyDown: (event: KeyboardEvent) => {
         const key = event.key;
-        //console.log(key);
+        if (event.ctrlKey || event.altKey) return
 
         switch (key) {
             case '1':
