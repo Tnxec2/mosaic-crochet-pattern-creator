@@ -1,5 +1,5 @@
-import { FC, useCallback, useContext, useEffect, useState } from "react";
-import { PatternContext } from "../../context";
+import { FC, useCallback, useEffect, useState } from "react";
+import { useStore } from "../../context";
 import Canvas from "./canvas"
 import { DEFAULT_FONT_SIZE } from "../../model/constats";
 import { Button, InputGroup, Modal } from "react-bootstrap";
@@ -19,7 +19,7 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   const {
     patternState,
     saveFontSize
-  } = useContext(PatternContext)
+  } = useStore((state) => state)
 
   const [fontSize, fontSizeDebounced, setFontSize] = useStateDebounced<number>(patternState.previewFontSize || MIN_FONT_SIZE, 300)
   const [showCellStitchType, setShowCellStitchType] = useState<boolean>(true)

@@ -1,8 +1,7 @@
-import { TVIEWBOX_SIZE } from '../components/pattern/windowed/pattern'
+
 import { IPattern } from '../context'
-import { DEFAULT_COLOR, DEFAULT_VIEWBOX, KEY_STORAGE, KEY_STORAGE_VIEWBOX, UNKNOWN_NAME } from '../model/constats'
+import { KEY_STORAGE_OLD, UNKNOWN_NAME } from '../model/constats'
 import { mug } from '../sampledata/mug'
-import { debounce } from './debounce'
 
 export const onSave = (patternState: IPattern) => {
     const fileName = patternState.name || UNKNOWN_NAME
@@ -42,28 +41,12 @@ export const loadJsonFile = (
     }
 }
 
-export const saveLocalDebounced = debounce(
-    (pattern: IPattern) => {
-        localStorage.setItem(KEY_STORAGE, JSON.stringify(pattern)) },
-    1000
-)
 
 export const baseName = (str: string) => {
    var base = str.substring(str.lastIndexOf('/') + 1); 
     if(base.lastIndexOf(".") !== -1)       
         base = base.substring(0, base.lastIndexOf("."));
    return base;
-}
-
-
-export const loadPattern = () => {
-    let saved = localStorage.getItem(KEY_STORAGE)
-    if (saved) {
-        let pattern = JSON.parse(saved) as IPattern
-        if (!pattern.name) pattern.name = UNKNOWN_NAME
-        return pattern
-    }
-    return mug
 }
 
 const fillTransparentPixelsWithWhite = (imageData: ImageData) => {
@@ -84,24 +67,3 @@ const fillTransparentPixelsWithWhite = (imageData: ImageData) => {
     // Put image data back
     return imageData;
   }
-
-
-export const saveViewBoxDebounced = debounce(
-    (viewBox: TVIEWBOX_SIZE) => {
-        localStorage.setItem(KEY_STORAGE_VIEWBOX, JSON.stringify(viewBox)) },
-    1000
-)
-
-export const loadViewBox = () => {
-    const saved = localStorage.getItem(KEY_STORAGE_VIEWBOX)
-    if (saved) {
-        let viewBox = JSON.parse(saved) as TVIEWBOX_SIZE
-
-        if (!viewBox.row || viewBox.row < 0) viewBox.row = DEFAULT_VIEWBOX.row
-        if (!viewBox.col || viewBox.col < 0) viewBox.col = DEFAULT_VIEWBOX.col
-        if (!viewBox.wx || viewBox.wx < 1) viewBox.wx = DEFAULT_VIEWBOX.wx
-        if (!viewBox.wy || viewBox.wy < 1) viewBox.wy = DEFAULT_VIEWBOX.wy
-        return viewBox
-    } 
-    return DEFAULT_VIEWBOX
-}

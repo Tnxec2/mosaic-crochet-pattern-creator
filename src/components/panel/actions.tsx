@@ -1,12 +1,12 @@
-import { FC, useContext, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { Form } from 'react-bootstrap'
-import { PatternContext } from '../../context'
+import { useStore } from '../../context'
 import { ACTION_TYPES, actionTitle } from '../../model/actiontype.enum'
 import './actions.css'
 
 type Props = {}
 export const ActionsComponent: FC<Props> = () => {
-    const { patternState, setAction, handleKeyDown } = useContext(PatternContext)
+    const { patternState, setAction, handleKeyDown } = useStore((state) => state)
 
     useEffect(() => {
         const handleKey = (event: KeyboardEvent) => {

@@ -1,9 +1,10 @@
-import { FC, Fragment, MouseEvent, useCallback, useContext } from "react"
-import { PatternContext } from "../../../context"
-import { TVIEWBOX_SIZE, TDropDownPos } from "./pattern"
+import { FC, Fragment, MouseEvent, useCallback } from "react"
+import { useStore } from "../../../context"
+
 import { IPatternRow } from "../../../model/patterncell.model"
 import { PatterCellComponent } from "../pattern_cell"
 import { PatternDraw } from "../../shared/patterndraw"
+import { TDropDownPos, TVIEWBOX_SIZE } from "../../../model/patterntype.enum"
 
 type PROPS = {
     row: IPatternRow,
@@ -11,7 +12,7 @@ type PROPS = {
     dropDownPosPatternCell: TDropDownPos,
     setDropDownPos: (pos: TDropDownPos) => void,
     setDropDownPosPatternCell: (pos: TDropDownPos) => void,
-    pos?: TVIEWBOX_SIZE,
+    pos?: TVIEWBOX_SIZE, 
 }
 
 export const PatternRowComponent: FC<PROPS> = ({ pos, row, rowIndex, dropDownPosPatternCell, setDropDownPos, setDropDownPosPatternCell }) => {
@@ -19,7 +20,7 @@ export const PatternRowComponent: FC<PROPS> = ({ pos, row, rowIndex, dropDownPos
         patternState,
         changeCell,
         showCellStitchType,
-    } = useContext(PatternContext)
+    } = useStore((state) => state)
 
     const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
         if (dropDownPosPatternCell.opened) {

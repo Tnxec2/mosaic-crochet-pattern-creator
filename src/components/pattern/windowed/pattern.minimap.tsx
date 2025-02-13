@@ -1,5 +1,5 @@
-import { FC, MouseEvent, useCallback, useContext, useEffect, useRef } from "react"
-import { PatternContext } from "../../../context"
+import { FC, MouseEvent, useCallback, useEffect, useRef } from "react"
+import { useStore } from "../../../context"
 import './pattern.minimap.css'
 import { PatternDraw } from "../../shared/patterndraw"
 import { useStateDebounced } from "../../../services/debounce"
@@ -14,7 +14,7 @@ export const PatternMinimapComponent: FC = () => {
         patternState,
         viewBox,
         gotoViewBox
-    } = useContext(PatternContext)
+    } = useStore((state) => state)
 
     const [drawState, debouncedDrawState, setDrawState] = useStateDebounced<string[][]>([], 1000)
 

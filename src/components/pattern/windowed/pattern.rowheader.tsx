@@ -1,6 +1,7 @@
-import { FC, useContext } from "react"
-import { PatternContext } from "../../../context"
-import { TVIEWBOX_SIZE, TDropDownPos } from "./pattern"
+import { FC, } from "react"
+import { useStore } from "../../../context"
+import { TDropDownPos, TVIEWBOX_SIZE } from "../../../model/patterntype.enum"
+
 
 type PROPS = {
     setDropDownPos: (pos: TDropDownPos) => void
@@ -8,9 +9,7 @@ type PROPS = {
 }
 
 export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos, pos }) => {
-    const {
-        patternState
-    } = useContext(PatternContext)
+    const patternState = useStore((state) => state.patternState)
 
     return (
         <div className="r">

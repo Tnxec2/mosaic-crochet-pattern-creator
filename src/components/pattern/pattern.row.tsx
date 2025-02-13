@@ -1,9 +1,9 @@
-import { FC, Fragment, MouseEvent, useCallback, useContext } from "react"
-import { PatternContext } from "../../context"
-import { TDropDownPos } from "./pattern"
+import { FC, Fragment, MouseEvent, useCallback } from "react"
+import { useStore } from "../../context"
 import { IPatternRow } from "../../model/patterncell.model"
 import { PatterCellComponent } from "./pattern_cell"
 import { PatternDraw } from "../shared/patterndraw"
+import { TDropDownPos } from "../../model/patterntype.enum"
 
 type PROPS = {
     row: IPatternRow,
@@ -18,7 +18,7 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
         patternState,
         changeCell,
         showCellStitchType,
-    } = useContext(PatternContext)
+    } = useStore((state) => state)
 
     const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
         if (dropDownPosPatternCell.opened) {

@@ -1,12 +1,12 @@
 import { FC, useContext } from 'react'
 import { Form } from 'react-bootstrap'
-import { PatternContext } from '../../context'
+import { useStore } from '../../context'
 import { ColorItemComponent } from './coloritem'
 
 type Props = {}
 
 export const ColorsComponent: FC<Props> = () => {
-    const { patternState, changeColor, setSelectedColor, addColor, deleteColor } = useContext(PatternContext)
+    const { patternState, changeColor, setSelectedColor, addColor, deleteColor } = useStore((state) => state)
   
     return (
         <>

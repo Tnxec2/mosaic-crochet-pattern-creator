@@ -1,11 +1,11 @@
-import { FC, useContext } from "react"
-import { PatternContext } from "../../context"
+import { FC } from "react"
+import { useStore } from "../../context"
 import { Form } from "react-bootstrap"
 
 type Props = {}
 
 export const PropertiesComponent: FC<Props> = () => {
-    const { mirrorVertical, setMirrorVertical, mirrorHorizontal, setMirrorHorizontal, toggleStitch, setToggleStitch } = useContext(PatternContext)
+    const { mirrorVertical, setMirrorVertical, mirrorHorizontal, setMirrorHorizontal, toggleStitch, setToggleStitch } = useStore((state) => state)
 
     return (
         <>            
