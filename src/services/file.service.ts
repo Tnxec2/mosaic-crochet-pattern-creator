@@ -1,7 +1,6 @@
 
 import { IPattern } from '../context'
-import { DEFAULT_VIEWBOX, KEY_STORAGE, KEY_STORAGE_VIEWBOX, UNKNOWN_NAME } from '../model/constats'
-import { TVIEWBOX_SIZE } from '../model/patterntype.enum'
+import { KEY_STORAGE_OLD, UNKNOWN_NAME } from '../model/constats'
 import { mug } from '../sampledata/mug'
 
 export const onSave = (patternState: IPattern) => {
@@ -50,19 +49,6 @@ export const baseName = (str: string) => {
    return base;
 }
 
-
-export const loadPatternMigrate = () => {
-    let saved = localStorage.getItem(KEY_STORAGE)
-    if (saved) {
-        let pattern = JSON.parse(saved) as IPattern
-        if (!pattern.name) pattern.name = UNKNOWN_NAME
-        return pattern
-    }
-    // TODO: 
-    //localStorage.removeItem(KEY_STORAGE)
-    return mug
-}
-
 const fillTransparentPixelsWithWhite = (imageData: ImageData) => {
     // Get image data
     const data = imageData.data;
@@ -81,20 +67,3 @@ const fillTransparentPixelsWithWhite = (imageData: ImageData) => {
     // Put image data back
     return imageData;
   }
-
-
-export const loadViewBoxMigrate = () => {
-    const saved = localStorage.getItem(KEY_STORAGE_VIEWBOX)
-    if (saved) {
-        let viewBox = JSON.parse(saved) as TVIEWBOX_SIZE
-
-        if (!viewBox.row || viewBox.row < 0) viewBox.row = DEFAULT_VIEWBOX.row
-        if (!viewBox.col || viewBox.col < 0) viewBox.col = DEFAULT_VIEWBOX.col
-        if (!viewBox.wx || viewBox.wx < 1) viewBox.wx = DEFAULT_VIEWBOX.wx
-        if (!viewBox.wy || viewBox.wy < 1) viewBox.wy = DEFAULT_VIEWBOX.wy
-        return viewBox
-    }
-    // TODO: 
-    //localStorage.removeItem(KEY_STORAGE_VIEWBOX)
-    return DEFAULT_VIEWBOX
-}

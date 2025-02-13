@@ -2,18 +2,19 @@ import { initialPattern, IPatternCell, IPatternGrid } from '../model/patterncell
 import { ACTION_TYPES, actionTypesToKey } from '../model/actiontype.enum'
 import {
     DEFAULT_COLOR,
-    DEFAULT_COLOR_2,
     DEFAULT_VIEWBOX,
+    KEY_STORAGE_OLD,
     KEY_STORAGE_ZUSTAND,
     UNKNOWN_NAME,
     VIEWBOX_MIN_SIZE
 } from '../model/constats'
-import { loadPatternMigrate } from '../services/file.service'
+
 import { actionToCellType, CELL_TYPE, TVIEWBOX_SIZE } from '../model/patterntype.enum'
 import { getNewCell } from '../components/pattern/getNetCell'
 
 import { create, StateCreator } from 'zustand'
 import { persist, createJSONStorage, devtools } from 'zustand/middleware'
+import { mug } from '../sampledata/mug'
 
 export interface IPattern {
     pattern: IPatternGrid
@@ -85,7 +86,7 @@ const createPatternSlice: StateCreator<
     [],
     PatternSlice
 > = (set, get) => ({
-    patternState: loadPatternMigrate(),
+    patternState: initialPattern,
     toggleStitch: true,
     setToggleStitch: (s: boolean) => set((state) => ({toggleStitch: s})),
     showOpenFileDialog: false,
@@ -451,4 +452,19 @@ export const useStore = create<PatternSlice & VieboxSlice>()(
   })
 );
   
-  
+
+// migration from old version with context
+if (!localStorage.getItem(KEY_STORAGE_ZUSTAND))  {
+    
+    let saved = localStorage.getItem(KEY_STORAGE_OLD)
+    if (saved) {
+        console.log("migrate old context state...");
+        let pattern = JSON.parse(saved) as IPattern
+        if (!pattern.name) pattern.name = UNKNOWN_NAME
+        useStore.getState().savePattern(pattern)
+    } else {
+        useStore.getState().savePattern(mug)
+    }
+    // TODO: 
+    //localStorage.removeItem(KEY_STORAGE)
+}
