@@ -9,6 +9,8 @@ export const PatternHeaderComponent: FC = () => {
     const {
         showCellStitchType,
         setShowCellStitchType,
+        isPatternWindowed,
+        toggleIsPatternWindowed
     } = useStore((state) => state)
 
     return (
@@ -16,23 +18,32 @@ export const PatternHeaderComponent: FC = () => {
             <Card.Title>
                 Pattern
                 <Help />
-                <div className="form-check form-switch float-end">
-                    <input
-                        className="form-check-input"
-                        type="checkbox"
-                        role="switch"
-                        id="flexSwitchCheckDefault"
-                        checked={showCellStitchType}
-                        onChange={(e) => {
-                            setShowCellStitchType(e.target.checked)
-                        }}
-                    />
-                    <label
-                        className="form-check-label"
-                        htmlFor="flexSwitchCheckDefault"
-                    >
-                        show stitch type
-                    </label>
+                <div className="float-end">
+                    <div className="form-check form-check-inline form-switch">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            role="switch"
+                            checked={isPatternWindowed}
+                            onChange={(e) => {
+                                toggleIsPatternWindowed()
+                            }}
+
+                        />
+                        <label className="form-check-label" onClick={(e) => { toggleIsPatternWindowed() }}>new version</label>
+                    </div>
+                    <div className="form-check form-check-inline form-switch">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            role="switch"
+                            checked={showCellStitchType}
+                            onChange={(e) => {
+                                setShowCellStitchType(e.target.checked)
+                            }}
+                        />
+                        <label className="form-check-label" onClick={(e) => { setShowCellStitchType(!showCellStitchType) }}>show stitch type</label>
+                    </div>
                 </div>
             </Card.Title>
             <InputGroup className="mb-3">

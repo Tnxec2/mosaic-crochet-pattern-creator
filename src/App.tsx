@@ -4,8 +4,11 @@ import { PatternComponent } from './components/pattern/pattern'
 import { PatternWindowComponent } from './components/pattern/windowed/pattern'
 
 import { Col, Row } from 'react-bootstrap'
+import { useStore } from './context'
 
 function App() {
+    const isPatternWindowed = useStore().isPatternWindowed
+
     return (<>
             <NavbarComponent />
             <Row className="m-3">
@@ -13,7 +16,11 @@ function App() {
                     <PanelComponent />
                 </Col>
                 <Col sm={10}>
+                { isPatternWindowed ?
                     <PatternWindowComponent />
+                    :
+                    <PatternComponent />
+                }
                 </Col>
             </Row>
             </>

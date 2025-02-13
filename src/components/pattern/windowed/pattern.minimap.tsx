@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useCallback, useEffect, useRef } from "react"
+import { FC, MouseEvent, useCallback, useEffect, useRef, useState } from "react"
 import { useStore } from "../../../context"
 import './pattern.minimap.css'
 import { PatternDraw } from "../../shared/patterndraw"
@@ -13,12 +13,15 @@ export const PatternMinimapComponent: FC = () => {
     const {
         patternState,
         viewBox,
-        gotoViewBox
+        gotoViewBox,
+        isPatternWindowed
     } = useStore((state) => state)
 
     const [drawState, debouncedDrawState, setDrawState] = useStateDebounced<string[][]>([], 1000)
 
     const minimapCanvasRef = useRef<HTMLCanvasElement | null>(null)
+
+    const [showFrame, setShowFrame] = useState(true)
 
 
     useEffect(()=> {
@@ -104,7 +107,21 @@ export const PatternMinimapComponent: FC = () => {
     }
         
     return <div className="minimap-container">
-        <Form.Label>Minimap</Form.Label>
+        <div style={{display: 'flex'}}>
+        <Form.Label style={{flex: 1}}>Minimap</Form.Label>
+        { isPatternWindowed && <div className="form-check form-check-inline form-switch m-0">
+            <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                checked={showFrame}
+                onChange={(e) => {
+                    setShowFrame(!showFrame)
+                }}
+                title="toggle frame"
+            />
+        </div> }
+        </div>
         <div className="wrapper-minmap" >
             <Canvas
                 id="canvasMinimap"
@@ -112,12 +129,13 @@ export const PatternMinimapComponent: FC = () => {
                 className="canvas-minimap"
                 onClick={handleClick}
             /> 
+            {showFrame && isPatternWindowed &&
             <Canvas
                 id="canvasMinimapFrame"
                 draw={drawFrame}
                 className="canvas-minimap-frame"
                 onClick={handleClick}
-            /> 
+            /> }
         </div>
     
     </div>

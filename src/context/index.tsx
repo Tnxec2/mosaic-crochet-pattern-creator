@@ -28,6 +28,8 @@ export interface IPattern {
 }
 
 interface PatternSlice {
+    isPatternWindowed: boolean
+    toggleIsPatternWindowed: () => void
     patternState: IPattern
     showOpenFileDialog: boolean
     setShowOpenFileDialog: (s: boolean) => void
@@ -86,6 +88,8 @@ const createPatternSlice: StateCreator<
     [],
     PatternSlice
 > = (set, get) => ({
+    isPatternWindowed: true,
+    toggleIsPatternWindowed: () => set((state) => ({isPatternWindowed: !state.isPatternWindowed})),
     patternState: initialPattern,
     toggleStitch: true,
     setToggleStitch: (s: boolean) => set((state) => ({toggleStitch: s})),
@@ -447,7 +451,8 @@ export const useStore = create<PatternSlice & VieboxSlice>()(
         mirrorHorizontal: state.mirrorHorizontal,
         mirrorVertical: state.mirrorVertical,
         toggleStitch: state.toggleStitch,
-        showCellStitchType: state.showCellStitchType
+        showCellStitchType: state.showCellStitchType,
+        isPatternWindowed: state.isPatternWindowed,
     }),
   })
 );

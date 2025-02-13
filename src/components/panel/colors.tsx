@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import { Form } from 'react-bootstrap'
 import { useStore } from '../../context'
 import { ColorItemComponent } from './coloritem'

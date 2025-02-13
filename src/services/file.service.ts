@@ -1,7 +1,7 @@
 
 import { IPattern } from '../context'
-import { KEY_STORAGE_OLD, UNKNOWN_NAME } from '../model/constats'
-import { mug } from '../sampledata/mug'
+import { UNKNOWN_NAME } from '../model/constats'
+
 
 export const onSave = (patternState: IPattern) => {
     const fileName = patternState.name || UNKNOWN_NAME
