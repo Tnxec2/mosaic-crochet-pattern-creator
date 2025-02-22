@@ -69,10 +69,10 @@ interface VieboxSlice {
     viewBox: TVIEWBOX_SIZE
     setViewBox: (viewBox: TVIEWBOX_SIZE) => void
     gotoViewBox: (row: number, col: number) => void
-    gotoViewBoxUp: () => void
-    gotoViewBoxDown: () => void
-    gotoViewBoxLeft: () => void
-    gotoViewBoxRight: () => void
+    gotoViewBoxUp: (step?: number) => void
+    gotoViewBoxDown: (step?: number) => void
+    gotoViewBoxLeft: (step?: number) => void
+    gotoViewBoxRight: (step?: number) => void
     onGrowViewBoxHeight: () => void
     onShrinkViewBoxHeight: () => void
     onGrowViewBoxWidth: () => void
@@ -365,17 +365,17 @@ VieboxSlice
         }
     })
     ),
-    gotoViewBoxUp: () => set((state) => ({
-        viewBox: { ...state.viewBox, row: Math.max(0, state.viewBox.row - 1) }
+    gotoViewBoxUp: (step?: number) => set((state) => ({
+        viewBox: { ...state.viewBox, row: Math.max(0, state.viewBox.row - (step || 1)) }
     })),
-    gotoViewBoxDown: () => set((state) => ({
-        viewBox: { ...state.viewBox, row: Math.max(0, Math.min(get().patternState.pattern.length - state.viewBox.wy, state.viewBox.row + 1)) }
+    gotoViewBoxDown: (step?: number) => set((state) => ({
+        viewBox: { ...state.viewBox, row: Math.max(0, Math.min(get().patternState.pattern.length - state.viewBox.wy, state.viewBox.row + (step || 1))) }
     })),
-    gotoViewBoxLeft: () => set((state) => ({
-        viewBox: { ...state.viewBox, col: Math.max(0, state.viewBox.col - 1) }
+    gotoViewBoxLeft: (step?: number) => set((state) => ({
+        viewBox: { ...state.viewBox, col: Math.max(0, state.viewBox.col - (step || 1)) }
     })),
-    gotoViewBoxRight: () => set((state) => ({
-        viewBox: { ...state.viewBox, col: Math.max(0, Math.min(get().patternState.pattern[0].length - state.viewBox.wx, state.viewBox.col + 1)) }
+    gotoViewBoxRight: (step?: number) => set((state) => ({
+        viewBox: { ...state.viewBox, col: Math.max(0, Math.min(get().patternState.pattern[0].length - state.viewBox.wx, state.viewBox.col + (step || 1))) }
     })),
     onGrowViewBoxHeight: () => set((state) => ({
         viewBox: { ...state.viewBox, wy: Math.min(get().patternState.pattern.length, state.viewBox.wy + 1) }

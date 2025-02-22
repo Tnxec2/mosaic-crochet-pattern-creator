@@ -13,7 +13,7 @@ import { useStore } from '../../../context'
 import { TDropDownPos } from '../../../model/patterntype.enum'
 
 
-
+const SCROLL_STEP = 5;
 
 export const PatternWindowComponent: FC = () => {
     const {
@@ -41,19 +41,22 @@ export const PatternWindowComponent: FC = () => {
     } = useStore()
 
     const handleOnWheel = useCallback((e: WheelEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+
         const { deltaY, shiftKey } = e
 
+        
         if (shiftKey) {
             if (deltaY > 0) {
-                gotoViewBoxRight()
+                gotoViewBoxRight(SCROLL_STEP)
             } else {
-                gotoViewBoxLeft()
+                gotoViewBoxLeft(SCROLL_STEP)
             }
         } else {
             if (deltaY > 0) {
-                gotoViewBoxDown()
+                gotoViewBoxDown(SCROLL_STEP)
             } else {
-                gotoViewBoxUp()
+                gotoViewBoxUp(SCROLL_STEP)
             }
         }
     }, [gotoViewBoxDown, gotoViewBoxLeft, gotoViewBoxRight, gotoViewBoxUp])
