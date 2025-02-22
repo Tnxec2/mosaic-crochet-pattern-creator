@@ -134,8 +134,10 @@ const getCellColor = (pattern: IPatternGrid, colors: string[], row: number, col:
 }
 
 const getColor = (pattern: IPatternGrid, colors: string[], row: number, col: number) => {
-    return pattern[row][col].colorindex >= 0
-        ? colors[pattern[row][col].colorindex]
+    var r = Math.max(0, row)
+    var c = Math.max(0, col)
+    return pattern[r][c].colorindex >= 0
+        ? colors[pattern[r][c].colorindex]
         : BACKGROUND_COLOR
 }
 

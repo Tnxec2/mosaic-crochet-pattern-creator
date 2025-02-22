@@ -67,6 +67,7 @@ interface PatternSlice {
 
 interface VieboxSlice {
     viewBox: TVIEWBOX_SIZE
+    setViewBox: (viewBox: TVIEWBOX_SIZE) => void
     gotoViewBox: (row: number, col: number) => void
     gotoViewBoxUp: () => void
     gotoViewBoxDown: () => void
@@ -355,11 +356,12 @@ PatternSlice & VieboxSlice,
 VieboxSlice
 > = (set, get) => ({
     viewBox: DEFAULT_VIEWBOX,
+    setViewBox: (viewBox: TVIEWBOX_SIZE) => set((state) => ({viewBox: viewBox})),
     gotoViewBox: (row: number, col: number) => set((state) => ({
         viewBox: {
             ...state.viewBox,
-            row: Math.min(get().patternState.pattern.length - 1, Math.max(0, row)),
-            col: Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col))
+            row: Math.max(0, Math.min(get().patternState.pattern.length - 1, Math.max(0, row))),
+            col: Math.max(0, Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col)))
         }
     })
     ),
@@ -367,13 +369,13 @@ VieboxSlice
         viewBox: { ...state.viewBox, row: Math.max(0, state.viewBox.row - 1) }
     })),
     gotoViewBoxDown: () => set((state) => ({
-        viewBox: { ...state.viewBox, row: Math.min(get().patternState.pattern.length - state.viewBox.wy, state.viewBox.row + 1) }
+        viewBox: { ...state.viewBox, row: Math.max(0, Math.min(get().patternState.pattern.length - state.viewBox.wy, state.viewBox.row + 1)) }
     })),
     gotoViewBoxLeft: () => set((state) => ({
         viewBox: { ...state.viewBox, col: Math.max(0, state.viewBox.col - 1) }
     })),
     gotoViewBoxRight: () => set((state) => ({
-        viewBox: { ...state.viewBox, col: Math.min(get().patternState.pattern[0].length - state.viewBox.wx, state.viewBox.col + 1) }
+        viewBox: { ...state.viewBox, col: Math.max(0, Math.min(get().patternState.pattern[0].length - state.viewBox.wx, state.viewBox.col + 1)) }
     })),
     onGrowViewBoxHeight: () => set((state) => ({
         viewBox: { ...state.viewBox, wy: Math.min(get().patternState.pattern.length, state.viewBox.wy + 1) }
@@ -399,10 +401,10 @@ VieboxSlice
         }
     })),
     onChageViewBoxWidth: (width: number) => set((state) => ({
-        viewBox: { ...state.viewBox, wx: width }
+        viewBox: { ...state.viewBox, wx: Math.max(VIEWBOX_MIN_SIZE, width) }
     })),
     onChageViewBoxHeight: (height: number) => set((state) => ({
-        viewBox: { ...state.viewBox, wy: height }
+        viewBox: { ...state.viewBox, wy: Math.max(VIEWBOX_MIN_SIZE, height) }
     })),
 
 })
