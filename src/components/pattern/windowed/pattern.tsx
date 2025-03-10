@@ -1,21 +1,21 @@
 import { FC, MouseEvent, useCallback, useMemo, useState, WheelEvent } from 'react'
 
-import { Card, Form, InputGroup } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 import '../pattern.css'
 import { ACTION_TYPES } from '../../../model/actiontype.enum'
 import { DropDown, MenuItemDivider } from '../dropdown'
 import { PatternHeaderComponent } from '../pattern.header'
-import { PatternRowHeaderComponent } from './pattern.rowheader'
-import { PatternRowComponent } from './pattern.row'
+import { PatternRowHeaderWindowedComponent } from './pattern.rowheader'
+import { PatternRowWindowedComponent } from './pattern.row'
 import { HoldButton } from './holdbutton'
-import { VIEWBOX_MIN_SIZE } from '../../../model/constats'
 import { useStore } from '../../../context'
 import { TDropDownPos } from '../../../model/patterntype.enum'
+import { ViewBoxSizeComponent } from './viewbox.size'
 
 
 const SCROLL_STEP = 5;
 
-export const PatternWindowComponent: FC = () => {
+export const PatternWindowedComponent: FC = () => {
     const {
         patternState,
         savePattern,
@@ -32,12 +32,6 @@ export const PatternWindowComponent: FC = () => {
         gotoViewBoxDown,
         gotoViewBoxLeft,
         gotoViewBoxRight,
-        onShrinkViewBoxWidth,
-        onGrowViewBoxWidth,
-        onGrowViewBoxHeight,
-        onShrinkViewBoxHeight,
-        onChageViewBoxWidth,
-        onChageViewBoxHeight
     } = useStore()
 
     const handleOnWheel = useCallback((e: WheelEvent<HTMLDivElement>) => {
@@ -212,23 +206,7 @@ export const PatternWindowComponent: FC = () => {
             <Card className="h-100">
                 <PatternHeaderComponent />
                 <Card.Body className="pattern-container">
-                    <div className='mb-3'>
-                        <InputGroup>
-                            <InputGroup.Text><strong>Viewbox</strong></InputGroup.Text>
-                            <InputGroup.Text>width</InputGroup.Text>
-                            <Form.Control type='number' min={VIEWBOX_MIN_SIZE} max={patternState.pattern[0].length} value={viewBox.wx}
-                                onChange={(e) => { onChageViewBoxWidth(Number(e.target.value)) }} />
-                            <HoldButton className='btn btn-outline-danger' onFire={onShrinkViewBoxWidth}>-</HoldButton>
-                            <HoldButton className='btn btn-outline-success' onFire={onGrowViewBoxWidth}>+</HoldButton>
-
-                            <InputGroup.Text>✖️</InputGroup.Text>
-                            <InputGroup.Text>height</InputGroup.Text>
-                            <Form.Control type='number' min={VIEWBOX_MIN_SIZE} max={patternState.pattern.length} value={viewBox.wy}
-                                onChange={(e) => { onChageViewBoxHeight(Number(e.target.value)) }} />
-                            <HoldButton className='btn btn-outline-danger' onFire={onShrinkViewBoxHeight}>-</HoldButton>
-                            <HoldButton className='btn btn-outline-success' onFire={onGrowViewBoxHeight}>+</HoldButton>
-                        </InputGroup>
-                    </div>
+                    <ViewBoxSizeComponent />
                     <div
                         className="noselect"
                         id="pattern"
@@ -238,20 +216,20 @@ export const PatternWindowComponent: FC = () => {
                             flexDirection: 'column'
                         }}
                     >
-                        <HoldButton className='btn-outline-secondary mb-1' onFire={gotoViewBoxUp}>🔼</HoldButton>
+                        <HoldButton className='btn-outline-secondary mb-1' onFire={() => gotoViewBoxUp(1)}>🔼</HoldButton>
                         <div style={{
                             display: 'flex',
                             flexDirection: 'row',
                             overflow: 'auto'
                         }}>
-                            <HoldButton className='btn-outline-secondary me-1' onFire={gotoViewBoxLeft}>◀️</HoldButton>
+                            <HoldButton className='btn-outline-secondary me-1' onFire={() => gotoViewBoxLeft(1)}>◀️</HoldButton>
 
                             <div onWheel={handleOnWheel} style={{ overflow: 'auto', overscrollBehavior: 'contain' }}>
-                                <PatternRowHeaderComponent setDropDownPos={setDropDownPos} pos={viewBox} />
+                                <PatternRowHeaderWindowedComponent setDropDownPos={setDropDownPos} pos={viewBox} />
                                 {patternState.pattern
-                                    .filter((_, rowIndex) => rowIndex >= viewBox.row && rowIndex <= viewBox.row + viewBox.wy)
+                                    .filter((_, rowIndex) => rowIndex >= viewBox.row && rowIndex < viewBox.row + viewBox.wy)
                                     .map((row, rowIndex) => (
-                                        <PatternRowComponent
+                                        <PatternRowWindowedComponent
                                             key={`row-${rowIndex + viewBox.row}`}
                                             row={row}
                                             rowIndex={rowIndex + viewBox.row}
@@ -261,11 +239,11 @@ export const PatternWindowComponent: FC = () => {
                                             pos={viewBox}
                                         />
                                     ))}
-                                <PatternRowHeaderComponent setDropDownPos={setDropDownPos} pos={viewBox} />
+                                <PatternRowHeaderWindowedComponent setDropDownPos={setDropDownPos} pos={viewBox} />
                             </div>
-                            <HoldButton className='btn-outline-secondary ms-1' onFire={gotoViewBoxRight}>▶️</HoldButton>
+                            <HoldButton className='btn-outline-secondary ms-1' onFire={() => gotoViewBoxRight(1)}>▶️</HoldButton>
                         </div>
-                        <HoldButton className='btn-outline-secondary mt-1' onFire={gotoViewBoxDown}>🔽</HoldButton>
+                        <HoldButton className='btn-outline-secondary mt-1' onFire={() => gotoViewBoxDown(1)}>🔽</HoldButton>
                     </div>
                 </Card.Body>
             </Card>

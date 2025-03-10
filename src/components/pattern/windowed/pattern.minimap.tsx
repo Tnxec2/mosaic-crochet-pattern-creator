@@ -76,12 +76,12 @@ export const PatternMinimapComponent: FC = () => {
             
             if (scaleFactor) {
                 canvas.width = mapWidth * scaleFactor
-                canvas.height = mapHeight * scaleFactor
+                canvas.height = mapHeight * scaleFactor              
 
                 ctx.strokeStyle = MINMAP_FRAME
                 ctx.lineWidth = 2
                 ctx.clearRect(0, 0, canvas.width, canvas.height)
-                ctx.strokeRect(viewBox.col*scaleFactor, viewBox.row*scaleFactor, viewBox.wx*scaleFactor, viewBox.wy*scaleFactor)
+                ctx.strokeRect(viewBox.col*scaleFactor, viewBox.row*scaleFactor, Math.min(mapWidth, viewBox.wx)*scaleFactor, Math.min(mapHeight, viewBox.wy*scaleFactor))
             }
         }
         

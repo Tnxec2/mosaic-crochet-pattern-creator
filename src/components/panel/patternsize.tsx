@@ -6,16 +6,18 @@ import { CELL_TYPE } from '../../model/patterntype.enum'
 
 type Props = {}
 export const PatternSizeComponent: FC<Props> = () => {
-    const [ rowsString, setRowsString ] = useState("10")
-    const [ colsString, setColsString ] = useState("10")
-    const { patternState, savePattern } = useStore((state) => state)
 
-    useEffect(() => {
+    const { patternState, savePattern } = useStore()
+
+    const [ rowsString, setRowsString ] = useState(patternState.pattern.length.toString())
+    const [ colsString, setColsString ] = useState(patternState.pattern[0].length.toString())
+
+    useEffect(() => {        
         setRowsString(patternState.pattern.length.toString())
         setColsString(patternState.pattern.length > 0
                 ? patternState.pattern[0].length.toString()
                 : "1")
-    }, [patternState])
+    }, [patternState.pattern])
 
     const changeCols = useCallback( (row: IPatternCell[], cols: number): IPatternCell[] => {
         if (cols > patternState.pattern[0].length) {

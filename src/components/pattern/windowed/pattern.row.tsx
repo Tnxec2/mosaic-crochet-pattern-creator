@@ -12,10 +12,10 @@ type PROPS = {
     dropDownPosPatternCell: TDropDownPos,
     setDropDownPos: (pos: TDropDownPos) => void,
     setDropDownPosPatternCell: (pos: TDropDownPos) => void,
-    pos?: TVIEWBOX_SIZE, 
+    pos: TVIEWBOX_SIZE, 
 }
 
-export const PatternRowComponent: FC<PROPS> = ({ pos, row, rowIndex, dropDownPosPatternCell, setDropDownPos, setDropDownPosPatternCell }) => {
+export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dropDownPosPatternCell, setDropDownPos, setDropDownPosPatternCell }) => {
     const {
         patternState,
         changeCell,
@@ -66,9 +66,9 @@ export const PatternRowComponent: FC<PROPS> = ({ pos, row, rowIndex, dropDownPos
                 {patternState.pattern.length - rowIndex}
             </div>
             {row
-            .filter((_, colIndex) => !pos || (colIndex >= pos.col && colIndex <= pos.col + pos.wx))
+            .filter((_, colIndex) => (colIndex >= pos.col && colIndex < pos.col + pos.wx))
             .map((col, colIndex) => (
-                <Fragment key={`col-${colIndex+(pos?.col||0)}`}>
+                <Fragment key={`col-${colIndex+pos.col}`}>
                     <PatterCellComponent
                         onClick={(e) => {
                             if (e.stopPropagation)
@@ -77,16 +77,16 @@ export const PatternRowComponent: FC<PROPS> = ({ pos, row, rowIndex, dropDownPos
                                 e.preventDefault()
                             handleClick(rowIndex, colIndex+(pos?.col||0), false, e)
                         }}
-                        color={PatternDraw.getCellColor(patternState.pattern, patternState.colors, rowIndex, colIndex+(pos?.col||0))}
+                        color={PatternDraw.getCellColor(patternState.pattern, patternState.colors, rowIndex, colIndex+pos.col)}
                         onMouseOver={(e) =>
                             handleMouseOver(
                                 e,
                                 rowIndex, 
-                                colIndex+(pos?.col||0)
+                                colIndex+pos.col
                             )
                         }
                         row={patternState.pattern.length - rowIndex}
-                        col={row.length - colIndex - (pos?.col||0)}
+                        col={row.length - colIndex - pos.col}
                         cell={col}
                         showCellCrochetType={showCellStitchType}
                     >

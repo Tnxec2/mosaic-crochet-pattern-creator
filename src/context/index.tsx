@@ -69,14 +69,10 @@ interface VieboxSlice {
     viewBox: TVIEWBOX_SIZE
     setViewBox: (viewBox: TVIEWBOX_SIZE) => void
     gotoViewBox: (row: number, col: number) => void
-    gotoViewBoxUp: (step?: number) => void
-    gotoViewBoxDown: (step?: number) => void
-    gotoViewBoxLeft: (step?: number) => void
-    gotoViewBoxRight: (step?: number) => void
-    onGrowViewBoxHeight: () => void
-    onShrinkViewBoxHeight: () => void
-    onGrowViewBoxWidth: () => void
-    onShrinkViewBoxWidth: () => void
+    gotoViewBoxUp: (step: number) => void
+    gotoViewBoxDown: (step: number) => void
+    gotoViewBoxLeft: (step: number) => void
+    gotoViewBoxRight: (step: number) => void
     resetViewBox: (pattern: IPatternGrid) => void
     onChageViewBoxWidth: (width: number) => void
     onChageViewBoxHeight: (height: number) => void
@@ -104,7 +100,14 @@ const createPatternSlice: StateCreator<
     setMirrorVertical: (s: boolean) => set((state) => ({mirrorVertical: s})),
     mirrorHorizontal: false,
     setMirrorHorizontal: (s: boolean) => set((state) => ({mirrorHorizontal: s})),
-    savePattern: (pattern: IPattern) => set((state) => ({ patternState: pattern })),
+    savePattern: (pattern: IPattern) => set((state) => {
+        console.log('here', get().viewBox, pattern.pattern.length, pattern.pattern[0].length);
+        
+        if (get().viewBox.row > pattern.pattern[0].length - get().viewBox.wx || get().viewBox.col > pattern.pattern.length - get().viewBox.wy) {
+            get().gotoViewBox(0, 0)
+        }
+        return { patternState: pattern }
+    }),
     newPattern: () => set((state) => ({ patternState: initialPattern })),
     addColumn: (at: number) => {
         set((state) => ({
@@ -357,55 +360,53 @@ VieboxSlice
 > = (set, get) => ({
     viewBox: DEFAULT_VIEWBOX,
     setViewBox: (viewBox: TVIEWBOX_SIZE) => set((state) => ({viewBox: viewBox})),
-    gotoViewBox: (row: number, col: number) => set((state) => ({
-        viewBox: {
-            ...state.viewBox,
-            row: Math.max(0, Math.min(get().patternState.pattern.length - 1, Math.max(0, row))),
-            col: Math.max(0, Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col)))
+    gotoViewBox: (row: number, col: number) => set((state) => {
+        console.log('gotoViewBox', row, col);
+        
+        return {
+            viewBox: {
+                ...state.viewBox,
+                row: Math.max(0, Math.min(get().patternState.pattern.length - 1, Math.max(0, row))),
+                col: Math.max(0, Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col)))
+            }
         }
-    })
-    ),
-    gotoViewBoxUp: (step?: number) => set((state) => ({
-        viewBox: { ...state.viewBox, row: Math.max(0, state.viewBox.row - (step || 1)) }
-    })),
-    gotoViewBoxDown: (step?: number) => set((state) => ({
-        viewBox: { ...state.viewBox, row: Math.max(0, Math.min(get().patternState.pattern.length - state.viewBox.wy, state.viewBox.row + (step || 1))) }
-    })),
-    gotoViewBoxLeft: (step?: number) => set((state) => ({
-        viewBox: { ...state.viewBox, col: Math.max(0, state.viewBox.col - (step || 1)) }
-    })),
-    gotoViewBoxRight: (step?: number) => set((state) => ({
-        viewBox: { ...state.viewBox, col: Math.max(0, Math.min(get().patternState.pattern[0].length - state.viewBox.wx, state.viewBox.col + (step || 1))) }
-    })),
-    onGrowViewBoxHeight: () => set((state) => ({
-        viewBox: { ...state.viewBox, wy: Math.min(get().patternState.pattern.length, state.viewBox.wy + 1) }
-    })),
-    onShrinkViewBoxHeight: () => set((state) => ({
-        viewBox: { ...state.viewBox, wy: Math.max(VIEWBOX_MIN_SIZE, state.viewBox.wy - 1) }
-    })),
-    onGrowViewBoxWidth: () => set((state) => ({
-        viewBox: { ...state.viewBox, wx: Math.min(get().patternState.pattern[0].length, state.viewBox.wx + 1) }
-    })),
-    onShrinkViewBoxWidth: () => set((state) => ({
-        viewBox: { ...state.viewBox, wx: Math.max(VIEWBOX_MIN_SIZE, state.viewBox.wx - 1) }
-    })),
-    resetViewBox: (pattern: IPatternGrid) => set((state) => ({
+    }),
+    gotoViewBoxUp: (step: number) => set((state) => {
+        let newRow = Math.max(0, state.viewBox.row - step)
+        return {viewBox: { ...state.viewBox, row: newRow } }
+    }),
+    gotoViewBoxDown: (step: number) => set((state) => {
+        let newRow = state.viewBox.row + step
+        let min = Math.max(0, get().patternState.pattern.length - state.viewBox.wy)
+        newRow = Math.min(min, newRow)
+        
+        return { viewBox: { ...state.viewBox, row: newRow }}
+    }),
+    gotoViewBoxLeft: (step: number) => set((state) => {
+        let newCol = Math.max(0, state.viewBox.col - step)
+        return { viewBox: { ...state.viewBox, col: newCol } }
+    }),
+    gotoViewBoxRight: (step: number) => set((state) => {
+        let newCol = state.viewBox.col + step
+        let min = Math.max(0, get().patternState.pattern[0].length - state.viewBox.wx)
+        newCol = Math.min(min, newCol)
+        return { viewBox: { ...state.viewBox, col: newCol }}
+    }),
+    resetViewBox: () => set((state) => ({
         viewBox: {
             ...state.viewBox,
             row: 0,
             col: 0,
-            wx: Math.min(DEFAULT_VIEWBOX.wx, pattern[0].length),
-            wy: Math.min(DEFAULT_VIEWBOX.wy, pattern.length),
-            patternWidth: pattern[0].length,
-            patternHeight: pattern.length
         }
     })),
-    onChageViewBoxWidth: (width: number) => set((state) => ({
+    onChageViewBoxWidth: (width: number) => set((state) => {
+        return {
         viewBox: { ...state.viewBox, wx: Math.max(VIEWBOX_MIN_SIZE, width) }
-    })),
-    onChageViewBoxHeight: (height: number) => set((state) => ({
+    }}),
+    onChageViewBoxHeight: (height: number) => set((state) => {
+        return {
         viewBox: { ...state.viewBox, wy: Math.max(VIEWBOX_MIN_SIZE, height) }
-    })),
+    }}),
 
 })
 

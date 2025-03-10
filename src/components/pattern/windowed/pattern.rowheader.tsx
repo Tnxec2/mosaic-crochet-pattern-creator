@@ -8,14 +8,14 @@ type PROPS = {
     pos: TVIEWBOX_SIZE
 }
 
-export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos, pos }) => {
+export const PatternRowHeaderWindowedComponent: FC<PROPS> = ({ setDropDownPos, pos }) => {
     const patternState = useStore((state) => state.patternState)
 
     return (
         <div className="r">
             <div className="cell empty rownumber">&nbsp;</div>
             {patternState.pattern[0]
-            .filter((_, colIndex) => !pos || (colIndex >= pos.col && colIndex <= pos.col + pos.wx))
+            .filter((_, colIndex) => !pos || (colIndex >= pos.col && colIndex < pos.col + pos.wx))
             .map((col, colIndex) => (
                 <div
                     key={`rowend-${colIndex}`}
