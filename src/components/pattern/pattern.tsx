@@ -24,7 +24,7 @@ export const PatternComponent: FC = () => {
         fillRow,
         fillRight,
         fillLeft,
-    } = useStore((state) => state)
+    } = useStore()
 
 
     const [dropDownPos, setDropDownPos] = useState<TDropDownPos>({

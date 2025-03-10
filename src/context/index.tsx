@@ -100,9 +100,7 @@ const createPatternSlice: StateCreator<
     setMirrorVertical: (s: boolean) => set((state) => ({mirrorVertical: s})),
     mirrorHorizontal: false,
     setMirrorHorizontal: (s: boolean) => set((state) => ({mirrorHorizontal: s})),
-    savePattern: (pattern: IPattern) => set((state) => {
-        console.log('here', get().viewBox, pattern.pattern.length, pattern.pattern[0].length);
-        
+    savePattern: (pattern: IPattern) => set((state) => {        
         if (get().viewBox.row > pattern.pattern[0].length - get().viewBox.wx || get().viewBox.col > pattern.pattern.length - get().viewBox.wy) {
             get().gotoViewBox(0, 0)
         }
@@ -136,7 +134,7 @@ const createPatternSlice: StateCreator<
                 ...state.patternState, pattern: [
                     ...state.patternState.pattern.slice(0, atRow + 1),
                     newRow,
-                    ...get().patternState.pattern.slice(atRow + 1)
+                    ...state.patternState.pattern.slice(atRow + 1)
                 ]
             }
         }))
@@ -162,7 +160,7 @@ const createPatternSlice: StateCreator<
         }
     })),
     deleteColumn: (col: number) => {
-        if (!window.confirm(`Do you really want to delete whole column ${col}?`)) return
+        if (!window.confirm(`Do you really want to delete whole column ${get().patternState.pattern[0].length - col }?`)) return
         set((state) => ({
             patternState: {
                 ...state.patternState,
@@ -173,7 +171,7 @@ const createPatternSlice: StateCreator<
         }))
     },
     deleteRow: (row: number) => {
-        if (!window.confirm(`Do you really want to delete whole row ${row}?`)) return
+        if (!window.confirm(`Do you really want to delete whole row ${get().patternState.pattern.length - row}?`)) return
         set((state) => ({
             patternState: {
                 ...state.patternState,

@@ -167,23 +167,23 @@ export const PatternWindowedComponent: FC = () => {
             y={dropDownPos.y}
             onclose={(e) => closeDropDown(e)}
             menu={[
-                { name: `Column ${patternState.pattern[0].length - dropDownPos.col}` },
+                { name: `Column ${patternState.pattern[0].length - dropDownPos.col - viewBox.col}` },
                 MenuItemDivider,
                 {
                     name: '➕ add col',
                     onClick: () =>
-                        addColumn(dropDownPos.col)
+                        addColumn(dropDownPos.col+viewBox.col)
                 },
                 {
                     name: '❌ delete col',
                     onClick: () =>
-                        deleteColumn(dropDownPos.col)
+                        deleteColumn(dropDownPos.col+viewBox.col)
                 },
                 MenuItemDivider,
                 {
                     name: 'col fill',
                     onClick: () =>
-                        fillColumn(dropDownPos.col),
+                        fillColumn(dropDownPos.col+viewBox.col),
                     action: patternState.selectedAction,
                     color: patternState
                         .colors[
