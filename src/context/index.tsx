@@ -10,7 +10,7 @@ import {
 } from '../model/constats'
 
 import { actionToCellType, CELL_TYPE, TVIEWBOX_SIZE } from '../model/patterntype.enum'
-import { getNewCell } from '../components/pattern/getNetCell'
+import { getNewCell } from '../components/pattern/getnewcell'
 
 import { create, StateCreator } from 'zustand'
 import { persist, createJSONStorage, devtools } from 'zustand/middleware'
