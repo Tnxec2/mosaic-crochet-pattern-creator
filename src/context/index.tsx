@@ -9,7 +9,7 @@ import {
     VIEWBOX_MIN_SIZE
 } from '../model/constats'
 
-import { actionToCellType, CELL_TYPE, TVIEWBOX_SIZE } from '../model/patterntype.enum'
+import { actionToCellType, CELL_TYPE, TCellCoords, TVIEWBOX_SIZE } from '../model/patterntype.enum'
 import { getNewCell } from '../components/pattern/getnewcell'
 
 import { create, StateCreator } from 'zustand'
@@ -78,6 +78,39 @@ interface VieboxSlice {
     onChageViewBoxHeight: (height: number) => void
 }
 
+interface CopyBufferSlice {
+    bufferdata: IPatternGrid
+    copy: (data: IPatternGrid) => void
+    start: TCellCoords
+    end: TCellCoords
+    setStart: (coords: TCellCoords) => void
+    setEnd: (coords: TCellCoords) => void
+    
+}
+
+const createCopyBufferSlice: StateCreator<
+    CopyBufferSlice & PatternSlice & VieboxSlice,
+    [],
+    [],
+    CopyBufferSlice
+> = (set, get) => ({
+    bufferdata: [],
+    copy: (data: IPatternGrid) => set((state) => ({bufferdata: data})),
+    start: {row: 0, col: 0},
+    end: {row: 0, col: 0},
+    setStart: (coords: TCellCoords) => set((state) => ({start: coords})),
+    setEnd: (coords: TCellCoords) => set((state) => {
+        if (coords.row <= state.start.row || coords.col <= state.start.col) {
+            window.alert('End coordinates should be right and bottom from start')
+            return {...state}
+        } else {
+            let data =  get().patternState.pattern
+                .filter((r, row) => row >= state.start.row && row <= coords.row)
+                .filter((c, col) => col >= state.start.col && col <= coords.col )
+            return {...state, end: coords, bufferdata: data}
+        }
+    })
+})
 
 const createPatternSlice: StateCreator<
     PatternSlice & VieboxSlice,
@@ -438,11 +471,12 @@ const fillRowRight = (r: IPatternCell[], row: number, col: number, selectedActio
 }
 
 
-export const useStore = create<PatternSlice & VieboxSlice>()(
+export const useStore = create<PatternSlice & VieboxSlice & CopyBufferSlice>()(
     persist(
         devtools((...a) => ({
     ...createPatternSlice(...a),
     ...createViewBoxSlice(...a),
+    ...createCopyBufferSlice(...a),
   })), {
     name: KEY_STORAGE_ZUSTAND,
     storage: createJSONStorage(() => localStorage),

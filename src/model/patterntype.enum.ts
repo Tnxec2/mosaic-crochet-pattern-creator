@@ -48,3 +48,8 @@ export type TVIEWBOX_SIZE = {
     wx: number,
     wy: number,
 }
+
+export type TCellCoords = {
+    row: number
+    col: number
+}

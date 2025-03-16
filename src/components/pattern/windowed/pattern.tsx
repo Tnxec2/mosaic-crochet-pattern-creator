@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useCallback, useMemo, useState, WheelEvent } from 'react'
+import { FC, MouseEvent, ReactEventHandler, useCallback, useMemo, useState, WheelEvent } from 'react'
 
 import { Card } from 'react-bootstrap'
 import '../pattern.css'
@@ -32,13 +32,15 @@ export const PatternWindowedComponent: FC = () => {
         gotoViewBoxDown,
         gotoViewBoxLeft,
         gotoViewBoxRight,
+        bufferdata,
+        setStart,
+        setEnd,
     } = useStore()
 
-    const handleOnWheel = useCallback((e: WheelEvent<HTMLDivElement>) => {
-        e.stopPropagation()
+    const handleOnWheel = useCallback((ev: globalThis.WheelEvent) => {
+        ev.preventDefault();        
 
-        const { deltaY, shiftKey } = e
-
+        const { deltaY, shiftKey } = ev
         
         if (shiftKey) {
             if (deltaY > 0) {
@@ -54,6 +56,17 @@ export const PatternWindowedComponent: FC = () => {
             }
         }
     }, [gotoViewBoxDown, gotoViewBoxLeft, gotoViewBoxRight, gotoViewBoxUp])
+
+    const divRefCallback = useCallback(
+        (node: HTMLDivElement) => {
+          console.log(node);
+          if (node == null) {
+            return;
+          }
+          node.addEventListener('wheel', handleOnWheel, { passive: false });
+        },
+        [handleOnWheel],
+      );
 
     const [dropDownPos, setDropDownPos] = useState<TDropDownPos>({
         row: 0,
@@ -224,7 +237,7 @@ export const PatternWindowedComponent: FC = () => {
                         }}>
                             <HoldButton className='btn-outline-secondary me-1' onFire={() => gotoViewBoxLeft(1)}>◀️</HoldButton>
 
-                            <div onWheel={handleOnWheel} style={{ overflow: 'auto', overscrollBehavior: 'contain' }}>
+                            <div ref={divRefCallback}>
                                 <PatternRowHeaderWindowedComponent setDropDownPos={setDropDownPos} pos={viewBox} />
                                 {patternState.pattern
                                     .filter((_, rowIndex) => rowIndex >= viewBox.row && rowIndex < viewBox.row + viewBox.wy)
