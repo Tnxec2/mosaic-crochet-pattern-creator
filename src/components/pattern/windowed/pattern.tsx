@@ -1,8 +1,7 @@
-import { FC, MouseEvent, ReactEventHandler, useCallback, useMemo, useState, WheelEvent } from 'react'
+import { FC, MouseEvent, useCallback, useMemo, useState } from 'react'
 
 import { Card } from 'react-bootstrap'
 import '../pattern.css'
-import { ACTION_TYPES } from '../../../model/actiontype.enum'
 import { DropDown, MenuItemDivider } from '../dropdown'
 import { PatternHeaderComponent } from '../pattern.header'
 import { PatternRowHeaderWindowedComponent } from './pattern.rowheader'
@@ -11,6 +10,11 @@ import { HoldButton } from './holdbutton'
 import { useStore } from '../../../context'
 import { TDropDownPos } from '../../../model/patterntype.enum'
 import { ViewBoxSizeComponent } from './viewbox.size'
+import { BufferRowComponent } from '../buffer.row'
+import { OutlineContentPasteGo } from '../../../icons/paste'
+import { EyeInvisibleFilled } from '../../../icons/eyeinvisible'
+import { EyeFilled } from '../../../icons/eye'
+import { TwotoneContentPasteGo } from '../../../icons/paste.filled'
 
 
 const SCROLL_STEP = 5;
@@ -32,7 +36,10 @@ export const PatternWindowedComponent: FC = () => {
         gotoViewBoxDown,
         gotoViewBoxLeft,
         gotoViewBoxRight,
+        showBufferData,
+        toggleShowBufferData,
         bufferdata,
+        paste,
         setStart,
         setEnd,
     } = useStore()
@@ -59,7 +66,6 @@ export const PatternWindowedComponent: FC = () => {
 
     const divRefCallback = useCallback(
         (node: HTMLDivElement) => {
-          console.log(node);
           if (node == null) {
             return;
           }
@@ -112,31 +118,30 @@ export const PatternWindowedComponent: FC = () => {
                     color: patternState.colors[patternState.selectedColorIndex],
                 },
                 MenuItemDivider,
-                { name: 'change action' },
-                ...(Object.values(ACTION_TYPES)
-                    .filter(action => action !== patternState.selectedAction)
-                    .map((value) => {
-                        return {
-                            name: value,
-                            action: value,
-                            color: patternState.colors[patternState.selectedColorIndex],
-                            onClick: () => savePattern({ ...patternState, selectedAction: value })
-                        }
-                    })),
-                MenuItemDivider,
-                { name: 'change color' },
-                ...(patternState.colors
-                    .filter((color, index) => index !== patternState.selectedColorIndex)
-                    .map((color) => {
-                        let colorIndex = patternState.colors.indexOf(color)
-                        return {
-                            name: `Color ${colorIndex + 1}`,
-                            action: ACTION_TYPES.COLOR,
-                            color: color,
-                            onClick: () => savePattern({ ...patternState, selectedColorIndex: colorIndex })
-                        }
-                    })
-                ),
+                {
+                    name: 'start copy',
+                    onClick: () => 
+                        setStart(dropDownPosPatternCell),
+                },
+                {
+                    name: 'end copy',
+                    onClick: () => 
+                        setEnd(dropDownPosPatternCell),
+                },
+                {
+                    name: <><OutlineContentPasteGo/> paste</>,
+                    onClick: () => 
+                        paste(dropDownPosPatternCell),
+                },
+                {
+                    name: <><TwotoneContentPasteGo/> paste with color</>,
+                    onClick: () => 
+                        paste(dropDownPosPatternCell, true),
+                },
+                {
+                    name: showBufferData ? <><EyeInvisibleFilled/> hidde buffer preview</> : <><EyeFilled/> show buffer preview</>,
+                    onClick: () => toggleShowBufferData(),
+                }
 
             ]}
         />, [dropDownPosPatternCell.col, dropDownPosPatternCell.row, dropDownPosPatternCell.x, dropDownPosPatternCell.y, fillLeft, fillRight, patternState, savePattern])
@@ -258,6 +263,33 @@ export const PatternWindowedComponent: FC = () => {
                         </div>
                         <HoldButton className='btn-outline-secondary mt-1' onFire={() => gotoViewBoxDown(1)}>🔽</HoldButton>
                     </div>
+
+                    { showBufferData && <div
+                        className="noselect mt-3"
+                        id="copyBuffer"
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}
+                    >
+                        <h6>Copy Buffer</h6>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            overflow: 'auto'
+                        }}>
+                            <div>
+                                {bufferdata
+                                    .map((row, rowIndex) => (
+                                        <BufferRowComponent
+                                            key={`bufferRow-${rowIndex}`}
+                                            row={row}
+                                            rowIndex={rowIndex }
+                                        />
+                                    ))}
+                            </div>
+                        </div>
+                    </div> }
                 </Card.Body>
             </Card>
         </>

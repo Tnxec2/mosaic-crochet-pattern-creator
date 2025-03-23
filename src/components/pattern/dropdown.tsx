@@ -1,10 +1,10 @@
-import { FC, MouseEvent } from 'react'
+import React, { FC, MouseEvent, ReactNode } from 'react'
 import './dropdown.css'
 import { useOutsideClick } from '../../effects/useclickoutside'
 import { ACTION_TYPES } from '../../model/actiontype.enum'
 
 type MenuItem = {
-    name?: string
+    name?: ReactNode
     action?: ACTION_TYPES
     color?: string
     divider?: boolean

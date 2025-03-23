@@ -9,6 +9,11 @@ import { PatternRowHeaderComponent } from './pattern.rowheader'
 import { PatternRowComponent } from './pattern.row'
 import { useStore } from '../../context'
 import { TDropDownPos } from '../../model/patterntype.enum'
+import { BufferRowComponent } from './buffer.row'
+import { OutlineContentPasteGo } from '../../icons/paste'
+import { TwotoneContentPasteGo } from '../../icons/paste.filled'
+import { EyeInvisibleFilled } from '../../icons/eyeinvisible'
+import { EyeFilled } from '../../icons/eye'
 
 
 
@@ -24,6 +29,12 @@ export const PatternComponent: FC = () => {
         fillRow,
         fillRight,
         fillLeft,
+        showBufferData,
+        toggleShowBufferData,
+        bufferdata,
+        paste,
+        setStart,
+        setEnd,
     } = useStore()
 
 
@@ -97,6 +108,31 @@ export const PatternComponent: FC = () => {
                     } )
                 ),
             
+                MenuItemDivider,
+                {
+                    name: 'start copy',
+                    onClick: () => 
+                        setStart(dropDownPosPatternCell),
+                },
+                {
+                    name: 'end copy',
+                    onClick: () => 
+                        setEnd(dropDownPosPatternCell),
+                },
+                {
+                    name: <><OutlineContentPasteGo/> paste</>,
+                    onClick: () => 
+                        paste(dropDownPosPatternCell),
+                },
+                {
+                    name: <><TwotoneContentPasteGo/> paste with color</>,
+                    onClick: () => 
+                        paste(dropDownPosPatternCell, true),
+                },
+                {
+                    name: showBufferData ? <><EyeInvisibleFilled/> hidde buffer preview</> : <><EyeFilled/> show buffer preview</>,
+                    onClick: () => toggleShowBufferData(),
+                }
             ]}
         />, [dropDownPosPatternCell.col, dropDownPosPatternCell.row, dropDownPosPatternCell.x, dropDownPosPatternCell.y, fillLeft, fillRight, patternState, savePattern])
 
@@ -196,6 +232,34 @@ export const PatternComponent: FC = () => {
                         ))}
                         <PatternRowHeaderComponent setDropDownPos={setDropDownPos} />
                     </div>
+
+
+                    { showBufferData && <div
+                        className="noselect mt-3"
+                        id="copyBuffer"
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}
+                    >
+                        <h6>Copy Buffer</h6>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            overflow: 'auto'
+                        }}>
+                            <div>
+                                {bufferdata
+                                    .map((row, rowIndex) => (
+                                        <BufferRowComponent
+                                            key={`bufferRow-${rowIndex}`}
+                                            row={row}
+                                            rowIndex={rowIndex }
+                                        />
+                                    ))}
+                            </div>
+                        </div>
+                    </div> }
                 </Card.Body>
             </Card>
         </>

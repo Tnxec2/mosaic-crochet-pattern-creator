@@ -21,8 +21,6 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
     let metrics = ctx.measureText(max.toString());
     let cellSize = metrics.width + 4
 
-    console.log(max, cellSize);
-
     let w = cellSize * (cols + 2)
     let h = cellSize * (rows + 2)
 

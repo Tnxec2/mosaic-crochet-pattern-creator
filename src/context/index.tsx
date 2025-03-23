@@ -80,12 +80,13 @@ interface VieboxSlice {
 
 interface CopyBufferSlice {
     bufferdata: IPatternGrid
-    copy: (data: IPatternGrid) => void
-    start: TCellCoords
-    end: TCellCoords
+    paste: (coords: TCellCoords, full?: boolean) => void
+    startCopy: TCellCoords
+    endCopy: TCellCoords
     setStart: (coords: TCellCoords) => void
     setEnd: (coords: TCellCoords) => void
-    
+    showBufferData: boolean,
+    toggleShowBufferData: () => void
 }
 
 const createCopyBufferSlice: StateCreator<
@@ -95,22 +96,37 @@ const createCopyBufferSlice: StateCreator<
     CopyBufferSlice
 > = (set, get) => ({
     bufferdata: [],
-    copy: (data: IPatternGrid) => set((state) => ({bufferdata: data})),
-    start: {row: 0, col: 0},
-    end: {row: 0, col: 0},
-    setStart: (coords: TCellCoords) => set((state) => ({start: coords})),
-    setEnd: (coords: TCellCoords) => set((state) => {
-        if (coords.row <= state.start.row || coords.col <= state.start.col) {
-            window.alert('End coordinates should be right and bottom from start')
-            return {...state}
-        } else {
-            let data =  get().patternState.pattern
-                .filter((r, row) => row >= state.start.row && row <= coords.row)
-                .filter((c, col) => col >= state.start.col && col <= coords.col )
-            return {...state, end: coords, bufferdata: data}
+    paste: (coords: TCellCoords, full?: boolean) => {
+        if (get().bufferdata.length > 0) {
+            const newPat = [...get().patternState.pattern]
+            const bufferWidth = get().bufferdata[0].length
+            const bufferHeight = get().bufferdata.length
+            for (let row = 0; row < bufferHeight; row++) {
+                for (let col = 0; col < bufferWidth; col++) {
+                    if (full) newPat[coords.row + row][coords.col + col] = get().bufferdata[row][col]
+                    else newPat[coords.row + row][coords.col + col].type = get().bufferdata[row][col].type
+                }
+            }
+            get().savePattern({...get().patternState, pattern: newPat})
         }
-    })
+    },
+    startCopy: {row: 0, col: 0},
+    endCopy: {row: 0, col: 0},
+    setStart: (coords: TCellCoords) => set((state) => ({startCopy: coords})),
+    setEnd: (coords: TCellCoords) =>  {        
+        let data =  get().patternState.pattern.filter((r, rowIndex) => between(rowIndex, get().startCopy.row, coords.row)
+        ).map((r) => r.filter((c, colIndex) => between(colIndex, get().startCopy.col, coords.col )))
+        set((state) => ({...state, endCopy: coords, bufferdata: data}))
+    },
+    showBufferData: false,
+    toggleShowBufferData: () => set((state) => ({showBufferData: !state.showBufferData}))
+
 })
+
+function between(value: number,first: number,last: number) {
+    let lower = Math.min(first,last) , upper = Math.max(first,last);
+    return value >= lower &&  value <= upper ;
+}
 
 const createPatternSlice: StateCreator<
     PatternSlice & VieboxSlice,
@@ -133,12 +149,12 @@ const createPatternSlice: StateCreator<
     setMirrorVertical: (s: boolean) => set((state) => ({mirrorVertical: s})),
     mirrorHorizontal: false,
     setMirrorHorizontal: (s: boolean) => set((state) => ({mirrorHorizontal: s})),
-    savePattern: (pattern: IPattern) => set((state) => {        
-        if (get().viewBox.row > pattern.pattern[0].length - get().viewBox.wx || get().viewBox.col > pattern.pattern.length - get().viewBox.wy) {
+    savePattern: (pattern: IPattern) =>  {        
+        if (get().viewBox.row > pattern.pattern[0].length || get().viewBox.col > pattern.pattern.length) {
             get().gotoViewBox(0, 0)
         }
-        return { patternState: pattern }
-    }),
+        set((state) => ({ patternState: pattern }))
+    },
     newPattern: () => set((state) => ({ patternState: initialPattern })),
     addColumn: (at: number) => {
         set((state) => ({
@@ -391,9 +407,7 @@ VieboxSlice
 > = (set, get) => ({
     viewBox: DEFAULT_VIEWBOX,
     setViewBox: (viewBox: TVIEWBOX_SIZE) => set((state) => ({viewBox: viewBox})),
-    gotoViewBox: (row: number, col: number) => set((state) => {
-        console.log('gotoViewBox', row, col);
-        
+    gotoViewBox: (row: number, col: number) => set((state) => {        
         return {
             viewBox: {
                 ...state.viewBox,
