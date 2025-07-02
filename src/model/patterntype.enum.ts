@@ -11,6 +11,10 @@ export enum CELL_TYPE {
     LXR = 'lxr'
 }
 
+export const hasX = (type: CELL_TYPE): boolean => {
+    return type === CELL_TYPE.X || type === CELL_TYPE.LX || type === CELL_TYPE.XR || type === CELL_TYPE.LXR;
+}
+
 export function actionToCellType(action: ACTION_TYPES, type: CELL_TYPE): CELL_TYPE {
     switch (action) {
         case ACTION_TYPES.NONE:
