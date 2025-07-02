@@ -31,7 +31,7 @@ export const PatterCellComponent: FC<propTypes> = ({
             className="cell"
             onClick={onClick}
             onMouseOver={onMouseOver}
-            title={`${cell.type.toUpperCase()} (${col}:${row}) ${hasError ? 'ERROR' : ''}`}
+            title={`${cell.type.toUpperCase()} (${col}:${row}) ${hasError ? ' ERROR' : ''}`}
             style={{
                 backgroundColor: hasError ? 'black' : color,
                 border: hasError ? '1px solid red' : '',
