@@ -9,7 +9,7 @@ export const PatternSizeComponent: FC<Props> = () => {
 
     const { patternState, savePattern } = useStore()
 
-    const [showContent, setShowContent] = useState(true)
+    const [showContent, setShowContent] = useState(false)
 
     const [ rowsString, setRowsString ] = useState(patternState.pattern.length.toString())
     const [ colsString, setColsString ] = useState(patternState.pattern[0].length.toString())
