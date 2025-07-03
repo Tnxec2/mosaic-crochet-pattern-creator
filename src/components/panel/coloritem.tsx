@@ -33,6 +33,7 @@ const [value, debouncedValue, setValue] = useStateDebounced(color, 1000);
       className="btn btn-outline-success btn-sm"
       onClick={(e) => setSelectedColor(colorIndex)}
       disabled={selected}
+      title={`set as selected color [${colorIndex+1}]`}
   >
       {selected
           ? '✔'
