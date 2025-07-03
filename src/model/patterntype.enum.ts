@@ -44,6 +44,7 @@ export type TDropDownPos = {
     x: number
     y: number
     opened: boolean
+    viewBoxNumber?: number
 }
 
 export type TVIEWBOX_SIZE = {

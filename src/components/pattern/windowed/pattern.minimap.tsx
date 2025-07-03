@@ -13,8 +13,10 @@ export const PatternMinimapComponent: FC = () => {
     const {
         patternState,
         viewBox,
+        viewBox2,
         gotoViewBox,
-        isPatternWindowed
+        isPatternWindowed,
+        splittedViewBox
     } = useStore((state) => state)
 
     const [drawState, debouncedDrawState, setDrawState] = useStateDebounced<string[][]>([], 1000)
@@ -81,11 +83,26 @@ export const PatternMinimapComponent: FC = () => {
                 ctx.strokeStyle = MINMAP_FRAME
                 ctx.lineWidth = 2
                 ctx.clearRect(0, 0, canvas.width, canvas.height)
-                ctx.strokeRect(viewBox.col*scaleFactor, viewBox.row*scaleFactor, Math.min(mapWidth, viewBox.wx)*scaleFactor, Math.min(mapHeight, viewBox.wy*scaleFactor))
+                
+                ctx.strokeRect(
+                    viewBox.col*scaleFactor,
+                    viewBox.row*scaleFactor,
+                    Math.min(mapWidth, viewBox.wx)*scaleFactor,
+                    Math.min(mapHeight, viewBox.wy*scaleFactor)
+                )
+
+                if (splittedViewBox) {
+                    ctx.strokeStyle = '#00FF00'
+                    ctx.strokeRect(
+                        viewBox2.col*scaleFactor, 
+                        viewBox2.row*scaleFactor, 
+                        Math.min(mapWidth, viewBox2.wx)*scaleFactor, 
+                        Math.min(mapHeight, viewBox2.wy*scaleFactor))
+                }
             }
         }
         
-    }, [viewBox, minimapCanvasRef])
+    }, [viewBox, viewBox2, splittedViewBox, minimapCanvasRef])
 
 
     const handleClick = (e: MouseEvent<HTMLElement>, ref: HTMLCanvasElement) => {
@@ -95,20 +112,32 @@ export const PatternMinimapComponent: FC = () => {
             const rect = ref.getBoundingClientRect()
             const xFactor = rect.width / (e.clientX - rect.x)
             const yFactor = rect.height / (e.clientY - rect.y)
-
-            var row = Math.floor(patternState.pattern.length / yFactor - viewBox.wy / 2)
-            var col = Math.floor(patternState.pattern[0].length / xFactor - viewBox.wx / 2)
-
-            if (patternState.pattern.length - row < viewBox.wy ) row = patternState.pattern.length - viewBox.wy - 1
-            if (patternState.pattern[0].length - col < viewBox.wx ) col = patternState.pattern[0].length - viewBox.wx - 1
+            console.log(e.getModifierState('Control'));
             
-            gotoViewBox(row, col);
+            if (splittedViewBox && e.getModifierState('Control')) {
+                var row2 = Math.floor(patternState.pattern.length / yFactor - viewBox2.wy / 2)
+                var col2 = Math.floor(patternState.pattern[0].length / xFactor - viewBox2.wx / 2)
+
+                if (patternState.pattern.length - row2 < viewBox2.wy ) row2 = patternState.pattern.length - viewBox2.wy - 1
+                if (patternState.pattern[0].length - col2 < viewBox2.wx ) col2 = patternState.pattern[0].length - viewBox2.wx - 1
+                
+                gotoViewBox(row2, col2, 2);
+            } else {
+                var row = Math.floor(patternState.pattern.length / yFactor - viewBox.wy / 2)
+                var col = Math.floor(patternState.pattern[0].length / xFactor - viewBox.wx / 2)
+
+                if (patternState.pattern.length - row < viewBox.wy ) row = patternState.pattern.length - viewBox.wy - 1
+                if (patternState.pattern[0].length - col < viewBox.wx ) col = patternState.pattern[0].length - viewBox.wx - 1
+                
+                gotoViewBox(row, col);
+            }
         }
     }
         
     return <div className="minimap-container">
         <div style={{display: 'flex'}}>
         <Form.Label style={{flex: 1}}>Minimap</Form.Label>
+        
         { isPatternWindowed && <div className="form-check form-check-inline form-switch m-0">
             <input
                 className="form-check-input"
@@ -130,12 +159,14 @@ export const PatternMinimapComponent: FC = () => {
                 onClick={handleClick}
             /> 
             {showFrame && isPatternWindowed &&
-            <Canvas
-                id="canvasMinimapFrame"
-                draw={drawFrame}
-                className="canvas-minimap-frame"
-                onClick={handleClick}
-            /> }
+                <Canvas
+                    id="canvasMinimapFrame"
+                    draw={drawFrame}
+                    className="canvas-minimap-frame"
+                    onClick={handleClick}
+                    title={splittedViewBox ? 'click to move first frame, to move second frame press control taste and click' : 'click to move the frame'}
+                /> 
+            }
         </div>
     
     </div>

@@ -67,15 +67,18 @@ interface PatternSlice {
 
 interface VieboxSlice {
     viewBox: TVIEWBOX_SIZE
-    setViewBox: (viewBox: TVIEWBOX_SIZE) => void
-    gotoViewBox: (row: number, col: number) => void
-    gotoViewBoxUp: (step: number) => void
-    gotoViewBoxDown: (step: number) => void
-    gotoViewBoxLeft: (step: number) => void
-    gotoViewBoxRight: (step: number) => void
-    resetViewBox: (pattern: IPatternGrid) => void
-    onChageViewBoxWidth: (width: number) => void
-    onChageViewBoxHeight: (height: number) => void
+    viewBox2: TVIEWBOX_SIZE
+    splittedViewBox: boolean
+    toggleSplittedViewBox: () => void
+    setViewBox: (viewBox: TVIEWBOX_SIZE, viewBoxNumber?: number) => void
+    gotoViewBox: (row: number, col: number, viewBoxNumber?: number) => void
+    gotoViewBoxUp: (step: number, viewBoxNumber?: number) => void
+    gotoViewBoxDown: (step: number, viewBoxNumber?: number) => void
+    gotoViewBoxLeft: (step: number, viewBoxNumber?: number) => void
+    gotoViewBoxRight: (step: number, viewBoxNumber?: number) => void
+    resetViewBox: (pattern: IPatternGrid, viewBoxNumber?: number) => void
+    onChageViewBoxWidth: (width: number, viewBoxNumber?: number) => void
+    onChageViewBoxHeight: (height: number, viewBoxNumber?: number) => void
 }
 
 interface CopyBufferSlice {
@@ -107,25 +110,25 @@ const createCopyBufferSlice: StateCreator<
                     else newPat[coords.row + row][coords.col + col].type = get().bufferdata[row][col].type
                 }
             }
-            get().savePattern({...get().patternState, pattern: newPat})
+            get().savePattern({ ...get().patternState, pattern: newPat })
         }
     },
-    startCopy: {row: 0, col: 0},
-    endCopy: {row: 0, col: 0},
-    setStart: (coords: TCellCoords) => set((state) => ({startCopy: coords})),
-    setEnd: (coords: TCellCoords) =>  {        
-        let data =  get().patternState.pattern.filter((r, rowIndex) => between(rowIndex, get().startCopy.row, coords.row)
-        ).map((r) => r.filter((c, colIndex) => between(colIndex, get().startCopy.col, coords.col )))
-        set((state) => ({...state, endCopy: coords, bufferdata: data}))
+    startCopy: { row: 0, col: 0 },
+    endCopy: { row: 0, col: 0 },
+    setStart: (coords: TCellCoords) => set((state) => ({ startCopy: coords })),
+    setEnd: (coords: TCellCoords) => {
+        let data = get().patternState.pattern.filter((r, rowIndex) => between(rowIndex, get().startCopy.row, coords.row)
+        ).map((r) => r.filter((c, colIndex) => between(colIndex, get().startCopy.col, coords.col)))
+        set((state) => ({ ...state, endCopy: coords, bufferdata: data }))
     },
     showBufferData: false,
-    toggleShowBufferData: () => set((state) => ({showBufferData: !state.showBufferData}))
+    toggleShowBufferData: () => set((state) => ({ showBufferData: !state.showBufferData }))
 
 })
 
-function between(value: number,first: number,last: number) {
-    let lower = Math.min(first,last) , upper = Math.max(first,last);
-    return value >= lower &&  value <= upper ;
+function between(value: number, first: number, last: number) {
+    let lower = Math.min(first, last), upper = Math.max(first, last);
+    return value >= lower && value <= upper;
 }
 
 const createPatternSlice: StateCreator<
@@ -135,40 +138,41 @@ const createPatternSlice: StateCreator<
     PatternSlice
 > = (set, get) => ({
     isPatternWindowed: true,
-    toggleIsPatternWindowed: () => set((state) => ({isPatternWindowed: !state.isPatternWindowed})),
+    toggleIsPatternWindowed: () => set((state) => ({ isPatternWindowed: !state.isPatternWindowed })),
     patternState: initialPattern,
     toggleStitch: true,
-    setToggleStitch: (s: boolean) => set((state) => ({toggleStitch: s})),
+    setToggleStitch: (s: boolean) => set((state) => ({ toggleStitch: s })),
     showOpenFileDialog: false,
-    setShowOpenFileDialog: (s: boolean) => set((state) => ({showOpenFileDialog: s})),
+    setShowOpenFileDialog: (s: boolean) => set((state) => ({ showOpenFileDialog: s })),
     showPreviewDialog: false,
-    setShowPreviewDialog: (s: boolean) => set((state) => ({showPreviewDialog: s})),
+    setShowPreviewDialog: (s: boolean) => set((state) => ({ showPreviewDialog: s })),
     showCellStitchType: true,
-    setShowCellStitchType: (s: boolean) => set((state) => ({showCellStitchType: s})),
+    setShowCellStitchType: (s: boolean) => set((state) => ({ showCellStitchType: s })),
     mirrorVertical: false,
-    setMirrorVertical: (s: boolean) => set((state) => ({mirrorVertical: s})),
+    setMirrorVertical: (s: boolean) => set((state) => ({ mirrorVertical: s })),
     mirrorHorizontal: false,
-    setMirrorHorizontal: (s: boolean) => set((state) => ({mirrorHorizontal: s})),
-    savePattern: (pattern: IPattern) =>  {        
+    setMirrorHorizontal: (s: boolean) => set((state) => ({ mirrorHorizontal: s })),
+    savePattern: (pattern: IPattern) => {
         if (get().viewBox.row > pattern.pattern[0].length || get().viewBox.col > pattern.pattern.length) {
             get().gotoViewBox(0, 0)
+            get().gotoViewBox(0, 0, 2)
         }
         set((state) => ({ patternState: pattern }))
     },
     newPattern: () => set((state) => ({ patternState: initialPattern })),
     addColumn: (at: number) => {
         set((state) => ({
-        patternState: {
-            ...state.patternState, pattern: state.patternState.pattern.map((row) => [
-                ...row.slice(0, at + 1),
-                {
-                    colorindex: row[at].colorindex,
-                    type: CELL_TYPE.EMPTY
-                },
-                ...row.slice(at + 1)
-            ])
-        }
-    }))
+            patternState: {
+                ...state.patternState, pattern: state.patternState.pattern.map((row) => [
+                    ...row.slice(0, at + 1),
+                    {
+                        colorindex: row[at].colorindex,
+                        type: CELL_TYPE.EMPTY
+                    },
+                    ...row.slice(at + 1)
+                ])
+            }
+        }))
     },
     addRow: (atRow: number) => {
         let newRow: IPatternCell[] = []
@@ -209,7 +213,7 @@ const createPatternSlice: StateCreator<
         }
     })),
     deleteColumn: (col: number) => {
-        if (!window.confirm(`Do you really want to delete whole column ${get().patternState.pattern[0].length - col }?`)) return
+        if (!window.confirm(`Do you really want to delete whole column ${get().patternState.pattern[0].length - col}?`)) return
         set((state) => ({
             patternState: {
                 ...state.patternState,
@@ -400,62 +404,109 @@ const createPatternSlice: StateCreator<
 })
 
 const createViewBoxSlice: StateCreator<
-PatternSlice & VieboxSlice,
-[],
-[],
-VieboxSlice
+    PatternSlice & VieboxSlice,
+    [],
+    [],
+    VieboxSlice
 > = (set, get) => ({
     viewBox: DEFAULT_VIEWBOX,
-    setViewBox: (viewBox: TVIEWBOX_SIZE) => set((state) => ({viewBox: viewBox})),
-    gotoViewBox: (row: number, col: number) => set((state) => {        
-        return {
-            viewBox: {
-                ...state.viewBox,
-                row: Math.max(0, Math.min(get().patternState.pattern.length - 1, Math.max(0, row))),
-                col: Math.max(0, Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col)))
-            }
+    viewBox2: DEFAULT_VIEWBOX,
+    splittedViewBox: false,
+    toggleSplittedViewBox: () => set((state) => ({ splittedViewBox: !state.splittedViewBox })),
+    setViewBox: (viewBox: TVIEWBOX_SIZE, viewBoxNumber?: number) => set((state) => {
+        if (viewBoxNumber === 2) {
+            return { viewBox2: viewBox }
+        } else {
+            return { viewBox: viewBox }
         }
     }),
-    gotoViewBoxUp: (step: number) => set((state) => {
-        let newRow = Math.max(0, state.viewBox.row - step)
-        return {viewBox: { ...state.viewBox, row: newRow } }
+
+    gotoViewBox: (row: number, col: number, viewBoxNumber?: number) => set((state) => {
+        return viewBoxNumber === 2 ?
+            {
+                viewBox2: {
+                    ...state.viewBox,
+                    row: Math.max(0, Math.min(get().patternState.pattern.length - 1, Math.max(0, row))),
+                    col: Math.max(0, Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col)))
+                }
+            }
+            :
+            {
+                viewBox: {
+                    ...state.viewBox2,
+                    row: Math.max(0, Math.min(get().patternState.pattern.length - 1, Math.max(0, row))),
+                    col: Math.max(0, Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col)))
+                }
+            }
     }),
-    gotoViewBoxDown: (step: number) => set((state) => {
-        let newRow = state.viewBox.row + step
-        let min = Math.max(0, get().patternState.pattern.length - state.viewBox.wy)
+    gotoViewBoxUp: (step: number, viewBoxNumber?: number) => set((state) => {
+        let box = getViewBox(state, viewBoxNumber)
+        let newRow = Math.max(0, box.row - step)
+        return viewBoxNumber === 2 ?
+            { viewBox2: { ...box, row: newRow } }
+            : { viewBox: { ...box, row: newRow } }
+    }),
+    gotoViewBoxDown: (step: number, viewBoxNumber?: number) => set((state) => {
+        let box = getViewBox(state, viewBoxNumber)
+        let newRow = box.row + step
+        let min = Math.max(0, get().patternState.pattern.length - box.wy)
         newRow = Math.min(min, newRow)
-        
-        return { viewBox: { ...state.viewBox, row: newRow }}
+
+        return viewBoxNumber === 2 ?
+            { viewBox2: { ...box, row: newRow } }
+            : { viewBox: { ...box, row: newRow } }
     }),
-    gotoViewBoxLeft: (step: number) => set((state) => {
-        let newCol = Math.max(0, state.viewBox.col - step)
-        return { viewBox: { ...state.viewBox, col: newCol } }
+    gotoViewBoxLeft: (step: number, viewBoxNumber?: number) => set((state) => {
+        let box = getViewBox(state, viewBoxNumber)
+        let newCol = Math.max(0, box.col - step)
+        return viewBoxNumber === 2 ?
+            { viewBox2: { ...box, col: newCol } }
+            : { viewBox: { ...box, col: newCol } }
     }),
-    gotoViewBoxRight: (step: number) => set((state) => {
-        let newCol = state.viewBox.col + step
-        let min = Math.max(0, get().patternState.pattern[0].length - state.viewBox.wx)
+    gotoViewBoxRight: (step: number, viewBoxNumber?: number) => set((state) => {
+        let box = getViewBox(state, viewBoxNumber)
+        let newCol = box.col + step
+        let min = Math.max(0, get().patternState.pattern[0].length - box.wx)
         newCol = Math.min(min, newCol)
-        return { viewBox: { ...state.viewBox, col: newCol }}
+        return viewBoxNumber === 2 ?
+            { viewBox2: { ...box, col: newCol } }
+            : { viewBox: { ...box, col: newCol } }
     }),
     resetViewBox: () => set((state) => ({
         viewBox: {
             ...state.viewBox,
             row: 0,
             col: 0,
+        },
+        splittedViewBox: false,
+        viewBox2: {
+            ...state.viewBox2,
+            row: 0,
+            col: 0,
         }
     })),
-    onChageViewBoxWidth: (width: number) => set((state) => {
-        return {
-        viewBox: { ...state.viewBox, wx: Math.max(VIEWBOX_MIN_SIZE, width) }
-    }}),
-    onChageViewBoxHeight: (height: number) => set((state) => {
-        return {
-        viewBox: { ...state.viewBox, wy: Math.max(VIEWBOX_MIN_SIZE, height) }
-    }}),
+    onChageViewBoxWidth: (width: number, viewBoxNumber?: number) => set((state) => {
+        let box = getViewBox(state, viewBoxNumber)
+        return viewBoxNumber === 2 ?
+            { viewBox2: { ...box, wx: Math.max(VIEWBOX_MIN_SIZE, width) } }
+            : { viewBox: { ...box, wx: Math.max(VIEWBOX_MIN_SIZE, width) } }
+    }),
+    onChageViewBoxHeight: (height: number, viewBoxNumber?: number) => set((state) => {
+        let box = getViewBox(state, viewBoxNumber)
+        return viewBoxNumber === 2 ?
+            { viewBox2: { ...box, wy: Math.max(VIEWBOX_MIN_SIZE, height) } }
+            : { viewBox: { ...box, wy: Math.max(VIEWBOX_MIN_SIZE, height) } }
+    }),
 
 })
 
-
+const getViewBox = (state: VieboxSlice, viewBoxNumber?: number): TVIEWBOX_SIZE => {
+    if (viewBoxNumber === 2) {
+        return state.viewBox2
+    } else {
+        return state.viewBox
+    }
+}
 
 
 
@@ -488,28 +539,28 @@ const fillRowRight = (r: IPatternCell[], row: number, col: number, selectedActio
 export const useStore = create<PatternSlice & VieboxSlice & CopyBufferSlice>()(
     persist(
         devtools((...a) => ({
-    ...createPatternSlice(...a),
-    ...createViewBoxSlice(...a),
-    ...createCopyBufferSlice(...a),
-  })), {
-    name: KEY_STORAGE_ZUSTAND,
-    storage: createJSONStorage(() => localStorage),
-    partialize: (state) => ({ 
-        patternState: state.patternState, 
-        viewBox: state.viewBox, 
-        mirrorHorizontal: state.mirrorHorizontal,
-        mirrorVertical: state.mirrorVertical,
-        toggleStitch: state.toggleStitch,
-        showCellStitchType: state.showCellStitchType,
-        isPatternWindowed: state.isPatternWindowed,
-    }),
-  })
+            ...createPatternSlice(...a),
+            ...createViewBoxSlice(...a),
+            ...createCopyBufferSlice(...a),
+        })), {
+        name: KEY_STORAGE_ZUSTAND,
+        storage: createJSONStorage(() => localStorage),
+        partialize: (state) => ({
+            patternState: state.patternState,
+            viewBox: state.viewBox,
+            mirrorHorizontal: state.mirrorHorizontal,
+            mirrorVertical: state.mirrorVertical,
+            toggleStitch: state.toggleStitch,
+            showCellStitchType: state.showCellStitchType,
+            isPatternWindowed: state.isPatternWindowed,
+        }),
+    })
 );
-  
+
 
 // migration from old version with context
-if (!localStorage.getItem(KEY_STORAGE_ZUSTAND))  {
-    
+if (!localStorage.getItem(KEY_STORAGE_ZUSTAND)) {
+
     let saved = localStorage.getItem(KEY_STORAGE_OLD)
     if (saved) {
         console.log("migrate old context state...");

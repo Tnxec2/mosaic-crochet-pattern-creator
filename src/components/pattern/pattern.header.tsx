@@ -10,7 +10,9 @@ export const PatternHeaderComponent: FC = () => {
         showCellStitchType,
         setShowCellStitchType,
         isPatternWindowed,
-        toggleIsPatternWindowed
+        toggleIsPatternWindowed,
+        splittedViewBox,
+        toggleSplittedViewBox
     } = useStore((state) => state)
 
     return (
@@ -18,7 +20,7 @@ export const PatternHeaderComponent: FC = () => {
             <Card.Title>
                 Pattern
                 <Help />
-                <div className="float-end">
+                <div className="float-end">                    
                     <div className="form-check form-check-inline form-switch">
                         <input
                             className="form-check-input"
@@ -32,6 +34,22 @@ export const PatternHeaderComponent: FC = () => {
                         />
                         <label className="form-check-label" onClick={(e) => { toggleIsPatternWindowed() }}>new version</label>
                     </div>
+                    { 
+                        isPatternWindowed &&
+                        <div className="form-check form-check-inline form-switch">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                checked={splittedViewBox}
+                                onChange={(e) => {
+                                    toggleSplittedViewBox()
+                                }}
+
+                            />
+                            <label className="form-check-label" onClick={(e) => { toggleSplittedViewBox() }}>split viewbox</label>
+                        </div>
+            }
                     <div className="form-check form-check-inline form-switch">
                         <input
                             className="form-check-input"
