@@ -548,6 +548,8 @@ export const useStore = create<PatternSlice & VieboxSlice & CopyBufferSlice>()(
         partialize: (state) => ({
             patternState: state.patternState,
             viewBox: state.viewBox,
+            viewBox2: state.viewBox2,
+            splittedViewBox: state.splittedViewBox,
             mirrorHorizontal: state.mirrorHorizontal,
             mirrorVertical: state.mirrorVertical,
             toggleStitch: state.toggleStitch,
