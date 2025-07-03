@@ -11,7 +11,7 @@ function App() {
 
     return (<div className='overflow-hidden' style={{ height: '100vh' }}>
             <NavbarComponent />
-            <Row className="m-3"  style={{maxHeight: '90vh'}}>
+            <Row className="m-0 mt-2"  style={{maxHeight: '90vh'}}>
                 <Col sm={2} style={{ maxHeight: '90vh', overflowY: 'scroll' }}>
                     <PanelComponent />
                 </Col>
