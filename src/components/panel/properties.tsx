@@ -1,17 +1,23 @@
-import { FC } from "react"
+import { FC, useState } from "react"
 import { useStore } from "../../context"
-import { Form } from "react-bootstrap"
+import { Card, Form } from "react-bootstrap"
 
 type Props = {}
 
 export const PropertiesComponent: FC<Props> = () => {
     const { mirrorVertical, setMirrorVertical, mirrorHorizontal, setMirrorHorizontal, toggleStitch, setToggleStitch } = useStore((state) => state)
 
+    const [showContent, setShowContent] = useState(true)
+
     return (
-        <>            
+        <Card className='mt-2'>
+            <Card.Header onClick={() => { setShowContent(!showContent) }}>
+                <Form.Label>Properties</Form.Label>
+            </Card.Header>
+            {showContent &&
+            <Card.Body className='p-1'>           
         <Form.Group className="mb-3">
-            <Form.Label>Properties</Form.Label>
-            <div className="form-check form-switch">
+            <div className="form-check form-switch" title="Toggle stitch [t]">
                 <input
                     className="form-check-input"
                     type="checkbox"
@@ -30,7 +36,7 @@ export const PropertiesComponent: FC<Props> = () => {
                     toggle stitch
                 </label>
             </div>
-            <div className="form-check form-switch">
+            <div className="form-check form-switch" title="Mirror vertical [v]">
                 <input
                     className="form-check-input"
                     type="checkbox"
@@ -49,7 +55,7 @@ export const PropertiesComponent: FC<Props> = () => {
                     ↔️ mirror vertical
                 </label>
             </div>
-            <div className="form-check form-switch">
+            <div className="form-check form-switch" title="Mirror horizontal [h]">
                 <input
                     className="form-check-input"
                     type="checkbox"
@@ -69,6 +75,9 @@ export const PropertiesComponent: FC<Props> = () => {
                 </label>
             </div>
         </Form.Group> 
-        </>
+        </Card.Body>
+
+            }
+        </Card>
     )
 }

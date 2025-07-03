@@ -266,7 +266,7 @@ export const PatternWindowedComponent: FC = () => {
                         {splittedViewBox && 
 
                         <div
-                            className="noselect d-flex flex-column"
+                            className="noselect d-flex flex-column ms-3"
                             id="pattern"
                             style={{
                                 transform: `scale(${patternState.scaleFactor})`,
@@ -301,7 +301,8 @@ export const PatternWindowedComponent: FC = () => {
                     </div>
 
 
-                    {showBufferData && <div
+                    {showBufferData && 
+                    <div
                         className="noselect mt-3"
                         id="copyBuffer"
                         style={{

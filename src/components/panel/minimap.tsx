@@ -10,8 +10,5 @@ export const MinimapPanelComponent: FC<Props> = () => {
         <div className='mb-3'>
             <PatternMinimapComponent />
         </div>
-                
-
-        
     )
 }

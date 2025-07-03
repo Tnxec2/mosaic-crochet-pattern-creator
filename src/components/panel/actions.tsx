@@ -1,5 +1,5 @@
-import { FC, useEffect } from 'react'
-import { Form } from 'react-bootstrap'
+import { FC, useEffect, useState } from 'react'
+import { Card, Form } from 'react-bootstrap'
 import { useStore } from '../../context'
 import { ACTION_TYPES, actionTitle } from '../../model/actiontype.enum'
 import './actions.css'
@@ -54,10 +54,16 @@ export const ActionsComponent: FC<Props> = () => {
         }
     }
 
+    const [showContent, setShowContent] = useState(true)
+
     return (
-        <>
-            <Form.Group className="mb-3">
+        <Card className='mt-2'>
+            <Card.Header onClick={() => { setShowContent(!showContent) }}>
                 <Form.Label>Actions</Form.Label>
+            </Card.Header>
+            {showContent &&
+            <Card.Body className='p-1'>
+            <Form.Group>
                 <div>
                     {Object.values(ACTION_TYPES).map((value) => (
                         <button
@@ -75,6 +81,7 @@ export const ActionsComponent: FC<Props> = () => {
                     ))}
                 </div>
             </Form.Group>
-        </>
+            </Card.Body> }
+        </Card>
     )
 }

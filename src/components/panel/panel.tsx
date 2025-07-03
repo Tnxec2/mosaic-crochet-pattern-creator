@@ -3,11 +3,12 @@ import { PatternSizeComponent } from './patternsize'
 import { ActionsComponent } from './actions'
 import { PropertiesComponent } from './properties'
 import { MinimapPanelComponent } from './minimap'
+import { PatternMinimapComponent } from '../pattern/windowed/pattern.minimap'
 
 export const PanelComponent = () => {
     return (
         <>
-            <MinimapPanelComponent />
+            <PatternMinimapComponent />
             <PatternSizeComponent />
             <ColorsComponent />
             <ActionsComponent />

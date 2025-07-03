@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react'
-import { Button, ButtonGroup, Form, InputGroup } from 'react-bootstrap'
+import { Button, ButtonGroup, Card, Form, InputGroup } from 'react-bootstrap'
 import { useStore } from '../../context'
 import { IPatternCell } from '../../model/patterncell.model'
 import { CELL_TYPE } from '../../model/patterntype.enum'
@@ -8,6 +8,8 @@ type Props = {}
 export const PatternSizeComponent: FC<Props> = () => {
 
     const { patternState, savePattern } = useStore()
+
+    const [showContent, setShowContent] = useState(true)
 
     const [ rowsString, setRowsString ] = useState(patternState.pattern.length.toString())
     const [ colsString, setColsString ] = useState(patternState.pattern[0].length.toString())
@@ -94,8 +96,12 @@ export const PatternSizeComponent: FC<Props> = () => {
     }, [changeCols, colsString, patternState, rowsString, savePattern])
 
     return (
-        <>
-        <Form.Label>Size of pattern</Form.Label>
+        <Card>
+            <Card.Header onClick={() => {setShowContent(!showContent)}}>
+            <Form.Label>Size of pattern</Form.Label>
+        </Card.Header>
+        { showContent && 
+        <Card.Body className='p-1'>
         <InputGroup size="sm">
             <InputGroup.Text>Rows</InputGroup.Text>
             <Form.Control
@@ -108,7 +114,7 @@ export const PatternSizeComponent: FC<Props> = () => {
                 onChange={(e) => setRowsString(e.target.value) }
             />
         </InputGroup>
-        <ButtonGroup  className="mt-1 mb-3">
+        <ButtonGroup  className="mt-1 mb-1">
         <Button
                 size="sm"
                 variant="outline-danger"
@@ -152,7 +158,7 @@ export const PatternSizeComponent: FC<Props> = () => {
                     onChange={(e) => setColsString((Number(e.target.value) || 1).toString())}
                 />
         </InputGroup>
-        <ButtonGroup className='mt-1 mb-3'>
+        <ButtonGroup className='mt-1 mb-1'>
         <Button
                 size="sm"
                 variant="outline-danger"
@@ -184,9 +190,10 @@ export const PatternSizeComponent: FC<Props> = () => {
                 ➕
             </Button>
         </ButtonGroup>
-        <Form.Group className="mb-3">
+        <Form.Group>
             <Button onClick={change}>Change</Button>
         </Form.Group>
-        </>
+        </Card.Body>}
+        </Card>
     )
 }
