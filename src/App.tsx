@@ -9,13 +9,13 @@ import { useStore } from './context'
 function App() {
     const isPatternWindowed = useStore().isPatternWindowed
 
-    return (<>
+    return (<div className='overflow-hidden' style={{ height: '100vh' }}>
             <NavbarComponent />
-            <Row className="m-3">
-                <Col sm={2}>
+            <Row className="m-3"  style={{maxHeight: '90vh'}}>
+                <Col sm={2} style={{ maxHeight: '90vh', overflowY: 'scroll' }}>
                     <PanelComponent />
                 </Col>
-                <Col sm={10}>
+                <Col sm={10} style={{ maxHeight: '90vh', overflowY: 'scroll' }}>
                 { isPatternWindowed ?
                     <PatternWindowedComponent />
                     :
@@ -23,7 +23,7 @@ function App() {
                 }
                 </Col>
             </Row>
-            </>
+            </div>
     )
 }
 

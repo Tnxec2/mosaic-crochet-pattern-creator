@@ -38,7 +38,7 @@ function NavbarComponent() {
 
     return (
         <>
-            <Navbar expand="lg" className="bg-body-tertiary">
+            <Navbar expand="lg" className="bg-body-tertiary" style={{maxHeight: '10vh'}}>
                 <Container>
                     <Navbar id="menu-navbar-nav">
                         <Navbar.Brand href="#">
