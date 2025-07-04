@@ -46,32 +46,42 @@ export const PatternWindowedComponent: FC = () => {
         setEnd,
     } = useStore()
 
-    const handleOnWheel = useCallback((ev: globalThis.WheelEvent) => {
+    const handleOnWheel = useCallback((ev: globalThis.WheelEvent, viewBoxNumber: number) => {
         ev.preventDefault();
 
         const { deltaY, shiftKey } = ev
 
         if (shiftKey) {
             if (deltaY > 0) {
-                gotoViewBoxRight(SCROLL_STEP)
+                gotoViewBoxRight(SCROLL_STEP, viewBoxNumber)
             } else {
-                gotoViewBoxLeft(SCROLL_STEP)
+                gotoViewBoxLeft(SCROLL_STEP, viewBoxNumber)
             }
         } else {
             if (deltaY > 0) {
-                gotoViewBoxDown(SCROLL_STEP)
+                gotoViewBoxDown(SCROLL_STEP, viewBoxNumber)
             } else {
-                gotoViewBoxUp(SCROLL_STEP)
+                gotoViewBoxUp(SCROLL_STEP, viewBoxNumber)
             }
         }
     }, [gotoViewBoxDown, gotoViewBoxLeft, gotoViewBoxRight, gotoViewBoxUp])
 
-    const divRefCallback = useCallback(
+    const viewBoxRefCallback = useCallback(
         (node: HTMLDivElement) => {
             if (node == null) {
                 return;
             }
-            node.addEventListener('wheel', handleOnWheel, { passive: false });
+            node.addEventListener('wheel', (e) => handleOnWheel(e, 1), { passive: false });
+        },
+        [handleOnWheel],
+    );
+
+    const viewBox2RefCallback = useCallback(
+        (node: HTMLDivElement) => {
+            if (node == null) {
+                return;
+            }
+            node.addEventListener('wheel', (e) => handleOnWheel(e, 2), { passive: false });
         },
         [handleOnWheel],
     );
@@ -230,19 +240,20 @@ export const PatternWindowedComponent: FC = () => {
                 <Card.Body className="pattern-container">
 
                     <ViewBoxSizeComponent />
-                    <div className='mt-3 d-flex flex-row'>
+                    <div className='mt-3 d-flex flex-row' 
+                            style={{
+                                transformOrigin: 'left top',
+                                transform: `scale(${patternState.scaleFactor})`,
+                            }}>
                         <div
                             className="noselect d-flex flex-column"
                             id="pattern"
-                            style={{
-                                transform: `scale(${patternState.scaleFactor})`,
-                            }}
                         >
                             <HoldButton className='btn-outline-secondary mb-1' onFire={() => gotoViewBoxUp(1)}>🔼</HoldButton>
                             <div className='d-flex flex-row overflow-auto'>
                                 <HoldButton className='btn-outline-secondary me-1' onFire={() => gotoViewBoxLeft(1)}>◀️</HoldButton>
 
-                                <div ref={divRefCallback}>
+                                <div ref={viewBoxRefCallback}>
                                     <PatternRowHeaderWindowedComponent setDropDownPos={(pos) => setDropDownPos({...pos, viewBoxNumber: 1})} pos={viewBox} />
                                     {patternState.pattern
                                         .filter((_, rowIndex) => rowIndex >= viewBox.row && rowIndex < viewBox.row + viewBox.wy)
@@ -268,15 +279,12 @@ export const PatternWindowedComponent: FC = () => {
                         <div
                             className="noselect d-flex flex-column ms-3"
                             id="pattern"
-                            style={{
-                                transform: `scale(${patternState.scaleFactor})`,
-                            }}
                         >
                             <HoldButton className='btn-outline-secondary mb-1' onFire={() => gotoViewBoxUp(1, 2)}>🔼</HoldButton>
                             <div className='d-flex flex-row overflow-auto'>
                                 <HoldButton className='btn-outline-secondary me-1' onFire={() => gotoViewBoxLeft(1, 2)}>◀️</HoldButton>
 
-                                <div ref={divRefCallback}>
+                                <div ref={viewBox2RefCallback}>
                                     <PatternRowHeaderWindowedComponent setDropDownPos={(pos) => setDropDownPos({...pos, viewBoxNumber: 2})} pos={viewBox2} />
                                     {patternState.pattern
                                         .filter((_, rowIndex) => rowIndex >= viewBox2.row && rowIndex < viewBox2.row + viewBox2.wy)
