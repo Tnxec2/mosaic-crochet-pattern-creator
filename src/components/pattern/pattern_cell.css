@@ -3,7 +3,7 @@
     width: calc(100% - 2px);
     height: calc(100% - 2px);
     background-size: contain;
-
+    background-blend-mode: difference;
     background-repeat: no-repeat;
 }
 

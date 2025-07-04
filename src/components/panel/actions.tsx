@@ -69,7 +69,7 @@ export const ActionsComponent: FC<Props> = () => {
                         <button
                             type="button"
                             key={value}
-                            className={`btn btn-outline-info btn-sm ms-1 mb-1 ${
+                            className={`btn btn-secondary btn-sm ms-1 mb-1 ${
                                 patternState.selectedAction === value
                                     ? 'selected-action'
                                     : ''
