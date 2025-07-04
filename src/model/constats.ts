@@ -1,6 +1,6 @@
 import { TVIEWBOX_SIZE } from "./patterntype.enum"
 
-export const VERSION = '1.3.7'
+export const VERSION = '1.3.8'
 
 export const BACKGROUND_COLOR = '#ffffff'
 export const DEFAULT_COLOR = '#ffffff'
