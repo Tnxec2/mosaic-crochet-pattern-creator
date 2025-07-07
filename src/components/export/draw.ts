@@ -7,6 +7,8 @@ function drawR(size: number) {
     let ctx = canvas.getContext("2d");
 
     if (ctx){ 
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "white";
         const w = size / WIDTH_RATIO
 
         // center to bottom-left "\"
@@ -26,6 +28,8 @@ function drawL(size: number) {
     var canvas = document.createElement("canvas");
     let ctx = canvas.getContext("2d");
     if (ctx){ 
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "white";
         const w = size / WIDTH_RATIO
         // center to bottom-left "/"
         ctx.save();
@@ -68,6 +72,8 @@ function drawLR(size: number) {
     var canvas = document.createElement("canvas");
     let ctx = canvas.getContext("2d");
     if (ctx){ 
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "white";
         const w = size / WIDTH_RATIO
         // center to bottom-left "\"
         ctx.save();
@@ -93,7 +99,10 @@ function drawLR(size: number) {
 function drawX(size: number) {
     var canvas = document.createElement("canvas");
     let ctx = canvas.getContext("2d");
+    
     if (ctx){ 
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "white";
         const w = size / WIDTH_RATIO
         // top left to bottom right "\"
         ctx.save();
@@ -116,6 +125,8 @@ function drawXR(size: number) {
     var canvas = document.createElement("canvas");
     let ctx = canvas.getContext("2d");
     if (ctx) { 
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "white";
         const w = size / WIDTH_RATIO
         // top left to bottom right "\"
         ctx.save();
@@ -138,6 +149,8 @@ function drawLX(size: number) {
     var canvas = document.createElement("canvas");
     let ctx = canvas.getContext("2d");
     if (ctx) {  
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "white";
         const w = size / WIDTH_RATIO
         // top left to bottom right "\"
         ctx.save();
@@ -160,6 +173,8 @@ function drawLXR(size: number) {
     var canvas = document.createElement("canvas");
     let ctx = canvas.getContext("2d");
     if (ctx) { 
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "white";
         const w = size / WIDTH_RATIO
         // top left to bottom right "\"
         ctx.save();

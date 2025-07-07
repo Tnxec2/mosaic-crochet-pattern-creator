@@ -13,6 +13,7 @@ export type TSize = {
 const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, showCellStitchType: boolean, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): TSize =>  {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+
     const rows = pattern.length
     const cols = pattern[0].length
     const max = Math.max(rows, cols)
@@ -34,6 +35,7 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
     ctx.fillRect(0, 0, w, h)
     ctx.lineWidth = 1
 
+
     const iconSize = cellSize-4
     const icons: Record<string, HTMLCanvasElement | null> = {}
     Object.values(CELL_TYPE).forEach(cellType => {
@@ -51,10 +53,14 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
 
         ctx.fillStyle = cellColor
         ctx.fillRect(x, y, cellSize, cellSize)
-
+        
         if (showCellStitchType && row[c].type !== CELL_TYPE.EMPTY) {
           let image = icons[row[c].type]
-          if (image) ctx.drawImage(image, x+2, y+2)
+          if (image) {
+            ctx.globalCompositeOperation = "difference";
+            ctx.drawImage(image, x+2, y+2)
+            ctx.globalCompositeOperation = "source-over";
+          }
         }
       }
     }
