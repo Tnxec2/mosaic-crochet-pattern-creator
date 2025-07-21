@@ -7,13 +7,41 @@ import { ScaleFactor } from "../shared/scalefactor";
 import { PatternName } from "../shared/patternname";
 import { PatternDraw } from "../shared/patterndraw";
 import { useStateDebounced } from "../../services/debounce";
+import jsPDF from "jspdf";
+import { CELL_TYPE } from "../../model/patterntype.enum";
 
 
 interface PROPS {
   onClose: () => void
 }
 
-const MIN_FONT_SIZE = 10
+const stichTypeToWrited = (type: CELL_TYPE): string => {
+  switch (type) {
+    case CELL_TYPE.EMPTY:
+      return 'sc';
+    case CELL_TYPE.X:
+      return 'dc';
+    case CELL_TYPE.L:
+      return 'dc left';
+    case CELL_TYPE.R:
+      return 'dc right';
+    case CELL_TYPE.LR:
+      return '(dc right, dc left)';
+    case CELL_TYPE.LX:
+      return '(dc, DC left)';
+    case CELL_TYPE.XR:
+      return '(dc right, dc)';
+    case CELL_TYPE.LXR:
+      return '(dc right, dc, dc left)';
+    default:
+      return '';
+  }
+}
+const getStichWrited = (line: string, stichcount: number, stichtype: CELL_TYPE) => {
+  return `${line.length > 0 ? ', ' : ''}${stichcount > 1 ? stichcount + ' ' : ''}${stichTypeToWrited(stichtype)}`;
+}
+
+const MIN_FONT_SIZE = 6
 
 export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   const {
@@ -55,6 +83,75 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
     }
   }, [canvasToSave, patternState.name])
 
+  const savePdf = useCallback(() => {
+    if (canvasToSave) {
+      let width = canvasToSave.width; 
+      let height = canvasToSave.height;
+
+      let pdf: jsPDF;
+
+      //set the orientation
+      if(width > height){
+        pdf = new jsPDF('l', 'px', [width, height]);
+      }
+      else{
+        pdf = new jsPDF('p', 'px', [height, width]);
+      }
+      //then we get the dimensions from the 'pdf' file itself
+      width = pdf.internal.pageSize.getWidth();
+      height = pdf.internal.pageSize.getHeight();
+      pdf.addImage(canvasToSave, 'PNG', 0, 0, width, height);
+      var filename = `${patternState.name}.pdf` ;
+      pdf.save(filename);
+    }
+  }, [canvasToSave, patternState.name])
+
+  const writePatternToPdf = useCallback(() => {
+    const pdf = new jsPDF('p', 'pt', 'a4');
+
+    var filename = `${patternState.name}_writted.pdf`;
+
+    var head = `<h1>${patternState.name}</h1>\n`;
+
+    let stichtype = CELL_TYPE.EMPTY;
+    let stichcount = 0;
+    let line = '';
+    let htmlText = ``;
+    
+    // process the pattern from down to up
+    for (let rowIndex = patternState.pattern.length-1; rowIndex >= 0 ; rowIndex--) {
+      const row = patternState.pattern[rowIndex];
+      stichcount = 0;
+      stichtype = CELL_TYPE.EMPTY;
+      line = ``;
+      for (let colIndex = row.length-1; colIndex >= 0; colIndex--) {
+        const cell = row[colIndex];
+        if (stichtype !== cell.type) {
+          if (stichcount > 0) {
+            line += getStichWrited(line, stichcount, stichtype);
+          }
+          stichtype = cell.type;
+          stichcount = 1;
+        } else {
+          stichcount++;
+        }
+      }
+      if (stichcount > 0) {
+        line += getStichWrited(line, stichcount, stichtype);
+      }
+      htmlText += `Row ${patternState.pattern.length-rowIndex}: ` + line + '<br>\n';
+    }
+    console.log(htmlText);
+    
+    pdf.html(`<div style="width:500px;">${head}<p style="font-size: 10pt;">${htmlText}</p></div>`, {
+      margin: 30,
+      width: 500,
+      autoPaging: 'text',
+      callback: function (doc) {
+        doc.save(filename);
+      }
+    });
+  }, [patternState.pattern, patternState.name])
 
   return (
     <Modal fullscreen show={true}>
@@ -123,7 +220,15 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
           </Button>
           &nbsp;
           <Button variant="primary" onClick={save}>
-            Save
+            Save Image as PNG
+          </Button>
+          &nbsp;
+          <Button variant="danger" onClick={savePdf}>
+            Save Image as PDF
+          </Button>
+          &nbsp;
+          <Button variant="info" onClick={writePatternToPdf}>
+            Save writted pattern as PDF
           </Button>
         </div>
         <div style={{ transform: `scale(${patternState.scaleFactor})`, transformOrigin: 'top left', marginTop: 10   }}>
@@ -131,6 +236,7 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
             id="canvasPreview"
             draw={draw}
             className="canva-preview"
+            
           />
         </div>
 
