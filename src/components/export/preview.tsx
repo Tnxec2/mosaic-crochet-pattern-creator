@@ -111,7 +111,7 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
 
     var filename = `${patternState.name}_writted.pdf`;
 
-    var head = `<h1>${patternState.name}</h1>\n`;
+    var head = `<h1>${patternState.name.charAt(0).toUpperCase() + patternState.name.slice(1)}</h1>\n`;
 
     let stichtype = CELL_TYPE.EMPTY;
     let stichcount = 0;
@@ -139,7 +139,7 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
       if (stichcount > 0) {
         line += getStichWrited(line, stichcount, stichtype);
       }
-      htmlText += `Row ${patternState.pattern.length-rowIndex}: ` + line + '<br>\n';
+      htmlText += `<strong>Row ${patternState.pattern.length-rowIndex}</strong>: ` + line + '<br>\n';
     }
     console.log(htmlText);
     
