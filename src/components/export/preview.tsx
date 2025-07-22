@@ -139,11 +139,11 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
       if (stichcount > 0) {
         line += getStichWrited(line, stichcount, stichtype);
       }
-      htmlText += `<strong>Row ${patternState.pattern.length-rowIndex}</strong>: ` + line + '<br>\n';
+      htmlText += `<p>Row ${patternState.pattern.length-rowIndex}: ` + line + '</p>\n';
     }
     console.log(htmlText);
     
-    pdf.html(`<div style="width:500px;">${head}<p style="font-size: 10pt;">${htmlText}</p></div>`, {
+    pdf.html(`<div style="width:500px;">${head}<div style="font-size: 10pt;">${htmlText}</div></div>`, {
       margin: 30,
       width: 500,
       autoPaging: 'text',
