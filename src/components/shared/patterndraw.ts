@@ -16,14 +16,23 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
 
     const rows = pattern.length
     const cols = pattern[0].length
-    const max = Math.max(rows, cols)
+    const maxCols = Math.max(cols)
+    const maxRows = Math.max(rows)
 
     ctx.font = `normal ${fontSize}pt monospace`
-    let metrics = ctx.measureText(max.toString());
-    let cellSize = metrics.width + 4
+    let metricsCols = ctx.measureText(maxCols.toString());
+    let metricsRows = ctx.measureText(maxRows.toString());
+    //let fontHeight = metricsCols.fontBoundingBoxAscent + metricsCols.fontBoundingBoxDescent;
+    let actualHeight = metricsCols.actualBoundingBoxAscent + metricsCols.actualBoundingBoxDescent;
 
-    let w = cellSize * (cols + 2)
-    let h = cellSize * (rows + 2)
+    let cellSize = actualHeight + 4
+
+    let headerHeight = metricsCols.width + 4
+
+    let rowIndexWidth = metricsRows.width + 4
+
+    let w = cellSize * cols + rowIndexWidth * 2
+    let h = cellSize * rows + headerHeight * 2
 
     canvas.width = w
     canvas.height = h
@@ -48,8 +57,8 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
       for (let c = 0; c < row.length; c++) {
         cellColor = getCellColor(pattern, colors, r, c)
 
-        let x = (c + 1) * cellSize
-        let y = (r + 1) * cellSize
+        let x = rowIndexWidth + c * cellSize
+        let y = headerHeight + r * cellSize
 
         ctx.fillStyle = cellColor
         ctx.fillRect(x, y, cellSize, cellSize)
@@ -69,24 +78,42 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
     ctx.fillStyle = "black"
     ctx.textBaseline = "top"
 
+    ctx.textAlign = "right"
     for (let r = 1; r <= rows; r++) {
-      let y = h - (r+1) * cellSize
-      ctx.fillText(r.toString(), 2, y+2) // left
-      ctx.fillText(r.toString(), w - cellSize + 2, y+2) // right
+      let y = h - headerHeight - r * cellSize 
+      ctx.fillText(r.toString(), rowIndexWidth - 2, y) // left
     }
 
-    for (let c = 1; c <= cols; c++) {
-      let x = w - (c+1) * cellSize
-      ctx.fillText(c.toString(), x + 2, 2) // top
-      ctx.fillText(c.toString(), x + 2, h - cellSize + 2) // bottom
+      ctx.textAlign = "left"
+    for (let r = 1; r <= rows; r++) {
+      let y = h - headerHeight - r * cellSize
+      ctx.fillText(r.toString(), w - rowIndexWidth + 2, y) // right
     }
+
+    ctx.save();
+    ctx.translate(-cellSize+2, headerHeight);
+    ctx.rotate(-Math.PI/2);
+ 
+    ctx.textAlign = "left"
+    for (let c = 0; c < cols; c++) {
+      let y = w - c * cellSize - rowIndexWidth - 2 
+      ctx.fillText((c+1).toString(), 2, y) // top
+    }
+
+    ctx.textAlign = "right"
+    for (let c = 0; c < cols; c++) {
+      let y = w - c * cellSize - rowIndexWidth - 2 
+      ctx.fillText((c+1).toString(), -h + headerHeight * 2 - 2, y) // bottom
+    }
+
+    ctx.restore();
 
     // grid
     for (let r = 0; r <= rows; r++) {
-      let y = (r + 1) * cellSize
+      let y = headerHeight + r * cellSize
       drawLine(ctx, [0, y], [w, y])
       for (let c = 0; c <= cols; c++) {
-        let x = (c + 1) * cellSize
+        let x = rowIndexWidth + c * cellSize
         drawLine(ctx, [x, 0], [x, h])
       }
     }

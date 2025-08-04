@@ -1,6 +1,6 @@
 import { IPattern } from '../context'
 import { ACTION_TYPES } from './actiontype.enum'
-import { DEFAULT_COLOR, DEFAULT_COLOR_2, UNKNOWN_NAME } from './constats'
+import { DEFAULT_COLOR, DEFAULT_COLOR_2, DEFAULT_FONT_SIZE, UNKNOWN_NAME } from './constats'
 import { CELL_TYPE } from './patterntype.enum'
 
 export type IPatternRow = IPatternCell[]
@@ -24,7 +24,8 @@ export const initialPattern: IPattern = {
     selectedAction: ACTION_TYPES.NONE,
     scaleFactor: 1,
     saved: true,
-    name: UNKNOWN_NAME
+    name: UNKNOWN_NAME,
+    previewFontSize: DEFAULT_FONT_SIZE,
 }
 
 function genpat() {
