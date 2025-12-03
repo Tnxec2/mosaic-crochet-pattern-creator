@@ -27,7 +27,6 @@
 .canvas-minimap-frame {
     position: absolute;
     max-width: 100%;
-    padding: 3px;
     left: 0;
     top: 0;
 }

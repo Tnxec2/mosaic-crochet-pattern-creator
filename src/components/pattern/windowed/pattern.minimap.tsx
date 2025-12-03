@@ -48,6 +48,10 @@ export const PatternMinimapComponent: FC = () => {
         const mapWidth = debouncedDrawState[0]?.length | 0
         const mapHeight = debouncedDrawState.length
 
+        if (mapWidth === 0 || mapHeight === 0) {
+            return
+        }
+
         const scaleFactor = 1
 
         if (scaleFactor) {
@@ -58,14 +62,20 @@ export const PatternMinimapComponent: FC = () => {
             ctx.fillStyle = BACKGROUND_COLOR
             ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-            for (let rowIndex = 0; rowIndex < debouncedDrawState.length; rowIndex++) {
+            const imageData = ctx.createImageData(canvas.width, canvas.height)
+            for (let rowIndex = 0; rowIndex < mapHeight; rowIndex++) {
                 const row = debouncedDrawState[rowIndex];
                 for (let colIndex = 0; colIndex < row.length; colIndex++) {
                     const colorString = row[colIndex];
-                    ctx.fillStyle = colorString
-                    ctx.fillRect(colIndex * scaleFactor, rowIndex * scaleFactor, 1, 1)
+                    const rgb = PatternDraw.hexToRgb(colorString)
+                    const index = (rowIndex * canvas.width + colIndex) * 4
+                    imageData.data[index] = rgb.r
+                    imageData.data[index + 1] = rgb.g
+                    imageData.data[index + 2] = rgb.b
+                    imageData.data[index + 3] = 255 // alpha
                 }
             }
+            ctx.putImageData(imageData, 0, 0)
         }
 
     }, [debouncedDrawState])
@@ -74,6 +84,10 @@ export const PatternMinimapComponent: FC = () => {
         if (minimapCanvasRef.current) {
             const mapWidth = minimapCanvasRef.current?.width
             const mapHeight = minimapCanvasRef.current?.height
+
+            if (!mapWidth || !mapHeight) {
+                return
+            }
 
             const scaleFactor = 1
 
