@@ -8,20 +8,23 @@ import { UNKNOWN_NAME } from "../../model/constats"
 export const PatternName: FC = () => {
     const {
         patternState,
-        savePattern,
+        changeName,
     } = useStore((state) => state)
 
     const [edit, setEdit] = useState(false)
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [ name, setName ] = useState(patternState.name);
+
+    useEffect(() => {
+        setName(patternState.name)
+    }, [patternState.name])
 
     useEffect(() => {
         if (edit) {
             inputRef?.current?.focus()
             if (patternState.name === UNKNOWN_NAME) inputRef?.current?.setSelectionRange(0, patternState.name.length)
-        } else {
-            if (patternState.name.trim() === '') savePattern({...patternState, name: UNKNOWN_NAME})
         } 
-    }, [edit, patternState, savePattern])
+    }, [edit, patternState])
 
 
     return (
@@ -29,7 +32,7 @@ export const PatternName: FC = () => {
             <InputGroup.Text 
                 title={patternState.name} >Name</InputGroup.Text>            
             <ButtonGroup className="float-end">
-                <Button
+               { !edit && <Button
                     size="sm"
                     variant="outline-primary"
                     title={edit ? 'ok' : 'edit'}
@@ -37,16 +40,27 @@ export const PatternName: FC = () => {
                         setEdit(!edit)
                     }}
                 >
-                    {edit ? '✖' : '✏️'}
-                </Button>
+                    ✏️
+                </Button> }
+                { edit && <Button
+                    size="sm"
+                    variant="outline-primary"
+                    title={edit ? 'ok' : 'edit'}
+                    onClick={() => {
+                        setEdit(!edit)
+                        changeName(name.trim() === '' ? UNKNOWN_NAME : name)
+                    }}
+                >
+                    💾
+                </Button> }
             </ButtonGroup>
             <Form.Control
                 style={{minWidth: 100}}
                 type="text"
-                title={patternState.name} 
+                title={name} 
                 placeholder="pattern name"
-                value={patternState.name}
-                onChange={(e) => savePattern({ ...patternState, name: e.target.value })}
+                value={name}
+                onChange={(e) => {e.stopPropagation(); setName(e.target.value)}}
                 ref={inputRef}
                 disabled={!edit}
                 autoFocus

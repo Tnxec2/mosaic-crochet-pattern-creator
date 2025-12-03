@@ -76,7 +76,8 @@ interface PatternSlice {
     setAction: (action: ACTION_TYPES) => void
     changeScale: (increase: boolean) => void
     resetScale: () => void
-    handleKeyDown: (event: KeyboardEvent) => void
+    handleKeyDown: (event: KeyboardEvent) => void,
+    changeName: (name: string) => void,
 }
 
 interface VieboxSlice {
@@ -459,7 +460,6 @@ const createPatternSlice: StateCreator<
             case actionTypesToKey(ACTION_TYPES.NONE):
                 get().setAction(ACTION_TYPES.NONE)
                 break;
-            // These toggle actions also change patternState indirectly (via rendering logic), so they should also save history
             case 'v':
                 set((state) => ({ mirrorVertical: !state.mirrorVertical }))
                 break;
@@ -468,15 +468,20 @@ const createPatternSlice: StateCreator<
                 break;
             case 't':
                 set((state) => ({ toggleStitch: !state.toggleStitch }))
-                // For these toggles, the patternState itself is not directly modified,
-                // but the rendering might change, so we might want to save the state.
-                // However, the current middleware only tracks patternState changes.
-                // If these toggles should be undoable, their effect on patternState
-                // needs to be explicitly triggered and tracked.
                 break;
             default:
                 break;
         }
+    },
+    changeName: (name: string) => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+        set((state) => ({
+            patternState: {
+                ...state.patternState,
+                name: name
+            }
+        }))
     },
 })
 const createViewBoxSlice: StateCreator<
