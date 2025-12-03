@@ -2,7 +2,7 @@ import { FC, Fragment, MouseEvent, useCallback } from "react"
 import { useStore } from "../../../context"
 
 import { IPatternRow } from "../../../model/patterncell.model"
-import { PatterCellComponent } from "../pattern_cell"
+import { MemoizedPatternCell } from "../pattern_cell"
 import { PatternDraw } from "../../shared/patterndraw"
 import { hasX, TDropDownPos, TVIEWBOX_SIZE } from "../../../model/patterntype.enum"
 
@@ -69,7 +69,7 @@ export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dro
             .filter((_, colIndex) => (colIndex >= pos.col && colIndex < pos.col + pos.wx))
             .map((col, colIndex) => (
                 <Fragment key={`col-${colIndex+pos.col}`}>
-                    <PatterCellComponent
+                    <MemoizedPatternCell
                         onClick={(e) => {
                             if (e.stopPropagation)
                                 e.stopPropagation()
@@ -97,8 +97,8 @@ export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dro
                                 (rowIndex < patternState.pattern.length - 1 && hasX(patternState.pattern[rowIndex + 1][colIndex + pos.col].t))
                             )
                         }
-                    >
-                    </PatterCellComponent>
+                    />
+                    
                 </Fragment>
             ))}
 
