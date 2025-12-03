@@ -164,6 +164,7 @@ export const PatternMinimapComponent: FC = () => {
                         role="switch"
                         checked={showFrame}
                         title="toggle frame"
+                        onChange={() => {}}
                     />
                 </div>}
             </Card.Header>
