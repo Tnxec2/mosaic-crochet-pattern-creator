@@ -1,9 +1,8 @@
 import { FC, Fragment, MouseEvent, useCallback } from "react"
 import { useStore } from "../../context"
 import { IPatternRow } from "../../model/patterncell.model"
-import { MemoizedPatternCell } from "./pattern_cell"
-import { PatternDraw } from "../shared/patterndraw"
 import { TDropDownPos } from "../../model/patterntype.enum"
+import { PatternCellContainer } from "./pattern.cell.container"
 
 type PROPS = {
     row: IPatternRow,
@@ -17,7 +16,6 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
     const {
         patternState,
         changeCell,
-        showCellStitchType,
     } = useStore((state) => state)
 
     const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
@@ -65,28 +63,12 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
             </div>
             {row.map((col, colIndex) => (
                 <Fragment key={`col-${colIndex}`}>
-                    <MemoizedPatternCell
-                        onClick={(e) => {
-                            if (e.stopPropagation)
-                                e.stopPropagation()
-                            if (e.preventDefault)
-                                e.preventDefault()
-                            handleClick(rowIndex, colIndex, false, e)
-                        }}
-                        color={PatternDraw.getCellColor(patternState.pattern, patternState.colors, rowIndex, colIndex)}
-                        onMouseOver={(e) =>
-                            handleMouseOver(
-                                e,
-                                rowIndex,
-                                colIndex
-                            )
-                        }
-                        row={patternState.pattern.length - rowIndex}
-                        col={row.length - colIndex}
-                        cell={col}
-                        showCellCrochetType={showCellStitchType}
+                    <PatternCellContainer
+                        rowIndex={rowIndex}
+                        colIndex={colIndex}
+                        onClick={handleClick}
+                        onMouseOver={handleMouseOver}
                     />
-                    
                 </Fragment>
             ))}
 

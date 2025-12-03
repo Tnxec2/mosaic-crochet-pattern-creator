@@ -2,9 +2,8 @@ import { FC, Fragment, MouseEvent, useCallback } from "react"
 import { useStore } from "../../../context"
 
 import { IPatternRow } from "../../../model/patterncell.model"
-import { MemoizedPatternCell } from "../pattern_cell"
-import { PatternDraw } from "../../shared/patterndraw"
-import { hasX, TDropDownPos, TVIEWBOX_SIZE } from "../../../model/patterntype.enum"
+import { TDropDownPos, TVIEWBOX_SIZE } from "../../../model/patterntype.enum"
+import { PatternCellContainer } from "../pattern.cell.container"
 
 type PROPS = {
     row: IPatternRow,
@@ -19,7 +18,6 @@ export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dro
     const {
         patternState,
         changeCell,
-        showCellStitchType,
     } = useStore((state) => state)
 
     const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
@@ -68,37 +66,13 @@ export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dro
             {row
             .filter((_, colIndex) => (colIndex >= pos.col && colIndex < pos.col + pos.wx))
             .map((col, colIndex) => (
-                <Fragment key={`col-${colIndex+pos.col}`}>
-                    <MemoizedPatternCell
-                        onClick={(e) => {
-                            if (e.stopPropagation)
-                                e.stopPropagation()
-                            if (e.preventDefault)
-                                e.preventDefault()
-                            handleClick(rowIndex, colIndex+(pos?.col||0), false, e)
-                        }}
-                        color={PatternDraw.getCellColor(patternState.pattern, patternState.colors, rowIndex, colIndex+pos.col)}
-                        onMouseOver={(e) =>
-                            handleMouseOver(
-                                e,
-                                rowIndex, 
-                                colIndex+pos.col
-                            )
-                        }
-                        row={patternState.pattern.length - rowIndex}
-                        col={row.length - colIndex - pos.col}
-                        cell={col}
-                        showCellCrochetType={showCellStitchType}
-                        hasError={
-                            // check if current cell type is X and cell type upper or down is also X
-                            hasX(col.t) &&
-                            (
-                                (rowIndex > 0 && hasX(patternState.pattern[rowIndex - 1][colIndex + pos.col].t)) ||
-                                (rowIndex < patternState.pattern.length - 1 && hasX(patternState.pattern[rowIndex + 1][colIndex + pos.col].t))
-                            )
-                        }
+                <Fragment key={`col-${colIndex + pos.col}`}>
+                    <PatternCellContainer
+                        rowIndex={rowIndex}
+                        colIndex={colIndex + pos.col}
+                        onClick={handleClick}
+                        onMouseOver={handleMouseOver}
                     />
-                    
                 </Fragment>
             ))}
 
