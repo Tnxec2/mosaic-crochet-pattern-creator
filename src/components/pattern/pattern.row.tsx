@@ -1,7 +1,7 @@
 import { FC, Fragment, MouseEvent, useCallback } from "react"
 import { useStore } from "../../context"
 import { IPatternRow } from "../../model/patterncell.model"
-import { PatterCellComponent } from "./pattern_cell"
+import { MemoizedPatternCell } from "./pattern_cell"
 import { PatternDraw } from "../shared/patterndraw"
 import { TDropDownPos } from "../../model/patterntype.enum"
 
@@ -65,7 +65,7 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
             </div>
             {row.map((col, colIndex) => (
                 <Fragment key={`col-${colIndex}`}>
-                    <PatterCellComponent
+                    <MemoizedPatternCell
                         onClick={(e) => {
                             if (e.stopPropagation)
                                 e.stopPropagation()
@@ -85,8 +85,8 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
                         col={row.length - colIndex}
                         cell={col}
                         showCellCrochetType={showCellStitchType}
-                    >
-                    </PatterCellComponent>
+                    />
+                    
                 </Fragment>
             ))}
 
