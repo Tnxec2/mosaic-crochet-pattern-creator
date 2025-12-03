@@ -22,7 +22,6 @@ const SCROLL_STEP = 5;
 export const PatternWindowedComponent: FC = () => {
     const {
         patternState,
-        savePattern,
         addColumn,
         addRow,
         fillColumn,
@@ -158,7 +157,7 @@ export const PatternWindowedComponent: FC = () => {
                 }
 
             ]}
-        />, [dropDownPosPatternCell.col, dropDownPosPatternCell.row, dropDownPosPatternCell.x, dropDownPosPatternCell.y, fillLeft, fillRight, patternState, savePattern])
+        />, [dropDownPosPatternCell, paste, showBufferData, setStart, setEnd, toggleShowBufferData, fillLeft, fillRight, patternState])
 
     const dropDownRow = useMemo(() =>
         <DropDown
@@ -191,7 +190,7 @@ export const PatternWindowedComponent: FC = () => {
                     ]
                 }
             ]}
-        />, [dropDownPos.x, dropDownPos.y, dropDownPos.row, patternState.pattern.length, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addRow, deleteRow, fillRow])
+        />, [dropDownPos.x, dropDownPos.y, dropDownPos.row, dropDownPos.viewBoxNumber, patternState.pattern.length, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addRow, deleteRow, fillRow])
 
     const dropDownColumn = useMemo(() =>
         <DropDown
@@ -224,7 +223,7 @@ export const PatternWindowedComponent: FC = () => {
                     ]
                 }
             ]}
-        />, [dropDownPos.x, dropDownPos.y, dropDownPos.col, patternState.pattern, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addColumn, deleteColumn, fillColumn])
+        />, [dropDownPos.x, dropDownPos.y, dropDownPos.col, dropDownPos.viewBoxNumber, viewBox.col, patternState.pattern, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addColumn, deleteColumn, fillColumn])
 
 
 
