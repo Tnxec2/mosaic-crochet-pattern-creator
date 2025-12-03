@@ -4,7 +4,7 @@ import { useStore } from "../../../context"
 import { IPatternRow } from "../../../model/patterncell.model"
 import { PatterCellComponent } from "../pattern_cell"
 import { PatternDraw } from "../../shared/patterndraw"
-import { CELL_TYPE, hasX, TDropDownPos, TVIEWBOX_SIZE } from "../../../model/patterntype.enum"
+import { hasX, TDropDownPos, TVIEWBOX_SIZE } from "../../../model/patterntype.enum"
 
 type PROPS = {
     row: IPatternRow,
@@ -91,10 +91,10 @@ export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dro
                         showCellCrochetType={showCellStitchType}
                         hasError={
                             // check if current cell type is X and cell type upper or down is also X
-                            hasX(col.type) &&
+                            hasX(col.t) &&
                             (
-                                (rowIndex > 0 && hasX(patternState.pattern[rowIndex - 1][colIndex + pos.col].type)) ||
-                                (rowIndex < patternState.pattern.length - 1 && hasX(patternState.pattern[rowIndex + 1][colIndex + pos.col].type))
+                                (rowIndex > 0 && hasX(patternState.pattern[rowIndex - 1][colIndex + pos.col].t)) ||
+                                (rowIndex < patternState.pattern.length - 1 && hasX(patternState.pattern[rowIndex + 1][colIndex + pos.col].t))
                             )
                         }
                     >

@@ -8,2354 +8,2354 @@ export const nya: IPattern = {
     "pattern": [
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.X
+          "c": 1,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ],
       [
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.EMPTY
+          "c": 0,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 0,
-          "type": CELL_TYPE.X
+          "c": 0,
+          "t": CELL_TYPE.X
         }
       ],
       [
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         },
         {
-          "colorindex": 1,
-          "type": CELL_TYPE.EMPTY
+          "c": 1,
+          "t": CELL_TYPE.EMPTY
         }
       ]
     ],
@@ -2367,5 +2367,6 @@ export const nya: IPattern = {
     "selectedAction": ACTION_TYPES.NONE,
     "scaleFactor": 1.0,
     "saved": false,
-    "name": "Nya Infinity Mosaic by lillabjorncrochet.com "
+    "name": "Nya Infinity Mosaic by lillabjorncrochet.com ",
+    "version": 2
   }

@@ -63,8 +63,8 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
         ctx.fillStyle = cellColor
         ctx.fillRect(x, y, cellSize, cellSize)
         
-        if (showCellStitchType && row[c].type !== CELL_TYPE.EMPTY) {
-          let image = icons[row[c].type]
+        if (showCellStitchType && row[c].t !== CELL_TYPE.EMPTY) {
+          let image = icons[row[c].t]
           if (image) {
             ctx.globalCompositeOperation = "difference";
             ctx.drawImage(image, x+2, y+2)
@@ -145,19 +145,19 @@ const getCellColor = (pattern: IPatternGrid, colors: string[], row: number, col:
     if (
         pattern[row - 1] &&
         pattern[row - 1][col - 1] &&
-        pattern[row - 1][col - 1].type.includes('r')
+        pattern[row - 1][col - 1].t.includes('r')
     ) {
         return getColor(pattern, colors, row - 1, col - 1)
     } else if (
         pattern[row - 1] &&
         pattern[row - 1][col + 1] &&
-        pattern[row - 1][col + 1].type.includes('l')
+        pattern[row - 1][col + 1].t.includes('l')
     ) {
         return getColor(pattern, colors, row - 1, col + 1)
     } else if (
         pattern[row - 1] &&
         pattern[row - 1][col] &&
-        pattern[row - 1][col].type.includes('x')
+        pattern[row - 1][col].t.includes('x')
     ) {
         return getColor(pattern, colors, row - 1, col)
     }
@@ -167,8 +167,8 @@ const getCellColor = (pattern: IPatternGrid, colors: string[], row: number, col:
 const getColor = (pattern: IPatternGrid, colors: string[], row: number, col: number) => {
     var r = Math.max(0, row)
     var c = Math.max(0, col)
-    return pattern[r][c].colorindex >= 0
-        ? colors[pattern[r][c].colorindex]
+    return pattern[r][c].c >= 0
+        ? colors[pattern[r][c].c]
         : BACKGROUND_COLOR
 }
 

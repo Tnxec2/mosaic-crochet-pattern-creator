@@ -1,11 +1,11 @@
 
-import { IPattern } from '../context'
+import { IPattern, loadPattern } from '../context'
 import { UNKNOWN_NAME } from '../model/constats'
 
 
 export const onSave = (patternState: IPattern) => {
     const fileName = patternState.name || UNKNOWN_NAME
-    const json = JSON.stringify(patternState, null, 2)
+    const json = JSON.stringify(patternState)
     const blob = new Blob([json], { type: 'application/json' })
     const href = URL.createObjectURL(blob)
 
@@ -32,7 +32,7 @@ export const loadJsonFile = (
         fr.onload = (e: ProgressEvent<FileReader>) => {
             if (e.target?.result) {
                 let json = e.target.result
-                let pat: IPattern = JSON.parse(json.toString())
+                let pat = loadPattern(json.toString())
                 if (!pat.name) pat.name = UNKNOWN_NAME
                 onLoad(pat)
             }

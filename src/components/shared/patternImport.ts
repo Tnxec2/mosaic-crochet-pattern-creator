@@ -1,6 +1,6 @@
 import MedianCut from "mediancut";
 import { IPattern } from "../../context";
-import { IPatternCell } from "../../model/patterncell.model";
+import { IPatternCell, IPatternGrid } from "../../model/patterncell.model";
 import { CELL_TYPE } from "../../model/patterntype.enum";
 import { ACTION_TYPES } from "../../model/actiontype.enum";
 import { baseName } from "../../services/file.service";
@@ -54,10 +54,10 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
     for (let row = 0; row < pattern.length; row++) {
       for (let col = 0; col < pattern[row].length; col++) {
         const cell = pattern[row][col];
-        context.fillStyle = paletteHex[cell.colorindex];
+        context.fillStyle = paletteHex[cell.c];
         if (row > 0) {
-          if (pattern[row - 1][col].type == CELL_TYPE.X) {
-            context.fillStyle = paletteHex[pattern[row - 1][col].colorindex];
+          if (pattern[row - 1][col].t === CELL_TYPE.X) {
+            context.fillStyle = paletteHex[pattern[row - 1][col].c];
           }
         }
   
@@ -68,7 +68,7 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
         context.beginPath();
         context.rect(col * cellSize, row * cellSize, cellSize, cellSize);
   
-        if (cell.type === CELL_TYPE.X) {
+        if (cell.t === CELL_TYPE.X) {
           context.moveTo(col * cellSize, row * cellSize);
           context.lineTo(col * cellSize + cellSize, row * cellSize + cellSize);
           context.moveTo(col * cellSize + cellSize, row * cellSize);
@@ -181,19 +181,19 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
     return counts
   }
   
-  function generatePattern2(colorGrid: [][], paletteHex: string[], processPattern: boolean) {
+  function generatePattern2(colorGrid: [][], paletteHex: string[], processPattern: boolean): IPatternGrid {
     const pattern: IPatternCell[][] = colorGrid.map((row) =>
       [
-        { colorindex: 0, type: CELL_TYPE.EMPTY },  // empty cell for row color
+        { c: 0, t: CELL_TYPE.EMPTY },  // empty cell for row color
         ...row.map((color) => {
-        return { colorindex: paletteHex.indexOf(color), type: CELL_TYPE.EMPTY };
+        return { c: paletteHex.indexOf(color), t: CELL_TYPE.EMPTY };
       })]
     );
     const rowColor: number[] = [];
   
     const height = pattern.length - 1;
   
-    const colors = (pattern.flat(2).map((c) => c.colorindex));
+    const colors = (pattern.flat(2).map((c) => c.c));
     
     // find first and second color
     const colorsCount = getCounts(colors)
@@ -217,9 +217,9 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
   
     // fill row color array
     const row = pattern[0];
-    const mostColor = findWinner(row.map((c) => c.colorindex))
+    const mostColor = findWinner(row.map((c) => c.c))
     rowColor[0] = mostColor
-    pattern[0][0].colorindex = rowColor[0]
+    pattern[0][0].c = rowColor[0]
     console.log(mostColor);
     
   
@@ -228,11 +228,11 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
   
       const mostColor = findWinner(
         row
-          .map((c) => c.colorindex)
+          .map((c) => c.c)
           .filter((c) => c !== rowColor[rowIndex - 1])
       );
       rowColor[rowIndex] = rowColor[rowIndex-1] === firstColor ? secondColor : firstColor
-      pattern[rowIndex][0].colorindex = rowColor[rowIndex]
+      pattern[rowIndex][0].c = rowColor[rowIndex]
     }
   
     console.log(rowColor);
@@ -245,22 +245,22 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
       const rowNext = pattern[rowIndex + 1];
   
       for (let colIndex = 1; colIndex < row.length; colIndex++) {
-        var cellColor = row[colIndex].colorindex;
-        row[colIndex].colorindex = rowColor[rowIndex];
+        var cellColor = row[colIndex].c;
+        row[colIndex].c = rowColor[rowIndex];
   
         if (
           rowColor[rowIndex] !== cellColor &&
-          (rowIndex === 0 || pattern[rowIndex - 1][0].colorindex !== cellColor) &&
-          (rowIndex === 0 || pattern[rowIndex - 1][colIndex].type !== CELL_TYPE.X)
+          (rowIndex === 0 || pattern[rowIndex - 1][0].c !== cellColor) &&
+          (rowIndex === 0 || pattern[rowIndex - 1][colIndex].t !== CELL_TYPE.X)
         ) {
-          row[colIndex].colorindex = cellColor;
+          row[colIndex].c = cellColor;
         }
   
         if (
-          row[colIndex].colorindex === rowNext[colIndex].colorindex &&
-          (rowIndex === 0 || pattern[rowIndex - 1][colIndex].type !== CELL_TYPE.X)
+          row[colIndex].c === rowNext[colIndex].c &&
+          (rowIndex === 0 || pattern[rowIndex - 1][colIndex].t !== CELL_TYPE.X)
         ) {
-          if (colIndex > 0) row[colIndex].type = CELL_TYPE.X;
+          if (colIndex > 0) row[colIndex].t = CELL_TYPE.X;
         }
       }
     }
@@ -271,7 +271,7 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
   function generatePattern(colorGrid: [][], paletteHex: string[], processPattern: boolean) {
     const pattern: IPatternCell[][] = colorGrid.map((row) =>
       row.map((color) => {
-        return { colorindex: paletteHex.indexOf(color), type: CELL_TYPE.EMPTY };
+        return { c: paletteHex.indexOf(color), t: CELL_TYPE.EMPTY };
       })
     );
     const rowColor: number[] = [];
@@ -286,32 +286,32 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
   
       const mostColor = findWinner(
         row
-          .map((c) => c.colorindex)
+          .map((c) => c.c)
           .filter((c) => rowIndex === 0 || c !== rowColor[rowIndex - 1])
       );
   
       rowColor[rowIndex] = mostColor;
   
       for (let colIndex = 1; colIndex < row.length; colIndex++) {
-        var cellColor = row[colIndex].colorindex;
-        row[colIndex].colorindex = mostColor;
+        var cellColor = row[colIndex].c;
+        row[colIndex].c = mostColor;
   
         if (
           mostColor !== cellColor &&
-          (rowIndex === 0 || pattern[rowIndex - 1][0].colorindex !== cellColor) &&
-          (rowIndex === 0 || pattern[rowIndex - 1][colIndex].type !== CELL_TYPE.X)
+          (rowIndex === 0 || pattern[rowIndex - 1][0].c !== cellColor) &&
+          (rowIndex === 0 || pattern[rowIndex - 1][colIndex].t !== CELL_TYPE.X)
         ) {
-          row[colIndex].colorindex = cellColor;
+          row[colIndex].c = cellColor;
         }
   
         if (
-          row[colIndex].colorindex === rowNext[colIndex].colorindex &&
-          (rowIndex === 0 || pattern[rowIndex - 1][colIndex].type !== CELL_TYPE.X)
+          row[colIndex].c === rowNext[colIndex].c &&
+          (rowIndex === 0 || pattern[rowIndex - 1][colIndex].t !== CELL_TYPE.X)
         ) {
-          if (colIndex > 0) row[colIndex].type = CELL_TYPE.X;
+          if (colIndex > 0) row[colIndex].t = CELL_TYPE.X;
         }
       }
-      row[0].colorindex = rowColor[rowIndex];
+      row[0].c = rowColor[rowIndex];
       //row[1].colorindex = mostColorNext
     }
   
@@ -385,7 +385,8 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
         selectedAction: ACTION_TYPES.NONE,
         scaleFactor: 1,
         saved: false,
-        name: baseName(imageName)
+        name: baseName(imageName),
+        version: 2
       })
     }
     originalImage.src = image

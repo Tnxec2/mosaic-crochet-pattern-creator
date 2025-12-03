@@ -31,7 +31,7 @@ export const PatterCellComponent: FC<propTypes> = ({
             className="cell"
             onClick={onClick}
             onMouseOver={onMouseOver}
-            title={`${cell.type.toUpperCase()} (${col}:${row}) ${hasError ? ' ERROR' : ''}`}
+            title={`${cell.t.toUpperCase()} (${col}:${row}) ${hasError ? ' ERROR' : ''}`}
             style={{
                 border: hasError ? '1px solid red' : '',
                 backgroundColor: hasError ? 'black' : color,
@@ -40,7 +40,7 @@ export const PatterCellComponent: FC<propTypes> = ({
             <div 
             className="stichtype"
             style={{
-                backgroundImage: showCellCrochetType && cell.type !== CELL_TYPE.EMPTY ? `url('./assets/${cell.type}${hasError ? '.error' : ''}.svg')` : '',
+                backgroundImage: showCellCrochetType && cell.t !== CELL_TYPE.EMPTY ? `url('./assets/${cell.t}${hasError ? '.error' : ''}.svg')` : '',
                 backgroundColor: hasError ? 'black' : color,
             }}>
                 {children} 

@@ -29,8 +29,8 @@ export const PatternSizeComponent: FC<Props> = () => {
                 cols - patternState.pattern[0].length
             ) {
                 colsToAppend.push({
-                    colorindex: row[row.length-1].colorindex,
-                    type: CELL_TYPE.EMPTY
+                    c: row[row.length-1].c,
+                    t: CELL_TYPE.EMPTY
                 })
             }
             return [
@@ -54,7 +54,7 @@ export const PatternSizeComponent: FC<Props> = () => {
 
         if (rows > patternState.pattern.length) {
             let rowsToAppend = []
-            let lastRowColorIndex = patternState.pattern[patternState.pattern.length-1][0].colorindex
+            let lastRowColorIndex = patternState.pattern[patternState.pattern.length-1][0].c
             let rowColorIndex = lastRowColorIndex === 0 ? 1 : 0
 
             while (
@@ -68,8 +68,8 @@ export const PatternSizeComponent: FC<Props> = () => {
                     index++
                 ) {
                     row.push({
-                        colorindex: rowColorIndex,
-                        type: CELL_TYPE.EMPTY
+                        c: rowColorIndex,
+                        t: CELL_TYPE.EMPTY
                     })
                 }
                 rowsToAppend.push(row)

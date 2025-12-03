@@ -3,18 +3,27 @@ import { ACTION_TYPES } from './actiontype.enum'
 import { DEFAULT_COLOR, DEFAULT_COLOR_2, DEFAULT_FONT_SIZE, UNKNOWN_NAME } from './constats'
 import { CELL_TYPE } from './patterntype.enum'
 
-export type IPatternRow = IPatternCell[]
-export type IPatternGrid = IPatternRow[]
+export type IPatternRow_Old = IPatternCell_Old[]
+export type IPatternGrid_Old = IPatternRow_Old[]
 
 
-export interface IPatternCell {
+export interface IPatternCell_Old {
     colorindex: number
     type: CELL_TYPE
 }
 
+export interface IPatternCell {
+    c: number
+    t: CELL_TYPE
+}
+
+export type IPatternRow = IPatternCell[]
+export type IPatternGrid = IPatternRow[]
+
+
 export const newPatternCell: IPatternCell = {
-    colorindex: 0,
-    type: CELL_TYPE.EMPTY
+    c: 0,
+    t: CELL_TYPE.EMPTY
 }
 
 export const initialPattern: IPattern = {
@@ -26,6 +35,7 @@ export const initialPattern: IPattern = {
     saved: true,
     name: UNKNOWN_NAME,
     previewFontSize: DEFAULT_FONT_SIZE,
+    version: 2
 }
 
 function genpat() {
@@ -34,8 +44,8 @@ function genpat() {
         const r: IPatternCell[] = []
         for (let col = 0; col < 10; col++) {
             r.push({
-                colorindex: row % 2 > 0 ? 0 : 1,
-                type: CELL_TYPE.EMPTY
+                c: row % 2 > 0 ? 0 : 1,
+                t: CELL_TYPE.EMPTY
             })
         }
         newpat.push(r)
@@ -49,8 +59,8 @@ function genpatHuge() {
         const r: IPatternCell[] = []
         for (let col = 0; col < 200; col++) {
             r.push({
-                colorindex: row % 2 > 0 ? 0 : 1,
-                type: CELL_TYPE.X
+                c: row % 2 > 0 ? 0 : 1,
+                t: CELL_TYPE.X
             })
         }
         newpat.push(r)

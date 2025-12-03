@@ -126,11 +126,11 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
       line = ``;
       for (let colIndex = row.length-1; colIndex >= 0; colIndex--) {
         const cell = row[colIndex];
-        if (stichtype !== cell.type) {
+        if (stichtype !== cell.t) {
           if (stichcount > 0) {
             line += getStichWrited(line, stichcount, stichtype);
           }
-          stichtype = cell.type;
+          stichtype = cell.t;
           stichcount = 1;
         } else {
           stichcount++;

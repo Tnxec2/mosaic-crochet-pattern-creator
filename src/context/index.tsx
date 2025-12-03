@@ -1,4 +1,4 @@
-import { initialPattern, IPatternCell, IPatternGrid } from '../model/patterncell.model'
+import { initialPattern, IPatternCell, IPatternGrid, IPatternGrid_Old } from '../model/patterncell.model'
 import { ACTION_TYPES, actionTypesToKey } from '../model/actiontype.enum'
 import {
     DEFAULT_COLOR,
@@ -16,6 +16,18 @@ import { create, StateCreator } from 'zustand'
 import { persist, createJSONStorage, devtools } from 'zustand/middleware'
 import { mug } from '../sampledata/mug'
 
+
+export interface IPattern_Old {
+    pattern: IPatternGrid_Old
+    colors: string[]
+    selectedColorIndex: number
+    selectedAction: ACTION_TYPES
+    scaleFactor: number
+    saved: boolean
+    name: string,
+    previewFontSize?: number,
+}
+
 export interface IPattern {
     pattern: IPatternGrid
     colors: string[]
@@ -24,7 +36,8 @@ export interface IPattern {
     scaleFactor: number
     saved: boolean
     name: string,
-    previewFontSize?: number
+    previewFontSize?: number,
+    version: number
 }
 
 interface PatternSlice {
@@ -104,10 +117,17 @@ const createCopyBufferSlice: StateCreator<
             const newPat = [...get().patternState.pattern]
             const bufferWidth = get().bufferdata[0].length
             const bufferHeight = get().bufferdata.length
+            const patternHeight = newPat.length;
+            const patternWidth = newPat[0].length;
+
             for (let row = 0; row < bufferHeight; row++) {
                 for (let col = 0; col < bufferWidth; col++) {
-                    if (full) newPat[coords.row + row][coords.col + col] = get().bufferdata[row][col]
-                    else newPat[coords.row + row][coords.col + col].type = get().bufferdata[row][col].type
+                    const targetRow = coords.row + row;
+                    const targetCol = coords.col + col;
+                    if (targetRow < patternHeight && targetCol < patternWidth) {
+                        if (full) newPat[targetRow][targetCol] = get().bufferdata[row][col]
+                        else newPat[targetRow][targetCol].t = get().bufferdata[row][col].t
+                    }
                 }
             }
             get().savePattern({ ...get().patternState, pattern: newPat })
@@ -153,7 +173,7 @@ const createPatternSlice: StateCreator<
     mirrorHorizontal: false,
     setMirrorHorizontal: (s: boolean) => set((state) => ({ mirrorHorizontal: s })),
     savePattern: (pattern: IPattern) => {
-        if (get().viewBox.row > pattern.pattern[0].length || get().viewBox.col > pattern.pattern.length) {
+        if (get().viewBox.row >= pattern.pattern.length || get().viewBox.col >= pattern.pattern[0].length) {
             get().gotoViewBox(0, 0)
             get().gotoViewBox(0, 0, 2)
         }
@@ -166,8 +186,8 @@ const createPatternSlice: StateCreator<
                 ...state.patternState, pattern: state.patternState.pattern.map((row) => [
                     ...row.slice(0, at + 1),
                     {
-                        colorindex: row[at].colorindex,
-                        type: CELL_TYPE.EMPTY
+                        c: row[at].c,
+                        t: CELL_TYPE.EMPTY
                     },
                     ...row.slice(at + 1)
                 ])
@@ -178,8 +198,8 @@ const createPatternSlice: StateCreator<
         let newRow: IPatternCell[] = []
         for (let index = 0; index < get().patternState.pattern[0].length; index++) {
             newRow.push({
-                colorindex: get().patternState.selectedColorIndex,
-                type: CELL_TYPE.EMPTY
+                c: get().patternState.selectedColorIndex,
+                t: CELL_TYPE.EMPTY
             })
         }
         set((state) => ({
@@ -200,18 +220,30 @@ const createPatternSlice: StateCreator<
             )
         }
     })),
-    changeCell: (row: number, col: number, mouseOver: boolean) => set((state) => ({
-        patternState: {
-            ...state.patternState,
-            pattern: state.patternState.pattern.map((r, rowI) =>
-                rowI === row || (state.mirrorHorizontal && rowI === state.patternState.pattern.length - row - 1)
-                    ? r.map((c, colI) =>
-                        colI === col || (state.mirrorVertical && colI === r.length - col - 1) ? getNewCell(c, state.patternState.selectedAction, state.patternState.selectedColorIndex, mouseOver, state.toggleStitch) : c
-                    )
-                    : r
-            )
+    changeCell: (row: number, col: number, mouseOver: boolean) => set((state) => {
+        const newPattern = [...state.patternState.pattern.map(r => [...r])];
+        const { pattern, selectedAction, selectedColorIndex } = state.patternState;
+        const { toggleStitch, mirrorHorizontal, mirrorVertical } = state;
+
+        const updateCell = (r: number, c: number) => {
+            if (r >= 0 && r < newPattern.length && c >= 0 && c < newPattern[r].length) {
+                newPattern[r][c] = getNewCell(pattern[r][c], selectedAction, selectedColorIndex, mouseOver, toggleStitch);
+            }
+        };
+
+        updateCell(row, col);
+        if (mirrorHorizontal) {
+            updateCell(pattern.length - 1 - row, col);
         }
-    })),
+        if (mirrorVertical) {
+            updateCell(row, pattern[0].length - 1 - col);
+        }
+        if (mirrorHorizontal && mirrorVertical) {
+            updateCell(pattern.length - 1 - row, pattern[0].length - 1 - col);
+        }
+
+        return { patternState: { ...state.patternState, pattern: newPattern } };
+    }),
     deleteColumn: (col: number) => {
         if (!window.confirm(`Do you really want to delete whole column ${get().patternState.pattern[0].length - col}?`)) return
         set((state) => ({
@@ -240,29 +272,33 @@ const createPatternSlice: StateCreator<
             )
         }
     })),
-    fillRight: (row: number, col: number) => set((state) => ({
-        patternState: {
-            ...state.patternState,
-            pattern: state.patternState.pattern.map((r, i) =>
-                i !== row ? r : state.mirrorVertical ? fillRowRight(
-                    fillRowLeft(r, row, r.length - col - 1, state.patternState.selectedAction, state.patternState.selectedColorIndex, state.toggleStitch),
-                    row, col, state.patternState.selectedAction, state.patternState.selectedColorIndex, state.toggleStitch)
-                    : fillRowRight(r, row, col, state.patternState.selectedAction, state.patternState.selectedColorIndex, state.toggleStitch)
-            )
-        }
-    })),
+    fillRight: (row: number, col: number) => set((state) => {
+        const { pattern, selectedAction, selectedColorIndex } = state.patternState;
+        const { toggleStitch, mirrorVertical } = state;
+        const newPattern = pattern.map((r, i) => {
+            if (i !== row) return r;
+            let newRow = fillRowRight(r, row, col, selectedAction, selectedColorIndex, toggleStitch);
+            if (mirrorVertical) {
+                newRow = fillRowLeft(newRow, row, r.length - 1 - col, selectedAction, selectedColorIndex, toggleStitch);
+            }
+            return newRow;
+        });
+        return { patternState: { ...state.patternState, pattern: newPattern } };
+    }),
 
-    fillLeft: (row: number, col: number) => set((state) => ({
-        patternState: {
-            ...state.patternState,
-            pattern: state.patternState.pattern.map((r, i) =>
-                i !== row ? r : state.mirrorVertical ? fillRowLeft(
-                    fillRowRight(r, row, r.length - col - 1, state.patternState.selectedAction, state.patternState.selectedColorIndex, state.toggleStitch),
-                    row, col, state.patternState.selectedAction, state.patternState.selectedColorIndex, state.toggleStitch)
-                    : fillRowLeft(r, row, col, state.patternState.selectedAction, state.patternState.selectedColorIndex, state.toggleStitch)
-            )
-        }
-    })),
+    fillLeft: (row: number, col: number) => set((state) => {
+        const { pattern, selectedAction, selectedColorIndex } = state.patternState;
+        const { toggleStitch, mirrorVertical } = state;
+        const newPattern = pattern.map((r, i) => {
+            if (i !== row) return r;
+            let newRow = fillRowLeft(r, row, col, selectedAction, selectedColorIndex, toggleStitch);
+            if (mirrorVertical) {
+                newRow = fillRowRight(newRow, row, r.length - 1 - col, selectedAction, selectedColorIndex, toggleStitch);
+            }
+            return newRow;
+        });
+        return { patternState: { ...state.patternState, pattern: newPattern } };
+    }),
     changeColor: (newColor: string, index: number) => {
         if (get().patternState.colors.includes(newColor)) return
 
@@ -271,7 +307,7 @@ const createPatternSlice: StateCreator<
                 ...state.patternState,
                 pattern: state.patternState.pattern.map((r) =>
                     r.map((c) =>
-                        c.colorindex === index ? { ...c, colorindex: index } : c
+                        c.c === index ? { ...c, colorindex: index } : c
                     )
                 ),
                 colors: state.patternState.colors.map((c, i) =>
@@ -331,35 +367,12 @@ const createPatternSlice: StateCreator<
         if (event.ctrlKey || event.altKey) return
 
         switch (key) {
-            case '1':
-                if (get().patternState.colors.length > 0) get().setSelectedColor(0)
-                break;
-            case '2':
-                if (get().patternState.colors.length > 1) get().setSelectedColor(1)
-                break;
-            case '3':
-                if (get().patternState.colors.length > 2) get().setSelectedColor(2)
-                break;
-            case '4':
-                if (get().patternState.colors.length > 3) get().setSelectedColor(3)
-                break;
-            case '5':
-                if (get().patternState.colors.length > 4) get().setSelectedColor(4)
-                break;
-            case '6':
-                if (get().patternState.colors.length > 5) get().setSelectedColor(5)
-                break;
-            case '7':
-                if (get().patternState.colors.length > 6) get().setSelectedColor(6)
-                break;
-            case '8':
-                if (get().patternState.colors.length > 7) get().setSelectedColor(7)
-                break;
-            case '9':
-                if (get().patternState.colors.length > 8) get().setSelectedColor(8)
-                break;
-            case '0':
-                if (get().patternState.colors.length > 9) get().setSelectedColor(9)
+            case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0':
+                const index = parseInt(key, 10);
+                const colorIndex = index === 0 ? 9 : index - 1; // map '0' to index 9
+                if (get().patternState.colors.length > colorIndex) {
+                    get().setSelectedColor(colorIndex);
+                }
                 break;
             case actionTypesToKey(ACTION_TYPES.X):
                 get().setAction(ACTION_TYPES.X)
@@ -424,16 +437,16 @@ const createViewBoxSlice: StateCreator<
     gotoViewBox: (row: number, col: number, viewBoxNumber?: number) => set((state) => {
         return viewBoxNumber === 2 ?
             {
-                viewBox2: {
-                    ...state.viewBox,
+                viewBox2: { // keep own properties like wx, wy
+                    ...state.viewBox2,
                     row: Math.max(0, Math.min(get().patternState.pattern.length - 1, Math.max(0, row))),
                     col: Math.max(0, Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col)))
                 }
             }
             :
             {
-                viewBox: {
-                    ...state.viewBox2,
+                viewBox: { // keep own properties like wx, wy
+                    ...state.viewBox,
                     row: Math.max(0, Math.min(get().patternState.pattern.length - 1, Math.max(0, row))),
                     col: Math.max(0, Math.min(get().patternState.pattern[0].length - 1, Math.max(0, col)))
                 }
@@ -508,16 +521,12 @@ const getViewBox = (state: VieboxSlice, viewBoxNumber?: number): TVIEWBOX_SIZE =
     }
 }
 
-
-
-
-
 const fillRowLeft = (r: IPatternCell[], row: number, col: number, selectedAction: ACTION_TYPES, selectedColorIndex: number, toggleStitch: boolean): IPatternCell[] => {
     let result = [...r]
     for (let index = col - 1; index >= 0; index--) {
         const cell = result[index];
 
-        if (cell.type === actionToCellType(selectedAction, cell.type)) return result
+        if (cell.t === actionToCellType(selectedAction, cell.t)) return result
         result[index] = getNewCell(cell, selectedAction, selectedColorIndex, false, toggleStitch)
     }
     return result
@@ -529,12 +538,11 @@ const fillRowRight = (r: IPatternCell[], row: number, col: number, selectedActio
     let result = [...r]
     for (let index = col + 1; index < r.length; index++) {
         const cell = result[index];
-        if (cell.type === actionToCellType(selectedAction, cell.type)) return result
+        if (cell.t === actionToCellType(selectedAction, cell.t)) return result
         result[index] = getNewCell(cell, selectedAction, selectedColorIndex, false, toggleStitch)
     }
     return result
 }
-
 
 export const useStore = create<PatternSlice & VieboxSlice & CopyBufferSlice>()(
     persist(
@@ -556,22 +564,94 @@ export const useStore = create<PatternSlice & VieboxSlice & CopyBufferSlice>()(
             showCellStitchType: state.showCellStitchType,
             isPatternWindowed: state.isPatternWindowed,
         }),
+        version: 2,
+        migrate: (prevState: any, prevVersion) => {
+            console.log({ prevState, prevVersion })
+            return { ...prevState, patternState: migrateOldPatternState(prevState.patternState) }
+        }
     })
 );
 
 
 // migration from old version with context
 if (!localStorage.getItem(KEY_STORAGE_ZUSTAND)) {
-
     let saved = localStorage.getItem(KEY_STORAGE_OLD)
     if (saved) {
         console.log("migrate old context state...");
-        let pattern = JSON.parse(saved) as IPattern
-        if (!pattern.name) pattern.name = UNKNOWN_NAME
-        useStore.getState().savePattern(pattern)
+        useStore.getState().savePattern(loadPattern(saved))
     } else {
         useStore.getState().savePattern(mug)
     }
     // TODO: 
     //localStorage.removeItem(KEY_STORAGE)
+} else {
+    let saved = localStorage.getItem(KEY_STORAGE_ZUSTAND)
+    
+    if (saved && saved.indexOf('"version":') === -1) {
+        console.log('migrate saved pattern to version 2');
+        
+        useStore.getState().savePattern(loadOldPattern(saved))
+    }
+}
+
+export function loadPattern(saved: string): IPattern {
+    if (saved.indexOf('"version":') === -1) {
+        // old format detected, do conversion
+        console.log('load old pattern format')
+        return loadOldPattern(saved)
+    } else {
+               
+        let pattern = JSON.parse(saved) as IPattern
+        if (!pattern.name) pattern.name = UNKNOWN_NAME
+        return pattern
+    }
+}
+
+export function loadOldPattern(saved: string): IPattern {
+    let oldpattern = JSON.parse(saved) as IPattern_Old
+    let newpat: IPatternGrid = []
+    for (let row = 0; row < oldpattern.pattern.length; row++) {
+        const r: IPatternCell[] = []
+        for (let col = 0; col < oldpattern.pattern[0].length; col++) {
+            const oldcell = oldpattern.pattern[row][col] as any
+            r.push({
+                c: oldcell.colorindex,
+                t: oldcell.type
+            })
+        }
+        newpat.push(r)
+    }
+    let pattern: IPattern = {
+        ...oldpattern,
+        pattern: newpat,
+        version: 2
+    }
+    if (!pattern.name) pattern.name = UNKNOWN_NAME
+    return pattern
+}
+
+export function migrateOldPatternState(oldState: any): IPattern {
+    if (!oldState) return initialPattern
+    if (oldState.version && oldState.version >= 2) return oldState as IPattern
+
+    let oldpattern = oldState as IPattern_Old
+    let newpat: IPatternGrid = []
+    for (let row = 0; row < oldpattern.pattern.length; row++) {
+        const r: IPatternCell[] = []
+        for (let col = 0; col < oldpattern.pattern[0].length; col++) {
+            const oldcell = oldpattern.pattern[row][col] as any
+            r.push({
+                c: oldcell.colorindex,
+                t: oldcell.type
+            })
+        }
+        newpat.push(r)
+    }
+    let pattern: IPattern = {
+        ...oldpattern,
+        pattern: newpat,
+        version: 2
+    }
+    if (!pattern.name) pattern.name = UNKNOWN_NAME
+    return pattern
 }

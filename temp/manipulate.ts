@@ -1,8 +1,8 @@
-import { IPattern } from "../src/context";
+import { IPattern, IPattern_Old } from "../src/context";
 
 import * as fs from 'fs';
 
-import { IPatternGrid } from "../src/model/patterncell.model";
+import { IPatternCell, IPatternGrid } from "../src/model/patterncell.model";
 
 /*
 
@@ -32,7 +32,30 @@ const outFile = 'temp/output_pattern.json';
 
 fs.readFile(origFile, 'utf8', (error: any, content: string) => {
     if (!error) {
-        var data: IPattern = JSON.parse(content);
+        var data: IPattern;
+        if (content.indexOf("version:") === -1) {
+            var oldPattern = JSON.parse(content) as IPattern_Old;
+            let newpat: IPatternGrid = []
+            for (let row = 0; row < oldPattern.pattern.length; row++) {
+                const r: IPatternCell[] = []
+                for (let col = 0; col < oldPattern.pattern[0].length; col++) {
+                    const oldcell = oldPattern.pattern[row][col] as any
+                    r.push({
+                        c: oldcell.colorindex,
+                        t: oldcell.type
+                    })
+                }
+                newpat.push(r)
+            }
+            data = {
+                ...oldPattern,
+                pattern: newpat,
+                version: 2
+            }
+        } else {
+            data = JSON.parse(content) as IPattern;
+        }
+        
         console.log(`pattern name: ${data.name}`);
         console.log(`pattern rows: ${data.pattern.length}, cols: ${data.pattern[0].length}`);
 

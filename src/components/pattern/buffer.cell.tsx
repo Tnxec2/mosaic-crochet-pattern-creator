@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import { CELL_TYPE } from '../../model/patterntype.enum'
 import './pattern_cell.css'
 import { IPatternCell } from '../../model/patterncell.model'
@@ -21,7 +21,7 @@ export const BufferCellComponent: FC<propTypes> = ({
     return (
         <div
             className="cell"
-            title={`${cell.type.toUpperCase()} (${col}:${row})`}
+            title={`${cell.t.toUpperCase()} (${col}:${row})`}
             style={{
                 backgroundColor: color,
             }}
@@ -29,7 +29,7 @@ export const BufferCellComponent: FC<propTypes> = ({
             <div 
             className="stichtype"
             style={{
-                backgroundImage: cell.type !== CELL_TYPE.EMPTY ? `url('./assets/${cell.type}.svg')` : '',
+                backgroundImage: cell.t !== CELL_TYPE.EMPTY ? `url('./assets/${cell.t}.svg')` : '',
             }}>
                 {children} 
             </div>
