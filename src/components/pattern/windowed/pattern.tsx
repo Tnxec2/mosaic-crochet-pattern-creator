@@ -248,9 +248,9 @@ export const PatternWindowedComponent: FC = () => {
                             className="noselect d-flex flex-column"
                             id="pattern"
                         >
-                            <HoldButton className='btn-outline-secondary mb-1' onFire={() => gotoViewBoxUp(1)}>🔼</HoldButton>
-                            <div className='d-flex flex-row overflow-auto'>
-                                <HoldButton className='btn-outline-secondary me-1' onFire={() => gotoViewBoxLeft(1)}>◀️</HoldButton>
+                            <HoldButton className='btn-outline-secondary btn-sm mb-1' onFire={() => gotoViewBoxUp(1)}>🔼</HoldButton>
+                            <div className='d-flex flex-row'>
+                                <HoldButton className='btn-outline-secondary btn-sm me-1' onFire={() => gotoViewBoxLeft(1)}>◀️</HoldButton>
 
                                 <div ref={viewBoxRefCallback}>
                                     <PatternRowHeaderWindowedComponent setDropDownPos={(pos) => setDropDownPos({...pos, viewBoxNumber: 1})} pos={viewBox} />
@@ -269,9 +269,9 @@ export const PatternWindowedComponent: FC = () => {
                                         ))}
                                     <PatternRowHeaderWindowedComponent setDropDownPos={(pos) => setDropDownPos({...pos, viewBoxNumber: 1})} pos={viewBox} />
                                 </div>
-                                <HoldButton className='btn-outline-secondary ms-1' onFire={() => gotoViewBoxRight(1)}>▶️</HoldButton>
+                                <HoldButton className='btn-outline-secondary btn-sm ms-1' onFire={() => gotoViewBoxRight(1)}>▶️</HoldButton>
                             </div>
-                            <HoldButton className='btn-outline-secondary mt-1' onFire={() => gotoViewBoxDown(1)}>🔽</HoldButton>
+                            <HoldButton className='btn-outline-secondary btn-sm mt-1' onFire={() => gotoViewBoxDown(1)}>🔽</HoldButton>
                         </div>
                         {splittedViewBox && 
 
@@ -279,9 +279,9 @@ export const PatternWindowedComponent: FC = () => {
                             className="noselect d-flex flex-column ms-3"
                             id="pattern"
                         >
-                            <HoldButton className='btn-outline-secondary mb-1' onFire={() => gotoViewBoxUp(1, 2)}>🔼</HoldButton>
-                            <div className='d-flex flex-row overflow-auto'>
-                                <HoldButton className='btn-outline-secondary me-1' onFire={() => gotoViewBoxLeft(1, 2)}>◀️</HoldButton>
+                            <HoldButton className='btn-outline-secondary btn-sm mb-1' onFire={() => gotoViewBoxUp(1, 2)}>🔼</HoldButton>
+                            <div className='d-flex flex-row'>
+                                <HoldButton className='btn-outline-secondary btn-sm me-1' onFire={() => gotoViewBoxLeft(1, 2)}>◀️</HoldButton>
 
                                 <div ref={viewBox2RefCallback}>
                                     <PatternRowHeaderWindowedComponent setDropDownPos={(pos) => setDropDownPos({...pos, viewBoxNumber: 2})} pos={viewBox2} />
@@ -300,9 +300,9 @@ export const PatternWindowedComponent: FC = () => {
                                         ))}
                                     <PatternRowHeaderWindowedComponent setDropDownPos={(pos) => setDropDownPos({...pos, viewBoxNumber: 2})} pos={viewBox2} />
                                 </div>
-                                <HoldButton className='btn-outline-secondary ms-1' onFire={() => gotoViewBoxRight(1, 2)}>▶️</HoldButton>
+                                <HoldButton className='btn-outline-secondary btn-sm ms-1' onFire={() => gotoViewBoxRight(1, 2)}>▶️</HoldButton>
                             </div>
-                            <HoldButton className='btn-outline-secondary mt-1' onFire={() => gotoViewBoxDown(1, 2)}>🔽</HoldButton>
+                            <HoldButton className='btn-outline-secondary btn-sm mt-1' onFire={() => gotoViewBoxDown(1, 2)}>🔽</HoldButton>
                         </div>
                         }
                     </div>
