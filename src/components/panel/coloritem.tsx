@@ -13,7 +13,11 @@ type Props = {
 
 export const ColorItemComponent: FC<Props> = ({colorIndex, color, changeColor, setSelectedColor, deleteColor, selected, canByDeleted}) => {
 
-const [value, debouncedValue, setValue] = useStateDebounced(color, 1000);
+  const [value, debouncedValue, setValue] = useStateDebounced(color, 1000);
+
+  useEffect(() => {
+    setValue(color);
+  }, [color]);
 
   useEffect(() => changeColor(debouncedValue, colorIndex), [changeColor, colorIndex, debouncedValue])
 
