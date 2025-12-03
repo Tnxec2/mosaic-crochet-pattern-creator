@@ -1,8 +1,8 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import { useStore } from "../../context";
 import Canvas from "./canvas"
-import { DEFAULT_FONT_SIZE } from "../../model/constats";
-import { Button, InputGroup, Modal } from "react-bootstrap";
+import { BACKGROUND_COLOR, DEFAULT_FONT_SIZE } from "../../model/constats";
+import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { ScaleFactor } from "../shared/scalefactor";
 import { PatternName } from "../shared/patternname";
 import { PatternDraw } from "../shared/patterndraw";
@@ -15,33 +15,30 @@ interface PROPS {
   onClose: () => void
 }
 
+const stitchTypeMap: Record<CELL_TYPE, string> = {
+  [CELL_TYPE.EMPTY]: 'sc',
+  [CELL_TYPE.X]: 'dc',
+  [CELL_TYPE.L]: 'dc left',
+  [CELL_TYPE.R]: 'dc right',
+  [CELL_TYPE.LR]: '(dc right, dc left)',
+  [CELL_TYPE.LX]: '(dc, DC left)',
+  [CELL_TYPE.XR]: '(dc right, dc)',
+  [CELL_TYPE.LXR]: '(dc right, dc, dc left)',
+};
+
 const stichTypeToWrited = (type: CELL_TYPE): string => {
-  switch (type) {
-    case CELL_TYPE.EMPTY:
-      return 'sc';
-    case CELL_TYPE.X:
-      return 'dc';
-    case CELL_TYPE.L:
-      return 'dc left';
-    case CELL_TYPE.R:
-      return 'dc right';
-    case CELL_TYPE.LR:
-      return '(dc right, dc left)';
-    case CELL_TYPE.LX:
-      return '(dc, DC left)';
-    case CELL_TYPE.XR:
-      return '(dc right, dc)';
-    case CELL_TYPE.LXR:
-      return '(dc right, dc, dc left)';
-    default:
-      return '';
-  }
+  return stitchTypeMap[type] || '';
 }
 const getStichWrited = (line: string, stichcount: number, stichtype: CELL_TYPE) => {
   return `${line.length > 0 ? ', ' : ''}${stichcount > 1 ? stichcount + ' ' : ''}${stichTypeToWrited(stichtype)}`;
 }
 
 const MIN_FONT_SIZE = 6
+
+type GroupedStitch = {
+  type: CELL_TYPE;
+  count: number;
+};
 
 export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   const {
@@ -113,36 +110,36 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
 
     var head = `<h1>${patternState.name.charAt(0).toUpperCase() + patternState.name.slice(1)}</h1>\n`;
 
-    let stichtype = CELL_TYPE.EMPTY;
-    let stichcount = 0;
-    let line = '';
     let htmlText = ``;
-    
-    // process the pattern from down to up
-    for (let rowIndex = patternState.pattern.length-1; rowIndex >= 0 ; rowIndex--) {
-      const row = patternState.pattern[rowIndex];
-      stichcount = 0;
-      stichtype = CELL_TYPE.EMPTY;
-      line = ``;
-      for (let colIndex = row.length-1; colIndex >= 0; colIndex--) {
-        const cell = row[colIndex];
-        if (stichtype !== cell.t) {
-          if (stichcount > 0) {
-            line += getStichWrited(line, stichcount, stichtype);
-          }
-          stichtype = cell.t;
-          stichcount = 1;
+
+    const groupStitches = (row: any[]): GroupedStitch[] => {
+      if (!row || row.length === 0) {
+        return [];
+      }
+      const grouped: GroupedStitch[] = [];
+      let lastType = row[0].t;
+      let count = 1;
+      for (let i = 1; i < row.length; i++) {
+        if (row[i].t === lastType) {
+          count++;
         } else {
-          stichcount++;
+          grouped.push({ type: lastType, count });
+          lastType = row[i].t;
+          count = 1;
         }
       }
-      if (stichcount > 0) {
-        line += getStichWrited(line, stichcount, stichtype);
-      }
-      htmlText += `<p>Row ${patternState.pattern.length-rowIndex}: ` + line + '</p>\n';
+      grouped.push({ type: lastType, count });
+      return grouped;
+    };
+
+    // process the pattern from down to up
+    for (let rowIndex = patternState.pattern.length - 1; rowIndex >= 0; rowIndex--) {
+      const row = [...patternState.pattern[rowIndex]].reverse();
+      const groupedStitches = groupStitches(row);
+      const line = groupedStitches.map(stitch => `${stitch.count > 1 ? stitch.count + ' ' : ''}${stichTypeToWrited(stitch.type)}`).join(', ');
+      htmlText += `<p>Row ${patternState.pattern.length - rowIndex}: ${line}</p>\n`;
     }
-    console.log(htmlText);
-    
+
     pdf.html(`<div style="width:500px;">${head}<div style="font-size: 10pt;">${htmlText}</div></div>`, {
       margin: 30,
       width: 500,
@@ -197,19 +194,14 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
                 ➕
             </Button>
 
-            <InputGroup.Text onClick={(e) => {
-              setShowCellStitchType(!showCellStitchType)
-            }}>show stitch type</InputGroup.Text>
-            <InputGroup.Checkbox
-
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
+            <Form.Check
+              type="switch"
+              id="show-stitch-type-switch"
+              label="show stitch type"
+              className="ms-3"
               checked={showCellStitchType}
-              onChange={(e) => {
-                setShowCellStitchType(e.target.checked)
-              }}
-            />
+              onChange={(e) => setShowCellStitchType(e.target.checked)}
+            />            
 
             <ScaleFactor />
           </InputGroup>
@@ -245,4 +237,3 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
 
   )
 }
-
