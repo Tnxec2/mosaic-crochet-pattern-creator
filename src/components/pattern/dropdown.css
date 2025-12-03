@@ -1,14 +1,12 @@
 
 .cell-dropdown {
-    position: fixed !important;
+    position: absolute !important;
     transform-origin: left top;
     z-index: 99999;
 } 
 
 .menu {
-    /* position: absolute; */
     list-style-type: none;
-    /* margin: 5px 0; */
     padding: 0;
     border: 1px solid #c2c2c2;
     width: max-content;
