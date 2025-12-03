@@ -5,6 +5,7 @@ import { IPatternRow } from "../../../model/patterncell.model"
 import { TDropDownPos, TVIEWBOX_SIZE } from "../../../model/patterntype.enum"
 import { PatternCellContainer } from "../pattern.cell.container"
 
+
 type PROPS = {
     row: IPatternRow,
     rowIndex: number,

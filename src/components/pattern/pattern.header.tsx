@@ -4,6 +4,9 @@ import { Help } from "./help"
 import { Card, InputGroup } from "react-bootstrap"
 import { PatternName } from "../shared/patternname"
 import { ScaleFactor } from "../shared/scalefactor"
+import { BaselineRedo } from "../../icons/redo"
+import { BaselineUndo } from "../../icons/undo"
+import { UNDO_LIMIT } from "../../model/constats"
 
 export const PatternHeaderComponent: FC = () => {
     const {
@@ -12,7 +15,11 @@ export const PatternHeaderComponent: FC = () => {
         isPatternWindowed,
         toggleIsPatternWindowed,
         splittedViewBox,
-        toggleSplittedViewBox
+        toggleSplittedViewBox,
+        undo,
+        redo,
+        past,
+        future
     } = useStore((state) => state)
 
     return (
@@ -20,7 +27,22 @@ export const PatternHeaderComponent: FC = () => {
             <Card.Title>
                 Pattern
                 <Help />
-                <div className="float-end">                    
+                <div className="float-end">
+                    <div className="btn-group me-3" title={`maximale history ${UNDO_LIMIT} steps`}>
+                        <button type="button" className="btn btn-sm btn-outline-warning" onClick={() => {
+                            undo()
+                            }}
+                            disabled={past.length === 0}>
+                            <BaselineUndo /> Undo
+                        </button>
+                        <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => {
+                            redo()
+                            }}
+                            disabled={future.length === 0}
+                        >
+                            <BaselineRedo /> Redo
+                        </button>
+                    </div>                    
                     <div className="form-check form-check-inline form-switch">
                         <input
                             className="form-check-input"

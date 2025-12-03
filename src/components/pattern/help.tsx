@@ -9,7 +9,7 @@ export const Help: FC<Props> = () => {
 
     return (
         <>
-            <Button className='ms-3' variant="info" ref={targetHelp} onClick={() => setShowHelp(!showHelp)}>Help</Button>
+            <Button className='ms-3' variant="outline-info" ref={targetHelp} onClick={() => setShowHelp(!showHelp)}>Help</Button>
             <Overlay target={targetHelp.current} show={showHelp} placement="bottom">
                 {({
                     placement: _placement,

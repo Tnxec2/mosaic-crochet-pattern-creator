@@ -13,6 +13,7 @@ export const KEY_STORAGE_ZUSTAND = 'com.kontranik.mosaiccrochetpattern.storage'
 export const UNKNOWN_NAME = 'unnamed pattern'
 export const DEFAULT_FONT_SIZE = 10
 export const VIEWBOX_MIN_SIZE = 10
+export const UNDO_LIMIT = 20
 export const DEFAULT_VIEWBOX: TVIEWBOX_SIZE = {
         row: 0,
         col: 0,

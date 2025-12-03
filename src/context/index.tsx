@@ -5,6 +5,7 @@ import {
     DEFAULT_VIEWBOX,
     KEY_STORAGE_OLD,
     KEY_STORAGE_ZUSTAND,
+    UNDO_LIMIT,
     UNKNOWN_NAME,
     VIEWBOX_MIN_SIZE
 } from '../model/constats'
@@ -56,7 +57,7 @@ interface PatternSlice {
     setMirrorHorizontal: (s: boolean) => void
     toggleStitch: boolean
     setToggleStitch: (s: boolean) => void
-    savePattern: (pattern: IPattern) => void
+    savePattern: (pattern: IPattern, ignoreHistory?: boolean) => void
     newPattern: () => void
     addColumn: (at: number) => void
     addRow: (at: number) => void
@@ -105,8 +106,18 @@ interface CopyBufferSlice {
     toggleShowBufferData: () => void
 }
 
+// New interface for history state
+interface HistoryState {
+    past: IPattern[];
+    future: IPattern[];
+    undo: () => void;
+    redo: () => void;
+    clearHistory: () => void;
+    addPatternStateToHistory: (stateToSave: IPattern) => void;
+}
+
 const createCopyBufferSlice: StateCreator<
-    CopyBufferSlice & PatternSlice & VieboxSlice,
+    CopyBufferSlice & PatternSlice & VieboxSlice & HistoryState,
     [],
     [],
     CopyBufferSlice
@@ -114,7 +125,10 @@ const createCopyBufferSlice: StateCreator<
     bufferdata: [],
     paste: (coords: TCellCoords, full?: boolean) => {
         if (get().bufferdata.length > 0) {
-            const newPat = [...get().patternState.pattern]
+            // Save current state to history before modification
+            get().addPatternStateToHistory(get().patternState);
+
+            const newPat = JSON.parse(JSON.stringify(get().patternState.pattern)) as IPatternGrid;
             const bufferWidth = get().bufferdata[0].length
             const bufferHeight = get().bufferdata.length
             const patternHeight = newPat.length;
@@ -130,7 +144,7 @@ const createCopyBufferSlice: StateCreator<
                     }
                 }
             }
-            get().savePattern({ ...get().patternState, pattern: newPat })
+            set((state) => ({ patternState: { ...state.patternState, pattern: newPat } }));
         }
     },
     startCopy: { row: 0, col: 0 },
@@ -152,7 +166,7 @@ function between(value: number, first: number, last: number) {
 }
 
 const createPatternSlice: StateCreator<
-    PatternSlice & VieboxSlice,
+    PatternSlice & VieboxSlice & HistoryState,
     [],
     [],
     PatternSlice
@@ -172,16 +186,27 @@ const createPatternSlice: StateCreator<
     setMirrorVertical: (s: boolean) => set((state) => ({ mirrorVertical: s })),
     mirrorHorizontal: false,
     setMirrorHorizontal: (s: boolean) => set((state) => ({ mirrorHorizontal: s })),
-    savePattern: (pattern: IPattern) => {
+    savePattern: (pattern: IPattern, ignoreHistory?: boolean) => {
+        // Save current state to history before modification
+        if (!ignoreHistory)
+            get().addPatternStateToHistory(get().patternState);
         if (get().viewBox.row >= pattern.pattern.length || get().viewBox.col >= pattern.pattern[0].length) {
             get().gotoViewBox(0, 0)
             get().gotoViewBox(0, 0, 2)
         }
         set((state) => ({ patternState: pattern }))
     },
-    newPattern: () => set((state) => ({ patternState: initialPattern })),
+    newPattern: () => set((state) => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(state.patternState);
+        return { patternState: initialPattern }
+    }),
     addColumn: (at: number) => {
-        set((state) => ({
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+        set((state) => {
+            // Ensure patternState is a new object for history tracking
+            const newPatternState = {
             patternState: {
                 ...state.patternState, pattern: state.patternState.pattern.map((row) => [
                     ...row.slice(0, at + 1),
@@ -191,10 +216,14 @@ const createPatternSlice: StateCreator<
                     },
                     ...row.slice(at + 1)
                 ])
-            }
-        }))
+            }};
+            return newPatternState;
+        });
     },
     addRow: (atRow: number) => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+
         let newRow: IPatternCell[] = []
         for (let index = 0; index < get().patternState.pattern[0].length; index++) {
             newRow.push({
@@ -202,25 +231,34 @@ const createPatternSlice: StateCreator<
                 t: CELL_TYPE.EMPTY
             })
         }
-        set((state) => ({
+        set((state) => {
+            // Ensure patternState is a new object for history tracking
+            const newPatternState = {
             patternState: {
                 ...state.patternState, pattern: [
                     ...state.patternState.pattern.slice(0, atRow + 1),
                     newRow,
                     ...state.patternState.pattern.slice(atRow + 1)
                 ]
-            }
-        }))
+            }};
+            return newPatternState;
+        });
     },
-    fillColumn: (col: number) => set((state) => ({
+    fillColumn: (col: number) => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+        set((state) => ({
         patternState: {
             ...state.patternState,
-            pattern: state.patternState.pattern.map((r) =>
+            pattern: state.patternState.pattern.map((r) => // Map creates new array, good for immutability
                 r.map((c, i) => (i !== col ? c : getNewCell(c, state.patternState.selectedAction, state.patternState.selectedColorIndex, false, state.toggleStitch)))
             )
         }
-    })),
-    changeCell: (row: number, col: number, mouseOver: boolean) => set((state) => {
+    }));},
+    changeCell: (row: number, col: number, mouseOver: boolean) => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+        set((state) => {
         const newPattern = [...state.patternState.pattern.map(r => [...r])];
         const { pattern, selectedAction, selectedColorIndex } = state.patternState;
         const { toggleStitch, mirrorHorizontal, mirrorVertical } = state;
@@ -243,8 +281,10 @@ const createPatternSlice: StateCreator<
         }
 
         return { patternState: { ...state.patternState, pattern: newPattern } };
-    }),
+    });},
     deleteColumn: (col: number) => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
         if (!window.confirm(`Do you really want to delete whole column ${get().patternState.pattern[0].length - col}?`)) return
         set((state) => ({
             patternState: {
@@ -256,6 +296,8 @@ const createPatternSlice: StateCreator<
         }))
     },
     deleteRow: (row: number) => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
         if (!window.confirm(`Do you really want to delete whole row ${get().patternState.pattern.length - row}?`)) return
         set((state) => ({
             patternState: {
@@ -264,15 +306,20 @@ const createPatternSlice: StateCreator<
             }
         }))
     },
-    fillRow: (row: number) => set((state) => ({
+    fillRow: (row: number) => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+        set((state) => ({
         patternState: {
             ...state.patternState,
-            pattern: state.patternState.pattern.map((r, i) =>
+            pattern: state.patternState.pattern.map((r, i) => // Map creates new array, good for immutability
                 i !== row ? r : r.map((c) => getNewCell(c, state.patternState.selectedAction, state.patternState.selectedColorIndex, false, state.toggleStitch))
             )
         }
-    })),
-    fillRight: (row: number, col: number) => set((state) => {
+    }));},
+    fillRight: (row: number, col: number) => { // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+        set((state) => {
         const { pattern, selectedAction, selectedColorIndex } = state.patternState;
         const { toggleStitch, mirrorVertical } = state;
         const newPattern = pattern.map((r, i) => {
@@ -284,9 +331,11 @@ const createPatternSlice: StateCreator<
             return newRow;
         });
         return { patternState: { ...state.patternState, pattern: newPattern } };
-    }),
+    });},
 
-    fillLeft: (row: number, col: number) => set((state) => {
+    fillLeft: (row: number, col: number) => { // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+        set((state) => {
         const { pattern, selectedAction, selectedColorIndex } = state.patternState;
         const { toggleStitch, mirrorVertical } = state;
         const newPattern = pattern.map((r, i) => {
@@ -298,9 +347,11 @@ const createPatternSlice: StateCreator<
             return newRow;
         });
         return { patternState: { ...state.patternState, pattern: newPattern } };
-    }),
+    });},
     changeColor: (newColor: string, index: number) => {
         if (get().patternState.colors.includes(newColor)) return
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
 
         set((state) => ({
             patternState: {
@@ -316,12 +367,15 @@ const createPatternSlice: StateCreator<
             }
         }))
     },
-    addColor: () => set((state) => ({
+    addColor: () => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+        set((state) => ({
         patternState: {
             ...state.patternState,
             colors: [...state.patternState.colors, DEFAULT_COLOR]
         }
-    })),
+    }));},
     setSelectedColor: (index: number) => set((state) => ({
         patternState: {
             ...state.patternState,
@@ -330,27 +384,29 @@ const createPatternSlice: StateCreator<
         }
     })
     ),
-    deleteColor: (index: number) => set((state) => ({
+    deleteColor: (index: number) => {
+        // Save current state to history before modification
+        get().addPatternStateToHistory(get().patternState);
+        set((state) => ({
         patternState: {
             ...state.patternState,
             colors: state.patternState.colors.filter((c, i) => i !== index)
         }
-    })
-    ),
-    saveFontSize: (fontSize: number) => set((state) => ({
+    }));},
+    saveFontSize: (fontSize: number) => {
+        set((state) => ({
         patternState: {
             ...state.patternState,
             previewFontSize: fontSize
         }
-    })
-    ),
-    setAction: (action: ACTION_TYPES) => set((state) => ({
+    }));},
+    setAction: (action: ACTION_TYPES) => {
+        set((state) => ({
         patternState: {
             ...state.patternState,
             selectedAction: action
         }
-    })
-    ),
+    }));},
     changeScale: (increase: boolean) => {
         let factor = get().patternState.scaleFactor || 1
 
@@ -361,9 +417,11 @@ const createPatternSlice: StateCreator<
         if (increase && factor < 10)
             set((state) => ({ patternState: { ...state.patternState, scaleFactor: factor + 0.1 } }))
     },
-    resetScale: () => set((state) => ({ patternState: { ...state.patternState, scaleFactor: 1 } })),
+    resetScale: () => {
+        set((state) => ({ patternState: { ...state.patternState, scaleFactor: 1 } }));
+    },
     handleKeyDown: (event: KeyboardEvent) => {
-        const key = event.key;
+        const key = event.key.toLowerCase(); // Normalize key to lowercase
         if (event.ctrlKey || event.altKey) return
 
         switch (key) {
@@ -401,6 +459,7 @@ const createPatternSlice: StateCreator<
             case actionTypesToKey(ACTION_TYPES.NONE):
                 get().setAction(ACTION_TYPES.NONE)
                 break;
+            // These toggle actions also change patternState indirectly (via rendering logic), so they should also save history
             case 'v':
                 set((state) => ({ mirrorVertical: !state.mirrorVertical }))
                 break;
@@ -409,15 +468,19 @@ const createPatternSlice: StateCreator<
                 break;
             case 't':
                 set((state) => ({ toggleStitch: !state.toggleStitch }))
+                // For these toggles, the patternState itself is not directly modified,
+                // but the rendering might change, so we might want to save the state.
+                // However, the current middleware only tracks patternState changes.
+                // If these toggles should be undoable, their effect on patternState
+                // needs to be explicitly triggered and tracked.
                 break;
             default:
                 break;
         }
     },
 })
-
 const createViewBoxSlice: StateCreator<
-    PatternSlice & VieboxSlice,
+    PatternSlice & VieboxSlice & HistoryState,
     [],
     [],
     VieboxSlice
@@ -544,12 +607,69 @@ const fillRowRight = (r: IPatternCell[], row: number, col: number, selectedActio
     return result
 }
 
-export const useStore = create<PatternSlice & VieboxSlice & CopyBufferSlice>()(
+// New slice for undo/redo history
+const createHistorySlice: StateCreator<
+    PatternSlice & VieboxSlice & CopyBufferSlice & HistoryState,
+    [],
+    [],
+    HistoryState
+> = (set, get) => ({
+    past: [],
+    future: [],
+    undo: () => {
+        const { past, patternState, future } = get();
+        if (past.length === 0) return;
+
+        const previous = past[past.length - 1];
+        const newPast = past.slice(0, past.length - 1);
+
+        set((state) => ({
+            ...state,
+            patternState: previous,
+            past: newPast,
+            future: [patternState, ...future],
+        }), false); // 'undo' name for devtools and to prevent re-recording
+    },
+    redo: () => {
+        const { past, patternState, future } = get();
+        if (future.length === 0) return;
+
+        const next = future[0];
+        const newFuture = future.slice(1);
+
+        set((state) => ({
+            ...state,
+            patternState: next,
+            past: [...past, patternState],
+            future: newFuture,
+        }), false); // 'redo' name for devtools and to prevent re-recording
+    },
+    clearHistory: () => {
+        set((state) => ({
+            ...state,
+            past: [],
+            future: [],
+        }), false); // 'clearHistory' name for devtools and to prevent re-recording
+    },
+    addPatternStateToHistory: (stateToSave: IPattern) => {
+        const { past } = JSON.parse(JSON.stringify(get())); // Deep copy to avoid reference issues
+
+        set((state) => ({
+            ...state,
+            past: [...(past.length >= UNDO_LIMIT ? past.slice(1) : past), stateToSave],
+            future: [], // Clear future when a new action is performed
+        }), false); // Name for devtools
+    },
+});
+
+// Combine all slices and export the store
+export const useStore = create<PatternSlice & VieboxSlice & CopyBufferSlice & HistoryState>()(
     persist(
         devtools((...a) => ({
             ...createPatternSlice(...a),
             ...createViewBoxSlice(...a),
             ...createCopyBufferSlice(...a),
+            ...createHistorySlice(...a), // Add the history slice
         })), {
         name: KEY_STORAGE_ZUSTAND,
         storage: createJSONStorage(() => localStorage),
