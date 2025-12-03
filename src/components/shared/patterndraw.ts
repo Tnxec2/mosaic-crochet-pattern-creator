@@ -10,18 +10,18 @@ export type TSize = {
     height: number
 }
 
+const iconCache: { [key: number]: Record<string, HTMLCanvasElement | null> } = {};
+
 const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, showCellStitchType: boolean, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): TSize =>  {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
 
     const rows = pattern.length
     const cols = pattern[0].length
-    const maxCols = Math.max(cols)
-    const maxRows = Math.max(rows)
 
     ctx.font = `normal ${fontSize}pt monospace`
-    let metricsCols = ctx.measureText(maxCols.toString());
-    let metricsRows = ctx.measureText(maxRows.toString());
+    let metricsCols = ctx.measureText(cols.toString());
+    let metricsRows = ctx.measureText(rows.toString());
     //let fontHeight = metricsCols.fontBoundingBoxAscent + metricsCols.fontBoundingBoxDescent;
     let actualHeight = metricsCols.actualBoundingBoxAscent + metricsCols.actualBoundingBoxDescent;
 
@@ -37,8 +37,6 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
     canvas.width = w
     canvas.height = h
 
-    var cellColor = BACKGROUND_COLOR
-
     ctx.font = `normal ${fontSize}pt monospace`
     ctx.fillStyle = BACKGROUND_COLOR
     ctx.fillRect(0, 0, w, h)
@@ -46,16 +44,19 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
 
 
     const iconSize = cellSize-4
-    const icons: Record<string, HTMLCanvasElement | null> = {}
-    Object.values(CELL_TYPE).forEach(cellType => {
-      icons[cellType] = DRAW.draw(iconSize, cellType)
-    });
+    if (!iconCache[iconSize]) {
+      iconCache[iconSize] = {};
+      Object.values(CELL_TYPE).forEach(cellType => {
+        iconCache[iconSize][cellType] = DRAW.draw(iconSize, cellType);
+      });
+    }
+    const icons = iconCache[iconSize];
 
     // pattern content
     for (let r = rows - 1; r >= 0; r--) {
       const row = pattern[r]
       for (let c = 0; c < row.length; c++) {
-        cellColor = getCellColor(pattern, colors, r, c)
+        const cellColor = getCellColor(pattern, colors, r, c)
 
         let x = rowIndexWidth + c * cellSize
         let y = headerHeight + r * cellSize
@@ -78,32 +79,31 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
     ctx.fillStyle = "black"
     ctx.textBaseline = "top"
 
+    const leftAxisX = rowIndexWidth - 2;
+    const rightAxisX = w - rowIndexWidth + 2;
+
     ctx.textAlign = "right"
     for (let r = 1; r <= rows; r++) {
       let y = h - headerHeight - r * cellSize 
-      ctx.fillText(r.toString(), rowIndexWidth - 2, y) // left
+      ctx.fillText(r.toString(), leftAxisX, y) // left
     }
 
-      ctx.textAlign = "left"
+    ctx.textAlign = "left"
     for (let r = 1; r <= rows; r++) {
       let y = h - headerHeight - r * cellSize
-      ctx.fillText(r.toString(), w - rowIndexWidth + 2, y) // right
+      ctx.fillText(r.toString(), rightAxisX, y) // right
     }
 
     ctx.save();
-    ctx.translate(-cellSize+2, headerHeight);
+    ctx.translate(rowIndexWidth, headerHeight);
     ctx.rotate(-Math.PI/2);
- 
-    ctx.textAlign = "left"
-    for (let c = 0; c < cols; c++) {
-      let y = w - c * cellSize - rowIndexWidth - 2 
-      ctx.fillText((c+1).toString(), 2, y) // top
-    }
 
-    ctx.textAlign = "right"
     for (let c = 0; c < cols; c++) {
-      let y = w - c * cellSize - rowIndexWidth - 2 
-      ctx.fillText((c+1).toString(), -h + headerHeight * 2 - 2, y) // bottom
+      const x = c * cellSize;
+      ctx.textAlign = "left";
+      ctx.fillText((cols - c + 1).toString(), 2, x); // top
+      ctx.textAlign = "right";
+      ctx.fillText((cols - c + 1).toString(), -h + headerHeight * 2 - 2, x); // bottom
     }
 
     ctx.restore();
@@ -172,4 +172,17 @@ const getColor = (pattern: IPatternGrid, colors: string[], row: number, col: num
         : BACKGROUND_COLOR
 }
 
-export const PatternDraw = {getCellColor, drawPattern}
+const hexToRgb = (hex: string): { r: number; g: number; b: number } => {
+    // Remove the leading '#' if present
+    hex = hex.replace(/^#/, '');
+
+    // Parse the hex string into its RGB components
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    return { r, g, b };
+}
+
+export const PatternDraw = {getCellColor, drawPattern, hexToRgb}
