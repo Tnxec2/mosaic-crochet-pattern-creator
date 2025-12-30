@@ -3,7 +3,7 @@ import { IPattern } from '.';
 import { HistorySlice } from './historySlice';
 import { VieboxSlice } from './viewBoxSlice';
 import { getNewCell } from '../components/pattern/getnewcell';
-import { ACTION_TYPES, actionKeys, actionTypesToKey, keyToActionType } from '../model/actiontype.enum';
+import { ACTION_TYPES, actionKeys, actionTypesToKey, keyToActionType, mirrorActionType } from '../model/actiontype.enum';
 import { DEFAULT_COLOR } from '../model/constats';
 import { initialPattern, IPatternCell } from '../model/patterncell.model';
 import { actionToCellType, CELL_TYPE } from '../model/patterntype.enum';
@@ -106,21 +106,21 @@ export const createPatternSlice: StateCreator<
             const { pattern, selectedAction, selectedColorIndex } = state.patternState;
             const { toggleStitch, mirrorHorizontal, mirrorVertical } = state;
 
-            const updateCell = (r: number, c: number) => {
+            const updateCell = (r: number, c: number, action: ACTION_TYPES) => {
                 if (r >= 0 && r < newPattern.length && c >= 0 && c < newPattern[r].length) {
-                    newPattern[r][c] = getNewCell(pattern[r][c], selectedAction, selectedColorIndex, mouseOver, toggleStitch);
+                    newPattern[r][c] = getNewCell(pattern[r][c], action, selectedColorIndex, mouseOver, toggleStitch);
                 }
             };
 
-            updateCell(row, col);
+            updateCell(row, col, selectedAction);
             if (mirrorHorizontal) {
-                updateCell(pattern.length - 1 - row, col);
+                updateCell(pattern.length - 1 - row, col, selectedAction);
             }
             if (mirrorVertical) {
-                updateCell(row, pattern[0].length - 1 - col);
+                updateCell(row, pattern[0].length - 1 - col, mirrorActionType(selectedAction));
             }
             if (mirrorHorizontal && mirrorVertical) {
-                updateCell(pattern.length - 1 - row, pattern[0].length - 1 - col);
+                updateCell(pattern.length - 1 - row, pattern[0].length - 1 - col, mirrorActionType(selectedAction));
             }
 
             return { patternState: { ...state.patternState, pattern: newPattern } };
@@ -170,7 +170,7 @@ export const createPatternSlice: StateCreator<
                 if (i !== row) return r;
                 let newRow = fillRowRight(r, row, col, selectedAction, selectedColorIndex, toggleStitch);
                 if (mirrorVertical) {
-                    newRow = fillRowLeft(newRow, row, r.length - 1 - col, selectedAction, selectedColorIndex, toggleStitch);
+                    newRow = fillRowLeft(newRow, row, r.length - 1 - col, mirrorActionType(selectedAction), selectedColorIndex, toggleStitch);
                 }
                 return newRow;
             });
@@ -187,7 +187,7 @@ export const createPatternSlice: StateCreator<
                 if (i !== row) return r;
                 let newRow = fillRowLeft(r, row, col, selectedAction, selectedColorIndex, toggleStitch);
                 if (mirrorVertical) {
-                    newRow = fillRowRight(newRow, row, r.length - 1 - col, selectedAction, selectedColorIndex, toggleStitch);
+                    newRow = fillRowRight(newRow, row, r.length - 1 - col, mirrorActionType(selectedAction), selectedColorIndex, toggleStitch);
                 }
                 return newRow;
             });
@@ -347,21 +347,33 @@ export const createPatternSlice: StateCreator<
     handleKeyDown: (event: KeyboardEvent) => void
     changeName: (name: string) => void
 }
+
 export const fillRowLeft = (r: IPatternCell[], row: number, col: number, selectedAction: ACTION_TYPES, selectedColorIndex: number, toggleStitch: boolean): IPatternCell[] => {
     let result = [...r]
-    for (let index = col - 1; index >= 0; index--) {
+
+    for (let index = col; index >= 0; index--) {
         const cell = result[index]
 
-        if (cell.t === actionToCellType(selectedAction, cell.t)) return result
+        if (
+            (selectedAction !== ACTION_TYPES.NONE && cell.t !== CELL_TYPE.EMPTY)
+            || (selectedAction === ACTION_TYPES.NONE && cell.t === CELL_TYPE.EMPTY)
+            || (selectedAction === ACTION_TYPES.COLOR && cell.c !== r[col].c)
+            ) return result
         result[index] = getNewCell(cell, selectedAction, selectedColorIndex, false, toggleStitch)
     }
     return result
 };
+
 export const fillRowRight = (r: IPatternCell[], row: number, col: number, selectedAction: ACTION_TYPES, selectedColorIndex: number, toggleStitch: boolean): IPatternCell[] => {
     let result = [...r]
-    for (let index = col + 1; index < r.length; index++) {
+    
+    for (let index = col; index < r.length; index++) {
         const cell = result[index]
-        if (cell.t === actionToCellType(selectedAction, cell.t)) return result
+        if (
+            (selectedAction !== ACTION_TYPES.NONE && cell.t !== CELL_TYPE.EMPTY)
+            || (selectedAction === ACTION_TYPES.NONE && cell.t === CELL_TYPE.EMPTY)
+            || (selectedAction === ACTION_TYPES.COLOR && cell.c !== r[col].c)
+            ) return result
         result[index] = getNewCell(cell, selectedAction, selectedColorIndex, false, toggleStitch)
     }
     return result

@@ -42,6 +42,25 @@ const actionTypeToKeyMap: Record<ACTION_TYPES, string> = {
     [ACTION_TYPES.LXR]: 'X'
 };
 
+export function mirrorActionType(type: ACTION_TYPES): ACTION_TYPES {
+    switch (type) {
+        case ACTION_TYPES.L:
+            return ACTION_TYPES.R;
+        case ACTION_TYPES.R:
+            return ACTION_TYPES.L;
+        case ACTION_TYPES.LR:
+            return ACTION_TYPES.LR;
+        case ACTION_TYPES.LX:
+            return ACTION_TYPES.XR;
+        case ACTION_TYPES.XR:
+            return ACTION_TYPES.LX;
+        case ACTION_TYPES.LXR:
+            return ACTION_TYPES.LXR;
+        default:
+            return type;
+    }
+}
+
 export const actionKeys = Object.values(actionTypeToKeyMap);
 
 export function keyToActionType(key: string): ACTION_TYPES {
