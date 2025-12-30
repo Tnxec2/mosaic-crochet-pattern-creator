@@ -29,9 +29,6 @@ const stitchTypeMap: Record<CELL_TYPE, string> = {
 const stichTypeToWrited = (type: CELL_TYPE): string => {
   return stitchTypeMap[type] || '';
 }
-const getStichWrited = (line: string, stichcount: number, stichtype: CELL_TYPE) => {
-  return `${line.length > 0 ? ', ' : ''}${stichcount > 1 ? stichcount + ' ' : ''}${stichTypeToWrited(stichtype)}`;
-}
 
 const MIN_FONT_SIZE = 6
 
