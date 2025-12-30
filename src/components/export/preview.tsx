@@ -17,13 +17,13 @@ interface PROPS {
 
 const stitchTypeMap: Record<CELL_TYPE, string> = {
   [CELL_TYPE.EMPTY]: 'sc',
-  [CELL_TYPE.X]: 'dc',
-  [CELL_TYPE.L]: 'dc left',
-  [CELL_TYPE.R]: 'dc right',
-  [CELL_TYPE.LR]: '(dc right, dc left)',
-  [CELL_TYPE.LX]: '(dc, DC left)',
-  [CELL_TYPE.XR]: '(dc right, dc)',
-  [CELL_TYPE.LXR]: '(dc right, dc, dc left)',
+  [CELL_TYPE.X]: 'DC',
+  [CELL_TYPE.L]: 'DC left',
+  [CELL_TYPE.R]: 'DC right',
+  [CELL_TYPE.LR]: '(DC right, DC left)',
+  [CELL_TYPE.LX]: '(DC, DC left)',
+  [CELL_TYPE.XR]: '(DC right, DC)',
+  [CELL_TYPE.LXR]: '(DC right, DC, DC left)',
 };
 
 const stichTypeToWrited = (type: CELL_TYPE): string => {
@@ -136,7 +136,8 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
     for (let rowIndex = patternState.pattern.length - 1; rowIndex >= 0; rowIndex--) {
       const row = [...patternState.pattern[rowIndex]].reverse();
       const groupedStitches = groupStitches(row);
-      const line = groupedStitches.map(stitch => `${stitch.count > 1 ? stitch.count + ' ' : ''}${stichTypeToWrited(stitch.type)}`).join(', ');
+      // const line = groupedStitches.map(stitch => `${stitch.count > 1 ? stitch.count + ' ' : ''}${stichTypeToWrited(stitch.type)}`).join(', ');
+      const line = groupedStitches.map(stitch => `${stitch.count} ${stichTypeToWrited(stitch.type)}`).join(', ');
       htmlText += `<p>Row ${patternState.pattern.length - rowIndex}: ${line}</p>\n`;
     }
 
