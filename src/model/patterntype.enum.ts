@@ -58,3 +58,23 @@ export type TCellCoords = {
     row: number
     col: number
 }
+
+export type GroupedStitch = {
+  type: CELL_TYPE;
+  count: number;
+};
+
+const stitchTypeMap: Record<CELL_TYPE, string> = {
+  [CELL_TYPE.EMPTY]: 'sc',
+  [CELL_TYPE.X]: 'DC',
+  [CELL_TYPE.L]: 'DC left',
+  [CELL_TYPE.R]: 'DC right',
+  [CELL_TYPE.LR]: '(DC right, DC left)',
+  [CELL_TYPE.LX]: '(DC, DC left)',
+  [CELL_TYPE.XR]: '(DC right, DC)',
+  [CELL_TYPE.LXR]: '(DC right, DC, DC left)',
+};
+
+export const stitchTypeToWritten = (type: CELL_TYPE): string => {
+  return stitchTypeMap[type] || '';
+}
