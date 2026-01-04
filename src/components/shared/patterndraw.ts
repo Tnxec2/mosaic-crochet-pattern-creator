@@ -101,9 +101,9 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
     for (let c = 0; c < cols; c++) {
       const x = c * cellSize;
       ctx.textAlign = "left";
-      ctx.fillText((cols - c + 1).toString(), 2, x); // top
+      ctx.fillText((cols - c).toString(), 2, x); // top
       ctx.textAlign = "right";
-      ctx.fillText((cols - c + 1).toString(), -h + headerHeight * 2 - 2, x); // bottom
+      ctx.fillText((cols - c).toString(), -h + headerHeight * 2 - 2, x); // bottom
     }
 
     ctx.restore();
