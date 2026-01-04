@@ -72,7 +72,7 @@ function NavbarComponent() {
                                     href=""
                                     onClick={() => setShowPreviewDialog(true)}
                                 >
-                                    Export Pattern to Image
+                                    Export Pattern
                                 </NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item
