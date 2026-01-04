@@ -67,7 +67,7 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   return (
     <Modal fullscreen show={true}>
       <Modal.Header closeButton onHide={onClose}>
-        <Modal.Title>Save Pattern</Modal.Title>
+        <Modal.Title>Export Pattern</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
