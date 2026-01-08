@@ -38,13 +38,13 @@ function NavbarComponent() {
 
     return (
         <>
-            <Navbar expand="lg" className="bg-body-tertiary" style={{maxHeight: '10vh'}}>
-                <Container>
-                    <Navbar id="menu-navbar-nav">
-                        <Navbar.Brand href="#">
+            <Navbar expand="lg" className="bg-body-tertiary" style={{maxHeight: '10vh', padding: 5, maxWidth: '100vw'}}>
+                <Container fluid>
+                    <Navbar id="menu-navbar-nav" style={{padding: 0}}>
+                        <Navbar.Brand href="#" style={{padding: 0}}>
                             Mosaic Crochet Pattern Generator
                         </Navbar.Brand>
-                        <Nav className="me-auto ms-0">
+                        <Nav className="me-auto ms-0" style={{padding: 0}}>
                             <NavDropdown title="File" id="file-nav-dropdown">
                                 <NavDropdown.Item
                                     href=""
@@ -109,8 +109,8 @@ function NavbarComponent() {
                             </NavDropdown>
                         </Nav>
                     </Navbar>
-                    <Navbar id="menu-navbar-version">
-                        <Navbar.Text className="justify-content-end ms-3">
+                    <Navbar id="menu-navbar-version"  style={{padding: 0}}>
+                        <Navbar.Text className="justify-content-end ms-3"  style={{padding: 0}}>
                             v. {VERSION}
 
 
@@ -122,7 +122,7 @@ function NavbarComponent() {
                              >
                                 <img 
                                 alt='crochettimer'
-                                style={{border:0, height:36}} 
+                                style={{border:0, height:32}} 
                                 src="https://tnxec2.github.io/crochettimer/icon-192.png"/>
                         </a>
                         
@@ -131,8 +131,8 @@ function NavbarComponent() {
                              rel="noreferrer"
                              title='Buy Me a Coffee at buymeacoffee.com' 
                             >
-                            <svg width="40" 
-                                height="40" 
+                            <svg width="32" 
+                                height="32" 
                                 viewBox="0 0 884 1279" 
 
                                 fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -157,8 +157,8 @@ function NavbarComponent() {
                              rel="noreferrer"
                             title='Buy Me a Coffee at ko-fi.com' 
                              >
-                        <img width='40'  
-                            style={{border:0, height:36}} 
+                        <img height='32'  
+                            style={{border:0, height:32}} 
                             src='https://storage.ko-fi.com/cdn/nav-logo-stroke.png' 
                             alt='Buy Me a Coffee at ko-fi.com' 
                             />
