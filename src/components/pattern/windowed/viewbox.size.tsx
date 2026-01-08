@@ -35,39 +35,35 @@ export const ViewBoxSizeComponent: FC = () => {
             <div>
                 <InputGroup>
                     <InputGroup.Text><strong>Viewbox</strong></InputGroup.Text>
-                    <InputGroup.Text>width</InputGroup.Text>
+
                     <Form.Control type='number' min={VIEWBOX_MIN_SIZE} max={patternState.pattern[0].length} value={width}
                         onChange={(e) => { setWidth(Number(e.target.value)) }} />
                     <HoldButton className='btn btn-outline-danger' onFire={() => { setWidth(Math.max(VIEWBOX_MIN_SIZE, width - 1)) }}>-</HoldButton>
                     <HoldButton className='btn btn-outline-success' onFire={() => { setWidth(Math.max(VIEWBOX_MIN_SIZE, width + 1)) }}>+</HoldButton>
 
-                    <InputGroup.Text>✖️</InputGroup.Text>
-                    <InputGroup.Text>height</InputGroup.Text>
+                    <InputGroup.Text>/</InputGroup.Text>
                     <Form.Control type='number' min={VIEWBOX_MIN_SIZE} max={patternState.pattern.length} value={height}
                         onChange={(e) => { setHeight(Number(e.target.value)) }} />
                     <HoldButton className='btn btn-outline-danger' onFire={() => { setHeight(Math.max(VIEWBOX_MIN_SIZE, height - 1)) }}>-</HoldButton>
                     <HoldButton className='btn btn-outline-success' onFire={() => { setHeight(Math.max(VIEWBOX_MIN_SIZE, height + 1)) }}>+</HoldButton>
-                </InputGroup>
-            </div>
-            {splittedViewBox &&
-                <div>
-                    <InputGroup>
+
+                    {splittedViewBox && <>
+
                         <InputGroup.Text><strong>Viewbox 2</strong></InputGroup.Text>
-                        <InputGroup.Text>width</InputGroup.Text>
                         <Form.Control type='number' min={VIEWBOX_MIN_SIZE} max={patternState.pattern[0].length} value={width2}
                             onChange={(e) => { setWidth2(Number(e.target.value)) }} />
                         <HoldButton className='btn btn-outline-danger' onFire={() => { setWidth2(Math.max(VIEWBOX_MIN_SIZE, width2 - 1)) }}>-</HoldButton>
                         <HoldButton className='btn btn-outline-success' onFire={() => { setWidth2(Math.max(VIEWBOX_MIN_SIZE, width2 + 1)) }}>+</HoldButton>
 
-                        <InputGroup.Text>✖️</InputGroup.Text>
-                        <InputGroup.Text>height</InputGroup.Text>
+                        <InputGroup.Text>/</InputGroup.Text>
                         <Form.Control type='number' min={VIEWBOX_MIN_SIZE} max={patternState.pattern.length} value={height2}
                             onChange={(e) => { setHeight2(Number(e.target.value)) }} />
                         <HoldButton className='btn btn-outline-danger' onFire={() => { setHeight2(Math.max(VIEWBOX_MIN_SIZE, height2 - 1)) }}>-</HoldButton>
                         <HoldButton className='btn btn-outline-success' onFire={() => { setHeight2(Math.max(VIEWBOX_MIN_SIZE, height2 + 1)) }}>+</HoldButton>
-                    </InputGroup>
-                </div>
-            }
+                    </>
+                    }
+                </InputGroup>
+            </div>
         </>
     )
 }
