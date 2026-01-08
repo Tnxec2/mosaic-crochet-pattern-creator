@@ -81,32 +81,32 @@ export const PatternComponent: FC = () => {
                     action: patternState.selectedAction,
                     color: patternState.colors[patternState.selectedColorIndex], 
                 },
-                MenuItemDivider,
-                { name: 'change action'},
-                ...(Object.values(ACTION_TYPES)
-                .filter(action => action !== patternState.selectedAction)
-                .map((value) => {
-                    return { 
-                        name: value,
-                        action: value,
-                        color: patternState.colors[patternState.selectedColorIndex], 
-                        onClick: () => savePattern({...patternState, selectedAction: value})
-                    } 
-                } )),
-                MenuItemDivider,
-                { name: 'change color'},
-                ...(patternState.colors
-                    .filter((color, index) => index !== patternState.selectedColorIndex)
-                    .map((color) => {
-                        let colorIndex = patternState.colors.indexOf(color)
-                        return { 
-                            name: `Color ${colorIndex+1}`,
-                            action: ACTION_TYPES.COLOR,
-                            color: color,
-                            onClick: () => savePattern({...patternState, selectedColorIndex: colorIndex})
-                        } 
-                    } )
-                ),
+                // MenuItemDivider,
+                // { name: 'change action'},
+                // ...(Object.values(ACTION_TYPES)
+                // .filter(action => action !== patternState.selectedAction)
+                // .map((value) => {
+                //     return { 
+                //         name: value,
+                //         action: value,
+                //         color: patternState.colors[patternState.selectedColorIndex], 
+                //         onClick: () => savePattern({...patternState, selectedAction: value})
+                //     } 
+                // } )),
+                // MenuItemDivider,
+                // { name: 'change color'},
+                // ...(patternState.colors
+                //     .filter((color, index) => index !== patternState.selectedColorIndex)
+                //     .map((color) => {
+                //         let colorIndex = patternState.colors.indexOf(color)
+                //         return { 
+                //             name: `Color ${colorIndex+1}`,
+                //             action: ACTION_TYPES.COLOR,
+                //             color: color,
+                //             onClick: () => savePattern({...patternState, selectedColorIndex: colorIndex})
+                //         } 
+                //     } )
+                // ),
             
                 MenuItemDivider,
                 {
