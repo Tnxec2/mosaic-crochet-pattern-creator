@@ -13,6 +13,7 @@ type propTypes = {
     showCellCrochetType?: boolean
     hasError?: boolean
     children?: ReactNode
+    scaleFactor?: number
 }
 
 const PatterCellComponent: FC<propTypes> = ({
@@ -24,12 +25,15 @@ const PatterCellComponent: FC<propTypes> = ({
     onMouseOver,
     showCellCrochetType,
     hasError = false,
+    scaleFactor = 1,
     children
 }) => {
     const cellStyle = useMemo(() => ({
         border: hasError ? '1px solid red' : '',
         backgroundColor: hasError ? 'black' : color,
-    }), [hasError, color]);
+        width: `${scaleFactor}em`,
+        height: `${scaleFactor}em`,
+    }), [hasError, color, scaleFactor]);
 
     const stitchTypeStyle = useMemo(() => ({
         backgroundImage: showCellCrochetType && cell.t !== CELL_TYPE.EMPTY ? `url('./assets/${cell.t}${hasError ? '.error' : ''}.svg')` : '',

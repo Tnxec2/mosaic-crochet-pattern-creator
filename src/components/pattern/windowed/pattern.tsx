@@ -240,10 +240,7 @@ export const PatternWindowedComponent: FC = () => {
 
                     <ViewBoxSizeComponent />
                     <div className='mt-3 d-flex flex-row' 
-                            style={{
-                                transformOrigin: 'left top',
-                                transform: `scale(${patternState.scaleFactor})`,
-                            }}>
+                            >
                         <div
                             className="noselect d-flex flex-column"
                             id="pattern"
@@ -252,7 +249,12 @@ export const PatternWindowedComponent: FC = () => {
                             <div className='d-flex flex-row'>
                                 <HoldButton className='btn-outline-secondary btn-sm me-1' onFire={() => gotoViewBoxLeft(1)}>◀️</HoldButton>
 
-                                <div ref={viewBoxRefCallback}>
+                                <div ref={viewBoxRefCallback} 
+                            //     style={{
+                            //     transformOrigin: 'left top',
+                            //     transform: `scale(${patternState.scaleFactor})`,
+                            // }}
+                                >
                                     <PatternRowHeaderWindowedComponent setDropDownPos={(pos) => setDropDownPos({...pos, viewBoxNumber: 1})} pos={viewBox} />
                                     {patternState.pattern
                                         .filter((_, rowIndex) => rowIndex >= viewBox.row && rowIndex < viewBox.row + viewBox.wy)

@@ -215,9 +215,6 @@ export const PatternComponent: FC = () => {
                     <div
                         className="noselect"
                         id="pattern"
-                        style={{
-                            transform: `scale(${patternState.scaleFactor})`
-                        }}
                     >
                         <PatternRowHeaderComponent setDropDownPos={setDropDownPos} />
                         

@@ -1,4 +1,4 @@
-import { FC, Fragment, MouseEvent, useCallback } from "react"
+import { FC, Fragment, MouseEvent, useCallback, useMemo } from "react"
 import { useStore } from "../../../context"
 
 import { IPatternRow } from "../../../model/patterncell.model"
@@ -12,7 +12,7 @@ type PROPS = {
     dropDownPosPatternCell: TDropDownPos,
     setDropDownPos: (pos: TDropDownPos) => void,
     setDropDownPosPatternCell: (pos: TDropDownPos) => void,
-    pos: TVIEWBOX_SIZE, 
+    pos: TVIEWBOX_SIZE,
 }
 
 export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dropDownPosPatternCell, setDropDownPos, setDropDownPosPatternCell }) => {
@@ -20,6 +20,15 @@ export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dro
         patternState,
         changeCell,
     } = useStore((state) => state)
+
+    const style: React.CSSProperties = useMemo(() => (
+        {
+            height: `${patternState.scaleFactor}em`,
+            lineHeight: `${patternState.scaleFactor}em`,
+            alignmentBaseline: 'middle',
+            textAlign: 'center',
+        }), [patternState.scaleFactor])
+
 
     const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
         if (dropDownPosPatternCell.opened) {
@@ -48,7 +57,7 @@ export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dro
     }, [handleClick])
 
     return (
-        <div  className="r">
+        <div className="r">
             <div
                 className="cell rownumber"
                 onClick={(e) => {
@@ -61,21 +70,22 @@ export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dro
                     })
                 }}
                 title={`${patternState.pattern.length - rowIndex}`}
+                style={style}
             >
                 {patternState.pattern.length - rowIndex}
             </div>
             {row
-            .filter((_, colIndex) => (colIndex >= pos.col && colIndex < pos.col + pos.wx))
-            .map((col, colIndex) => (
-                <Fragment key={`col-${colIndex + pos.col}`}>
-                    <PatternCellContainer
-                        rowIndex={rowIndex}
-                        colIndex={colIndex + pos.col}
-                        onClick={handleClick}
-                        onMouseOver={handleMouseOver}
-                    />
-                </Fragment>
-            ))}
+                .filter((_, colIndex) => (colIndex >= pos.col && colIndex < pos.col + pos.wx))
+                .map((col, colIndex) => (
+                    <Fragment key={`col-${colIndex + pos.col}`}>
+                        <PatternCellContainer
+                            rowIndex={rowIndex}
+                            colIndex={colIndex + pos.col}
+                            onClick={handleClick}
+                            onMouseOver={handleMouseOver}
+                        />
+                    </Fragment>
+                ))}
 
             <div
                 key={`colend-${rowIndex}`}
@@ -90,6 +100,7 @@ export const PatternRowWindowedComponent: FC<PROPS> = ({ pos, row, rowIndex, dro
                     })
                 }}
                 title={`${patternState.pattern.length - rowIndex}`}
+                style={style}
             >
                 {patternState.pattern.length - rowIndex}
             </div>

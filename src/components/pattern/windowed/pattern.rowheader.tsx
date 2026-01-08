@@ -1,4 +1,4 @@
-import { FC, } from "react"
+import { FC, useMemo, } from "react"
 import { useStore } from "../../../context"
 import { TDropDownPos, TVIEWBOX_SIZE } from "../../../model/patterntype.enum"
 
@@ -10,6 +10,17 @@ type PROPS = {
 
 export const PatternRowHeaderWindowedComponent: FC<PROPS> = ({ setDropDownPos, pos }) => {
     const patternState = useStore((state) => state.patternState)
+
+        const style: React.CSSProperties = useMemo(() => (
+            {
+                writingMode: 'vertical-lr',
+                WebkitTransform: 'rotate(180deg)',
+                transform: 'rotate(180deg)',
+                width: `${patternState.scaleFactor}em`,
+                lineHeight: `${patternState.scaleFactor}em`,
+                alignmentBaseline: 'middle',
+                textAlign: 'center',
+            }), [patternState.scaleFactor])
 
     return (
         <div className="r">
@@ -30,6 +41,7 @@ export const PatternRowHeaderWindowedComponent: FC<PROPS> = ({ setDropDownPos, p
                         })
                     }}
                     title={`${patternState.pattern[0].length - colIndex - pos.col }`}
+                    style={style}
                 >
                     {patternState.pattern[0].length - colIndex - pos.col }
                 </div>

@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useMemo } from "react"
 import { useStore } from "../../context"
 import { TDropDownPos } from "../../model/patterntype.enum"
 
@@ -9,7 +9,16 @@ type PROPS = {
 
 export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos }) => {
     const patternState = useStore((state) => state.patternState)
-
+    const style: React.CSSProperties = useMemo(() => (
+            {
+                writingMode: 'vertical-lr',
+                WebkitTransform: 'rotate(180deg)',
+                transform: 'rotate(180deg)',
+                width: `${patternState.scaleFactor}em`,
+                lineHeight: `${patternState.scaleFactor}em`,
+                alignmentBaseline: 'middle',
+                textAlign: 'center',
+            }), [patternState.scaleFactor])
     return (
         <div className="r">
             <div className="cell empty rownumber">&nbsp;</div>
@@ -27,6 +36,7 @@ export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos }) => {
                         })
                     }}
                     title={`${patternState.pattern[0].length - colIndex}`}
+                    style={style}
                 >
                     {patternState.pattern[0].length - colIndex}
                 </div>

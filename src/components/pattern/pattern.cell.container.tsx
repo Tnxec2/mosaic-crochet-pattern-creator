@@ -47,5 +47,6 @@ export const PatternCellContainer: FC<PROPS> = ({ rowIndex, colIndex, onClick, o
         cell={cell}
         showCellCrochetType={showCellStitchType}
         hasError={hasError}
+        scaleFactor={patternState.scaleFactor}
     />
 }

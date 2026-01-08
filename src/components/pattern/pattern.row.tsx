@@ -1,4 +1,4 @@
-import { FC, Fragment, MouseEvent, useCallback } from "react"
+import { FC, Fragment, MouseEvent, useCallback, useMemo } from "react"
 import { useStore } from "../../context"
 import { IPatternRow } from "../../model/patterncell.model"
 import { TDropDownPos } from "../../model/patterntype.enum"
@@ -17,6 +17,14 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
         patternState,
         changeCell,
     } = useStore((state) => state)
+
+    const style: React.CSSProperties = useMemo(() => (
+            {
+                height: `${patternState.scaleFactor}em`,
+                lineHeight: `${patternState.scaleFactor}em`,
+                alignmentBaseline: 'middle',
+                textAlign: 'center',
+            }), [patternState.scaleFactor])
 
     const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
         if (dropDownPosPatternCell.opened) {
@@ -58,6 +66,7 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
                     })
                 }}
                 title={`${patternState.pattern.length - rowIndex}`}
+                style={style}
             >
                 {patternState.pattern.length - rowIndex}
             </div>
@@ -85,6 +94,7 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
                     })
                 }}
                 title={`${patternState.pattern.length - rowIndex}`}
+                style={style}
             >
                 {patternState.pattern.length - rowIndex}
             </div>
