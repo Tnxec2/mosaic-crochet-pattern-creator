@@ -2,15 +2,24 @@ import { CELL_TYPE } from "../../model/patterntype.enum";
 
 const WIDTH_RATIO = 20/4
 
-function drawR(size: number) {
+const drawColor = "white";
+
+
+function drawCallout(size: number, callback: (ctx: CanvasRenderingContext2D, size: number) => void) {
     var canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-
+    var ctx = canvas.getContext("2d");
     if (ctx){ 
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
-        const w = size / WIDTH_RATIO
+        ctx.fillStyle = drawColor;
+        ctx.strokeStyle = drawColor;
+        callback(ctx, size);
+    }
+    return canvas;
+}
 
+
+function drawR(size: number) {
+    return drawCallout(size, (ctx, size) => {
+        const w = size / WIDTH_RATIO
         // center to bottom-left "\"
         ctx.save();
         ctx.translate(size / 2, size / 2);
@@ -19,17 +28,11 @@ function drawR(size: number) {
         ctx.restore();
 
         triangleRight(ctx,size)
-    }
-
-    return canvas;
+    });
 }
 
 function drawL(size: number) {
-    var canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-    if (ctx){ 
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
+    return drawCallout(size, (ctx, size) => {
         const w = size / WIDTH_RATIO
         // center to bottom-left "/"
         ctx.save();
@@ -39,9 +42,7 @@ function drawL(size: number) {
         ctx.restore();
 
         triangleLeft(ctx,size)
-    }
-
-    return canvas;
+    });
 }
 
 function triangleLeft(ctx: CanvasRenderingContext2D, size: number) {
@@ -69,11 +70,7 @@ function triangleRight(ctx: CanvasRenderingContext2D, size: number) {
 }
 
 function drawLR(size: number) {
-    var canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-    if (ctx){ 
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
+    return drawCallout(size, (ctx, size) => {
         const w = size / WIDTH_RATIO
         // center to bottom-left "\"
         ctx.save();
@@ -91,18 +88,11 @@ function drawLR(size: number) {
         
         triangleLeft(ctx, size)
         triangleRight(ctx, size)
-    }
-
-    return canvas;
+    });
 }
 
 function drawX(size: number) {
-    var canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-    
-    if (ctx){ 
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
+    return drawCallout(size, (ctx, size) => {
         const w = size / WIDTH_RATIO
         // top left to bottom right "\"
         ctx.save();
@@ -116,17 +106,12 @@ function drawX(size: number) {
         ctx.rotate((45 * Math.PI) / 180);
         ctx.fillRect(-w / 2, -size/2, w, size);
         ctx.restore();
-    } 
-    return canvas
+    } );
 }
 
 
 function drawXR(size: number) {
-    var canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-    if (ctx) { 
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
+    return drawCallout(size, (ctx, size) => {
         const w = size / WIDTH_RATIO
         // top left to bottom right "\"
         ctx.save();
@@ -141,16 +126,11 @@ function drawXR(size: number) {
         ctx.fillRect(-w / 2, -size/2, w, size);
         ctx.restore();
         triangleRight(ctx, size)
-    } 
-    return canvas
+    } );
 }
 
 function drawLX(size: number) {
-    var canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-    if (ctx) {  
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
+    return drawCallout(size, (ctx, size) => {
         const w = size / WIDTH_RATIO
         // top left to bottom right "\"
         ctx.save();
@@ -165,16 +145,11 @@ function drawLX(size: number) {
         ctx.fillRect(-w / 2, -size/2, w, size);
         ctx.restore();
         triangleLeft(ctx,size)
-    } 
-    return canvas
+    } );
 }
 
 function drawLXR(size: number) {
-    var canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-    if (ctx) { 
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
+    return drawCallout(size, (ctx, size) => {
         const w = size / WIDTH_RATIO
         // top left to bottom right "\"
         ctx.save();
@@ -190,8 +165,7 @@ function drawLXR(size: number) {
         ctx.restore();
         triangleLeft(ctx,size)
         triangleRight(ctx,size)
-    } 
-    return canvas
+    } );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
