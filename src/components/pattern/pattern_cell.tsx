@@ -40,12 +40,14 @@ const PatterCellComponent: FC<propTypes> = ({
         backgroundColor: hasError ? 'black' : color,
     }), [showCellCrochetType, cell.t, hasError, color]);
 
+    const title = useMemo(() => `${cell.t.toUpperCase()} (${col}:${row}) ${hasError ? ' ERROR' : ''}`, [cell.t, col, row, hasError])
+
     return (
         <div
             className="cell"
             onClick={onClick}
             onMouseOver={onMouseOver}
-            title={`${cell.t.toUpperCase()} (${col}:${row}) ${hasError ? ' ERROR' : ''}`}
+            title={title}
             style={cellStyle}
         >
             <div 

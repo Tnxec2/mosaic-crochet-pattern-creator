@@ -19,6 +19,10 @@ export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos }) => {
                 alignmentBaseline: 'middle',
                 textAlign: 'center',
             }), [patternState.scaleFactor])
+    const fontSize = useMemo(() =>
+        `${(patternState.scaleFactor * 100)-10}%`
+    , [patternState.scaleFactor])
+
     return (
         <div className="r">
             <div className="cell empty rownumber">&nbsp;</div>
@@ -38,7 +42,9 @@ export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos }) => {
                     title={`${patternState.pattern[0].length - colIndex}`}
                     style={style}
                 >
-                    {patternState.pattern[0].length - colIndex}
+                    <div style={{fontSize: fontSize}}>
+                        {patternState.pattern[0].length - colIndex}
+                    </div>
                 </div>
             ))}
             <div className="cell empty rownumber">&nbsp;</div>

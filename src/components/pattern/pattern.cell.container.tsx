@@ -13,7 +13,7 @@ type PROPS = {
 
 export const PatternCellContainer: FC<PROPS> = ({ rowIndex, colIndex, onClick, onMouseOver }) => {
     const { patternState, showCellStitchType } = useStore((state) => state);
-    const cell = patternState.pattern[rowIndex][colIndex];
+    const cell = useMemo(() => patternState.pattern[rowIndex][colIndex], [patternState.pattern, rowIndex, colIndex]);
 
     const hasError = useMemo(() => {
         const isX = hasX(cell.t);
@@ -38,12 +38,20 @@ export const PatternCellContainer: FC<PROPS> = ({ rowIndex, colIndex, onClick, o
         onMouseOver(e, rowIndex, colIndex)
     }, [onMouseOver, rowIndex, colIndex]);
 
+    const row = useMemo(() => 
+        patternState.pattern.length - rowIndex
+    , [patternState.pattern.length, rowIndex])
+
+    const col = useMemo(() => 
+        patternState.pattern[0].length - colIndex
+    , [patternState.pattern[0].length, colIndex])
+
     return <MemoizedPatternCell
         onClick={handleOnClick}
         onMouseOver={handleOnMouseOver}
         color={color}
-        row={patternState.pattern.length - rowIndex}
-        col={patternState.pattern[0].length - colIndex}
+        row={row}
+        col={col}
         cell={cell}
         showCellCrochetType={showCellStitchType}
         hasError={hasError}

@@ -10,11 +10,11 @@ export type TSize = {
     height: number
 }
 
-const iconCache: { [key: number]: Record<string, HTMLCanvasElement | null> } = {};
+// iconCache = map(color to map(StitchType to IconImage))
+const iconCache: { [key: string]: Record<string, HTMLCanvasElement | null> } = {};
 
 const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, showCellStitchType: boolean, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): TSize =>  {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-
 
     const rows = pattern.length
     const cols = pattern[0].length
@@ -44,14 +44,22 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
 
 
     const iconSize = cellSize-4
-    if (!iconCache[iconSize]) {
-      iconCache[iconSize] = {};
+    
+    // fill iconCache for all colors
+    colors.forEach((color) => {
+      iconCache[color] = {}
       Object.values(CELL_TYPE).forEach(cellType => {
-        iconCache[iconSize][cellType] = DRAW.draw(iconSize, cellType);
+        var c = document.createElement('canvas');
+        c.width = iconSize;
+        c.height = iconSize;
+        const tx = c.getContext('2d');
+        if (tx) {
+          DRAW.draw(iconSize, cellType, tx, DRAW.contrastingColor(color), 0, 0);
+          iconCache[color][cellType] = c
+        }
       });
-    }
-    const icons = iconCache[iconSize];
-
+    });
+    
     // pattern content
     for (let r = rows - 1; r >= 0; r--) {
       const row = pattern[r]
@@ -65,12 +73,11 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
         ctx.fillRect(x, y, cellSize, cellSize)
         
         if (showCellStitchType && row[c].t !== CELL_TYPE.EMPTY) {
-          let image = icons[row[c].t]
+          let image = iconCache[cellColor][row[c].t]
           if (image) {
-            ctx.globalCompositeOperation = "difference";
             ctx.drawImage(image, x+2, y+2)
-            ctx.globalCompositeOperation = "source-over";
           }
+          // DRAW.draw(iconSize, row[c].t, ctx, cellColor, x+3, y+3)
         }
       }
     }

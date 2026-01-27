@@ -25,6 +25,14 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
                 alignmentBaseline: 'middle',
                 textAlign: 'center',
             }), [patternState.scaleFactor])
+    const fontSize = useMemo(() =>
+        `${(patternState.scaleFactor * 100)-10}%`
+    , [patternState.scaleFactor])
+
+    const rowNumber = useMemo(() => 
+        `${patternState.pattern.length - rowIndex}`
+    , [patternState.pattern.length, rowIndex])
+
 
     const handleClick = useCallback((row: number, col: number, mouseOver: boolean, event: MouseEvent<HTMLElement>) => {
         if (dropDownPosPatternCell.opened) {
@@ -65,10 +73,12 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
                         opened: true
                     })
                 }}
-                title={`${patternState.pattern.length - rowIndex}`}
+                title={rowNumber}
                 style={style}
             >
-                {patternState.pattern.length - rowIndex}
+                <div style={{fontSize: fontSize}}>
+                {rowNumber}
+                </div>
             </div>
             {row.map((col, colIndex) => (
                 <Fragment key={`col-${colIndex}`}>
@@ -93,10 +103,12 @@ export const PatternRowComponent: FC<PROPS> = ({ row, rowIndex, dropDownPosPatte
                         opened: true
                     })
                 }}
-                title={`${patternState.pattern.length - rowIndex}`}
+                title={rowNumber}
                 style={style}
             >
-                {patternState.pattern.length - rowIndex}
+                <div style={{fontSize: fontSize}}>
+                {rowNumber}
+                </div>
             </div>
         </div>
     )

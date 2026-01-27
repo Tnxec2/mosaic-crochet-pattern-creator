@@ -5,218 +5,168 @@ const WIDTH_RATIO = 20/4
 const drawColor = "white";
 
 
-function drawCallout(size: number, callback: (ctx: CanvasRenderingContext2D, size: number) => void) {
-    var canvas = document.createElement("canvas");
-    var ctx = canvas.getContext("2d");
-    if (ctx){ 
-        ctx.fillStyle = drawColor;
-        ctx.strokeStyle = drawColor;
-        callback(ctx, size);
-    }
-    return canvas;
+function leftToRight(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    const w = size / WIDTH_RATIO
+    // top left to bottom right "\"
+    ctx.save();
+    ctx.translate(x + size / 2, y + size / 2);
+    ctx.rotate((-45 * Math.PI) / 180);
+    ctx.fillRect(-w / 2, -size/2, w, size);
+    ctx.restore();
 }
 
-
-function drawR(size: number) {
-    return drawCallout(size, (ctx, size) => {
-        const w = size / WIDTH_RATIO
-        // center to bottom-left "\"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((-45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, 0, w, size / 2);
-        ctx.restore();
-
-        triangleRight(ctx,size)
-    });
+function rightToLeft(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    const w = size / WIDTH_RATIO
+    // top right to bottom left "/"
+    ctx.save();
+    ctx.translate(x + size / 2, y + size / 2);
+    ctx.rotate((45 * Math.PI) / 180);
+    ctx.fillRect(-w / 2, -size/2, w, size);
+    ctx.restore();
 }
 
-function drawL(size: number) {
-    return drawCallout(size, (ctx, size) => {
-        const w = size / WIDTH_RATIO
-        // center to bottom-left "/"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, 0, w, size / 2);
-        ctx.restore();
-
-        triangleLeft(ctx,size)
-    });
+function centerToRight(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    const w = size / WIDTH_RATIO
+    // center to bottom-left "\"
+    ctx.save();
+    ctx.translate(x + size / 2, y + size / 2);
+    ctx.rotate((-45 * Math.PI) / 180);
+    ctx.fillRect(-w / 2, 0, w, size / 2);
+    ctx.restore();
 }
 
-function triangleLeft(ctx: CanvasRenderingContext2D, size: number) {
+function centerToLeft(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    const w = size / WIDTH_RATIO
+    // center to bottom-left "/"
+    ctx.save();
+    ctx.translate(x + size / 2, y + size / 2);
+    ctx.rotate((45 * Math.PI) / 180);
+    ctx.fillRect(-w / 2, 0, w, size / 2);
+    ctx.restore();
+}
+
+function triangleLeft(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
     const w = size / WIDTH_RATIO
     const triangleHeight = w + size/6
     // triangle left
-    ctx.moveTo(0, size);
-    ctx.lineTo(0, size - triangleHeight);
-    ctx.lineTo(triangleHeight, size);
-    ctx.lineTo(0, size);
+    ctx.moveTo(x, y + size);
+    ctx.lineTo(x, y + size - triangleHeight);
+    ctx.lineTo(x + triangleHeight, y + size);
+    ctx.lineTo(x, y + size);
     ctx.fill();
     ctx.stroke();
 }
 
-function triangleRight(ctx: CanvasRenderingContext2D, size: number) {
+function triangleRight(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
     const w = size / WIDTH_RATIO
     const triangleHeight = w + size/6
     // triangle right
-    ctx.moveTo(size, size);
-    ctx.lineTo(size, size - triangleHeight);
-    ctx.lineTo(size - triangleHeight, size);
-    ctx.lineTo(size, size);
+    ctx.moveTo(x + size, y + size);
+    ctx.lineTo(x + size, y + size - triangleHeight);
+    ctx.lineTo(x + size - triangleHeight, y + size);
+    ctx.lineTo(x + size, y + size);
     ctx.fill();
     ctx.stroke();
 }
 
-function drawLR(size: number) {
-    return drawCallout(size, (ctx, size) => {
-        const w = size / WIDTH_RATIO
-        // center to bottom-left "\"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((-45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, 0, w, size / 2);
-        ctx.restore();
-        
-        // center to bottom-left "/"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, 0, w, size / 2);
-        ctx.restore();
-        
-        triangleLeft(ctx, size)
-        triangleRight(ctx, size)
-    });
+function drawR(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    centerToRight(ctx, size, x, y)
+    triangleRight(ctx, size, x, y)
 }
 
-function drawX(size: number) {
-    return drawCallout(size, (ctx, size) => {
-        const w = size / WIDTH_RATIO
-        // top left to bottom right "\"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((-45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, -size/2, w, size);
-        ctx.restore();
-        // top right to bottom left "/"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, -size/2, w, size);
-        ctx.restore();
-    } );
+function drawL(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    centerToLeft(ctx, size, x, y)
+    triangleLeft(ctx,size, x, y)
 }
 
-
-function drawXR(size: number) {
-    return drawCallout(size, (ctx, size) => {
-        const w = size / WIDTH_RATIO
-        // top left to bottom right "\"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((-45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, -size/2, w, size);
-        ctx.restore();
-        // top right to bottom left "/"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, -size/2, w, size);
-        ctx.restore();
-        triangleRight(ctx, size)
-    } );
+function drawLR(ctx: CanvasRenderingContext2D, size: number, x: number = 0, y: number = 0) {
+    centerToLeft(ctx, size, x, y)
+    centerToRight(ctx, size, x, y)
+    triangleLeft(ctx, size, x, y)
+    triangleRight(ctx, size, x, y)
 }
 
-function drawLX(size: number) {
-    return drawCallout(size, (ctx, size) => {
-        const w = size / WIDTH_RATIO
-        // top left to bottom right "\"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((-45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, -size/2, w, size);
-        ctx.restore();
-        // top right to bottom left "/"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, -size/2, w, size);
-        ctx.restore();
-        triangleLeft(ctx,size)
-    } );
+function drawX(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    leftToRight(ctx, size, x, y)
+    rightToLeft(ctx, size, x, y)
 }
 
-function drawLXR(size: number) {
-    return drawCallout(size, (ctx, size) => {
-        const w = size / WIDTH_RATIO
-        // top left to bottom right "\"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((-45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, -size/2, w, size);
-        ctx.restore();
-        // top right to bottom left "/"
-        ctx.save();
-        ctx.translate(size / 2, size / 2);
-        ctx.rotate((45 * Math.PI) / 180);
-        ctx.fillRect(-w / 2, -size/2, w, size);
-        ctx.restore();
-        triangleLeft(ctx,size)
-        triangleRight(ctx,size)
-    } );
+function drawXR(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    leftToRight(ctx, size, x, y)
+    rightToLeft(ctx, size, x, y)
+    triangleRight(ctx, size, x, y)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function testDraw() {
-    const size = 30;
-
-    var r = drawR(size);
-    var l = drawL(size);
-    var lr = drawLR(size);
-    var x = drawX(size);
-    var xr = drawXR(size);
-    var lx = drawLX(size);
-    var lxr = drawLXR(size);
-
-    var canvas  = document.getElementById("canvas") as HTMLCanvasElement;
-    var destCtx = canvas?.getContext("2d");
-    if (destCtx) { 
-        destCtx.drawImage(r, 0, 0);
-        destCtx.drawImage(l, (size+2)*1, size);
-        destCtx.drawImage(lr, (size+2)*2, 0);
-        destCtx.drawImage(x, (size+2)*3, size);
-        destCtx.drawImage(xr, (size+2)*4, 0);
-        destCtx.drawImage(lx, (size+2)*5, size);
-        destCtx.drawImage(lxr, (size+2)*6, 0);
-    } 
+function drawLX(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    leftToRight(ctx, size, x, y)
+    rightToLeft(ctx, size, x, y)
+    triangleLeft(ctx,size, x, y)
 }
 
-function draw(size: number, type: CELL_TYPE): HTMLCanvasElement | null  {
+function drawLXR(ctx: CanvasRenderingContext2D, size: number, x: number, y: number) {
+    leftToRight(ctx, size, x, y)
+    rightToLeft(ctx, size, x, y)
+    triangleLeft(ctx,size, x, y)
+    triangleRight(ctx,size, x, y)
+}
+
+function draw(size: number, type: CELL_TYPE, ctx: CanvasRenderingContext2D, color: string, x: number, y: number)  {
     if (type === CELL_TYPE.EMPTY) return null
-
-    switch (type) {
-        case CELL_TYPE.L:
-            return drawL(size)
-        case CELL_TYPE.R:
-            return drawR(size)
-        case CELL_TYPE.LR:
-            return drawLR(size)
-        case CELL_TYPE.X:
-            return drawX(size)
-        case CELL_TYPE.LX:
-            return drawLX(size)
-        case CELL_TYPE.XR: 
-            return drawXR(size)
-        case CELL_TYPE.LXR:
-            return drawLXR(size)
-        default:
-            break;
+    
+    if (ctx){ 
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+        switch (type) {
+            case CELL_TYPE.L:
+                drawL(ctx, size, x, y)
+                break;
+            case CELL_TYPE.R:
+                drawR(ctx, size, x, y)
+                break;
+            case CELL_TYPE.LR:
+                drawLR(ctx, size, x, y)
+                break;
+            case CELL_TYPE.X:
+                drawX(ctx, size, x, y)
+                break;
+            case CELL_TYPE.LX:
+                drawLX(ctx, size, x, y)
+                break;
+            case CELL_TYPE.XR: 
+                drawXR(ctx, size, x, y)
+                break;
+            case CELL_TYPE.LXR:
+                drawLXR(ctx, size, x, y)
+                break;
+            default:
+                break;
+        }
     }
-    return null
-} 
+}
+
+function contrastingColor(color: string) {
+    return (luma(color) >= 165) ? '#000' : '#fff';
+}
+
+function luma(color: string) {
+    var rgb = hexToRGBArray(color);
+    return (0.2126 * rgb[0]) + (0.7152 * rgb[1]) + (0.0722 * rgb[2]); // SMPTE C, Rec. 709 weightings
+}
+
+function hexToRGBArray(c: string) {
+    let color = c.startsWith('#') ? c.slice(1) : c;
+    
+    if (color.length === 3)
+        color = color.charAt(0) + color.charAt(0) + color.charAt(1) + color.charAt(1) + color.charAt(2) + color.charAt(2);
+    else if (color.length !== 6)
+        throw new Error('Invalid hex color: ' + color);
+    var rgb = [];
+    for (var i = 0; i <= 2; i++)
+        rgb[i] = parseInt(color.substr(i * 2, 2), 16);
+    return rgb;
+}
 
 export const DRAW = {
-    draw
+    draw,
+    contrastingColor
 } 
