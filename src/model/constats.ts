@@ -3,6 +3,7 @@ import { TVIEWBOX_SIZE } from "./patterntype.enum"
 export const VERSION = '1.5.4'
 
 export const BACKGROUND_COLOR = '#ffffff'
+export const BACKGROUND_COLOR_ERROR = '#000000'
 export const DEFAULT_COLOR = '#ffffff'
 export const DEFAULT_COLOR_2 = '#FF0000'
 export const MINMAP_FRAME = '#000'

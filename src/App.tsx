@@ -5,6 +5,7 @@ import { PatternWindowedComponent } from './components/pattern/windowed/pattern'
 
 import { Col, Row } from 'react-bootstrap'
 import { useStore } from './context'
+import { PatternWithCanvasComponent } from './components/patternCanvas/pattern'
 
 function App() {
     const isPatternWindowed = useStore().isPatternWindowed
@@ -19,7 +20,8 @@ function App() {
                 { isPatternWindowed ?
                     <PatternWindowedComponent />
                     :
-                    <PatternComponent />
+                    // <PatternComponent />
+                    <PatternWithCanvasComponent />
                 }
                 </Col>
             </Row>

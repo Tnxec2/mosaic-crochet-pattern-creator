@@ -1,4 +1,5 @@
 
+import { off } from "process"
 import { BACKGROUND_COLOR } from "../../model/constats"
 import { IPatternGrid } from "../../model/patterncell.model"
 import { CELL_TYPE } from "../../model/patterntype.enum"
@@ -8,12 +9,21 @@ import { DRAW } from "../export/draw"
 export type TSize = {
     width: number
     height: number
+    rowNumberWidth: number
+    headerHeight: number
+    cellSize: number
 }
 
 // iconCache = map(color to map(StitchType to IconImage))
 const iconCache: { [key: string]: Record<string, HTMLCanvasElement | null> } = {};
 
-const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, showCellStitchType: boolean, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): TSize =>  {
+const drawPattern = (
+  pattern: IPatternGrid, 
+  colors: string[], 
+  fontSize: number, 
+  showCellStitchType: boolean, 
+  canvas: HTMLCanvasElement, 
+  ctx: CanvasRenderingContext2D): TSize =>  {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     const rows = pattern.length
@@ -86,18 +96,20 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
     ctx.fillStyle = "black"
     ctx.textBaseline = "top"
 
+    ctx.textBaseline = "middle"
+
     const leftAxisX = rowIndexWidth - 2;
     const rightAxisX = w - rowIndexWidth + 2;
 
     ctx.textAlign = "right"
     for (let r = 1; r <= rows; r++) {
-      let y = h - headerHeight - r * cellSize 
+      let y = h - headerHeight - r * cellSize + cellSize / 2
       ctx.fillText(r.toString(), leftAxisX, y) // left
     }
 
     ctx.textAlign = "left"
     for (let r = 1; r <= rows; r++) {
-      let y = h - headerHeight - r * cellSize
+      let y = h - headerHeight - r * cellSize + cellSize / 2
       ctx.fillText(r.toString(), rightAxisX, y) // right
     }
 
@@ -108,9 +120,9 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
     for (let c = 0; c < cols; c++) {
       const x = c * cellSize;
       ctx.textAlign = "left";
-      ctx.fillText((cols - c).toString(), 2, x); // top
+      ctx.fillText((cols - c).toString(), 2, x + cellSize/2); // top
       ctx.textAlign = "right";
-      ctx.fillText((cols - c).toString(), -h + headerHeight * 2 - 2, x); // bottom
+      ctx.fillText((cols - c).toString(), -h + headerHeight * 2 - 2, x + cellSize/2); // bottom
     }
 
     ctx.restore();
@@ -124,7 +136,7 @@ const drawPattern = (pattern: IPatternGrid, colors: string[], fontSize: number, 
         drawLine(ctx, [x, 0], [x, h])
       }
     }
-    return {width: w, height: h}
+    return {width: w, height: h, rowNumberWidth: rowIndexWidth, headerHeight: headerHeight, cellSize: cellSize}
   }
 
   function drawLine(
