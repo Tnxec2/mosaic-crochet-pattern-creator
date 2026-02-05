@@ -1,4 +1,5 @@
 
+import { log } from "node:console"
 import { BACKGROUND_COLOR, BACKGROUND_COLOR_ERROR } from "../../model/constats"
 import { IPatternGrid } from "../../model/patterncell.model"
 import { CELL_TYPE, hasX } from "../../model/patterntype.enum"
@@ -13,7 +14,10 @@ export type TSize = {
     cellSize: number
 }
 
-
+// iconCache = map(color to map(StitchType to IconImage))
+const iconCache: { [key: string]: Record<string, HTMLCanvasElement | null> } = {};
+const iconCacheError: { [key: string]: HTMLCanvasElement } = {};
+let cachedIconSize = -1;
 
 const drawPattern = (
   pattern: IPatternGrid, 
@@ -103,11 +107,13 @@ const drawPattern = (
         drawLine(ctx, [x, 0], [x, h])
       }
     }
-
-    drawStitches(ctx, cellSize, pattern, colors, showCellStitchType, rowIndexWidth, headerHeight, rows, oldPattern, true)
+    console.log('redraw all');
+    
+    drawStitches(ctx, cellSize, pattern, colors, showCellStitchType, rowIndexWidth, headerHeight, rows, oldPattern, true, oldColors)
     return {width: w, height: h, rowNumberWidth: rowIndexWidth, headerHeight: headerHeight, cellSize: cellSize}
   } else {
-    drawStitches(ctx, cellSize, pattern, colors, showCellStitchType, rowIndexWidth, headerHeight, rows, oldPattern, false)
+    console.log('redraw stitches only');
+    drawStitches(ctx, cellSize, pattern, colors, showCellStitchType, rowIndexWidth, headerHeight, rows, oldPattern, false, oldColors)
     return {width: canvas.width, height: canvas.height, rowNumberWidth: rowIndexWidth, headerHeight: headerHeight, cellSize: cellSize}
   }
 }
@@ -123,16 +129,21 @@ function drawStitches(
   headerHeight: number,
   rows: number,
   oldPattern: IPatternGrid,
-  redrawAll: boolean
+  redrawAll: boolean,
+  oldColors: string[]
 ) {
-  // iconCache = map(color to map(StitchType to IconImage))
-  const iconCache: { [key: string]: Record<string, HTMLCanvasElement | null> } = {};
-  const iconCacheError: { [key: string]: HTMLCanvasElement } = {};
   const iconSize = cellSize-4
+
+  if (cachedIconSize !== iconSize) {
+    Object.keys(iconCache).forEach(key => delete iconCache[key]);
+    Object.keys(iconCacheError).forEach(key => delete iconCacheError[key]);
+    cachedIconSize = iconSize;
+  }
     
-    // fill iconCache for all colors
-    colors.forEach((color) => {
-      iconCache[color] = {}
+  // fill iconCache for all colors
+  colors.forEach((color) => {
+    if (!iconCache[color]) {
+      iconCache[color] = {};
       Object.values(CELL_TYPE).forEach(cellType => {
         var c = document.createElement('canvas');
         c.width = iconSize;
@@ -140,11 +151,13 @@ function drawStitches(
         const tx = c.getContext('2d');
         if (tx) {
           DRAW.draw(iconSize, cellType, tx, DRAW.contrastingColor(color), 0, 0);
-          iconCache[color][cellType] = c
+          iconCache[color][cellType] = c;
         }
       });
-    });
+    }
+  });
 
+  if (Object.keys(iconCacheError).length === 0) {
     Object.values(CELL_TYPE).forEach(cellType => {
       var canvasError = document.createElement('canvas');
       canvasError.width = iconSize;
@@ -152,39 +165,36 @@ function drawStitches(
       const tx = canvasError.getContext('2d');
       if (tx) {
         DRAW.draw(iconSize, cellType, tx, '#ff0000', 0, 0);
-        iconCacheError[cellType] = canvasError
+        iconCacheError[cellType] = canvasError;
       }
     });
+  }
     
-    // pattern content
-    
-    for (let r = rows - 1; r >= 0; r--) {
-      const row = pattern[r]
-      for (let c = 0; c < row.length; c++) {
-        const error = hasError(pattern, r, c)
-        const oldCellError = hasError(oldPattern, r, c)
+  // pattern content
+  for (let r = rows - 1; r >= 0; r--) {
+    const row = pattern[r];
+    for (let c = 0; c < row.length; c++) {
+      const error = hasError(pattern, r, c);
+      const oldCellError = hasError(oldPattern, r, c);
+      const cellColor = error ? BACKGROUND_COLOR_ERROR : getCellColor(pattern, colors, r, c);
+      const oldCellColor = oldCellError ? BACKGROUND_COLOR_ERROR : getCellColor(oldPattern, oldColors, r, c);
+      const stitchType = row[c].t;
+      const oldStitchType = oldPattern.length > 0 && oldPattern[r] && oldPattern[r][c] ? oldPattern[r][c].t : null;
 
-        const cellColor = error ? BACKGROUND_COLOR_ERROR : getCellColor(pattern, colors, r, c)
-
-        const oldCellColor = oldCellError ? BACKGROUND_COLOR_ERROR : getCellColor(oldPattern, colors, r, c)
-
-        let x = rowIndexWidth + c * cellSize
-        let y = headerHeight + r * cellSize
-
-        if (redrawAll || cellColor !== oldCellColor || (oldPattern.length > 0 && row[c].t !== oldPattern[r][c].t)) {
-          ctx.fillStyle = cellColor
-          ctx.fillRect(x+1, y+1, cellSize-2, cellSize-2)
-        }
-        
-        if (redrawAll || (showCellStitchType && row[c].t !== CELL_TYPE.EMPTY)) {
-          let image = error ? iconCacheError[row[c].t] : iconCache[cellColor][row[c].t]
+      if (redrawAll || cellColor !== oldCellColor || stitchType !== oldStitchType) {
+        const x = rowIndexWidth + c * cellSize;
+        const y = headerHeight + r * cellSize;
+        ctx.fillStyle = cellColor;
+        ctx.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
+        if (showCellStitchType && stitchType !== CELL_TYPE.EMPTY) {
+          const image = error ? iconCacheError[stitchType] : iconCache[cellColor][stitchType];
           if (image) {
-          ctx.drawImage(image, x+2, y+2)
+            ctx.drawImage(image, x + 2, y + 2);
           }
         }
       }
     }
-    
+  }
 }
 
 function drawLine(
@@ -227,29 +237,29 @@ const hasError = (pattern: IPatternGrid, row: number, col: number): boolean => {
 }
 
 const getCellColor = (pattern: IPatternGrid, colors: string[], row: number, col: number) => {
-  if (pattern.length === 0) {
+  if (pattern.length === 0 || colors.length === 0) {
     return BACKGROUND_COLOR
   }
-    if (
-        pattern[row - 1] &&
-        pattern[row - 1][col - 1] &&
-        pattern[row - 1][col - 1].t.includes('r')
-    ) {
-        return getColor(pattern, colors, row - 1, col - 1)
-    } else if (
-        pattern[row - 1] &&
-        pattern[row - 1][col + 1] &&
-        pattern[row - 1][col + 1].t.includes('l')
-    ) {
-        return getColor(pattern, colors, row - 1, col + 1)
-    } else if (
-        pattern[row - 1] &&
-        pattern[row - 1][col] &&
-        pattern[row - 1][col].t.includes('x')
-    ) {
-        return getColor(pattern, colors, row - 1, col)
-    }
-    return getColor(pattern, colors, row, col)
+  if (
+      pattern[row - 1] &&
+      pattern[row - 1][col - 1] &&
+      pattern[row - 1][col - 1].t.includes('r')
+  ) {
+      return getColor(pattern, colors, row - 1, col - 1)
+  } else if (
+      pattern[row - 1] &&
+      pattern[row - 1][col + 1] &&
+      pattern[row - 1][col + 1].t.includes('l')
+  ) {
+      return getColor(pattern, colors, row - 1, col + 1)
+  } else if (
+      pattern[row - 1] &&
+      pattern[row - 1][col] &&
+      pattern[row - 1][col].t.includes('x')
+  ) {
+      return getColor(pattern, colors, row - 1, col)
+  }
+  return getColor(pattern, colors, row, col)
 }
 
 const getColor = (pattern: IPatternGrid, colors: string[], row: number, col: number) => {
