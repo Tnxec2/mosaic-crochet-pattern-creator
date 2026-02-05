@@ -20,7 +20,6 @@ export const DropDownMenu: FC<{
         }) => {
     const {
         patternState,
-        savePattern,
         addColumn,
         addRow,
         fillColumn,
@@ -37,7 +36,6 @@ export const DropDownMenu: FC<{
     } = useStore()
 
     
-
     const [dropDownPos, setDropDownPos] = useState<TDropDownPos>({
         row: 0,
         col: 0,
@@ -64,30 +62,42 @@ export const DropDownMenu: FC<{
         }
     }, [row, col, x, y, patternState.pattern.length, patternState.pattern[0].length])
 
-    const closeDropDown = useCallback((e?: MouseEvent<HTMLLIElement>) => {
-        setDropDownPos({ row: -1, col: -1, x: e?.screenX || 0, y: e?.screenY || 0, opened: false })
+    const closeAllDropDowns = useCallback((e?: MouseEvent<HTMLLIElement>) => {
         e?.stopPropagation()
+        e?.preventDefault()
+
+        // Verzögern Sie das Schließen des Dropdowns mit setTimeout, um zu verhindern,
+        // dass das Klick-Event an das darunter liegende Canvas-Element weitergegeben wird,
+        // nachdem das Dropdown aus dem DOM entfernt wurde.
+        setTimeout(() => {
+            setDropDownPos(prev => ({ ...prev, opened: false }))
+            setDropDownPosPatternCell(prev => ({ ...prev, opened: false }))
+        }, 0)
     }, [])
 
     const dropDownCell = useMemo(() => 
         <DropDown
             x={dropDownPosPatternCell.x}
             y={dropDownPosPatternCell.y}
-            onclose={() => setDropDownPosPatternCell({row: -1, col: -1, x: -1, y: -1, opened: false })}
+            onclose={closeAllDropDowns}
             menu={[
                 { name: `Cell ${patternState.pattern[0].length - dropDownPosPatternCell.col}:${patternState.pattern.length - dropDownPosPatternCell.row}`},
                 MenuItemDivider,
                 {
                     name: '➡️ fill right',
-                    onClick: () =>
-                        fillRight(dropDownPosPatternCell.row, dropDownPosPatternCell.col),
+                    onClick: (e) => {
+                        fillRight(dropDownPosPatternCell.row, dropDownPosPatternCell.col)
+                        closeAllDropDowns(e)
+                    },
                     action: patternState.selectedAction,
                     color: patternState.colors[patternState.selectedColorIndex], 
                 },
                 {
                     name: '⬅️ fill left',
-                    onClick: () =>
-                        fillLeft(dropDownPosPatternCell.row, dropDownPosPatternCell.col),
+                    onClick: (e) => {
+                        fillLeft(dropDownPosPatternCell.row, dropDownPosPatternCell.col)
+                        closeAllDropDowns(e)
+                    },
                     action: patternState.selectedAction,
                     color: patternState.colors[patternState.selectedColorIndex], 
                 },
@@ -121,54 +131,71 @@ export const DropDownMenu: FC<{
                 MenuItemDivider,
                 {
                     name: 'start copy',
-                    onClick: () => 
-                        setStart(dropDownPosPatternCell),
+                    onClick: (e) => {
+                        setStart(dropDownPosPatternCell)
+                        closeAllDropDowns(e)
+                    },
                 },
                 {
                     name: 'end copy',
-                    onClick: () => 
-                        setEnd(dropDownPosPatternCell),
+                    onClick: (e) => {
+                        setEnd(dropDownPosPatternCell)
+                        closeAllDropDowns(e)
+                    },
                 },
                 {
                     name: <><OutlineContentPasteGo/> paste</>,
-                    onClick: () => 
-                        paste(dropDownPosPatternCell),
+                    onClick: (e) => {
+                        paste(dropDownPosPatternCell)
+                        closeAllDropDowns(e)
+                    },
                 },
                 {
                     name: <><TwotoneContentPasteGo/> paste with color</>,
-                    onClick: () => 
-                        paste(dropDownPosPatternCell, true),
+                    onClick: (e) => {
+                        paste(dropDownPosPatternCell, true)
+                        closeAllDropDowns(e)
+                    },
                 },
                 {
                     name: showBufferData ? <><EyeInvisibleFilled/> hidde buffer preview</> : <><EyeFilled/> show buffer preview</>,
-                    onClick: () => toggleShowBufferData(),
+                    onClick: (e) => {
+                        toggleShowBufferData()
+                        closeAllDropDowns(e)
+                    },
                 }
             ]}
-        />, [dropDownPosPatternCell.col, dropDownPosPatternCell.row, dropDownPosPatternCell.x, dropDownPosPatternCell.y, fillLeft, fillRight, patternState, savePattern])
+        />, [closeAllDropDowns, dropDownPosPatternCell, fillLeft, fillRight, paste, patternState, setEnd, setStart, showBufferData, toggleShowBufferData])
 
     const dropDownRow = useMemo(() => 
         <DropDown
             x={dropDownPos.x}
             y={dropDownPos.y}
-            onclose={(e) => closeDropDown(e)}
+            onclose={closeAllDropDowns}
             menu={[
                 { name: `Row ${patternState.pattern.length - dropDownPos.row}`},
                 MenuItemDivider,
                 {
                     name: '➕ add row',
-                    onClick: () =>
+                    onClick: (e) => {
                         addRow(dropDownPos.row)
+                        closeAllDropDowns(e)
+                    }
                 },
                 {
                     name: '❌ delete row',
-                    onClick: () =>
+                    onClick: (e) => {
                         deleteRow(dropDownPos.row)
+                        closeAllDropDowns(e)
+                    }
                 },
                 MenuItemDivider,
                 {
                     name: 'row fill',
-                    onClick: () =>
-                        fillRow(dropDownPos.row),
+                    onClick: (e) => {
+                        fillRow(dropDownPos.row)
+                        closeAllDropDowns(e)
+                    },
                     action: patternState.selectedAction,
                     color: patternState
                         .colors[
@@ -177,31 +204,37 @@ export const DropDownMenu: FC<{
                     ]
                 }
             ]}
-        />, [ dropDownPos.x, dropDownPos.y, dropDownPos.row, patternState.pattern.length, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addRow, deleteRow, fillRow])
+        />, [addRow, closeAllDropDowns, deleteRow, dropDownPos.row, dropDownPos.x, dropDownPos.y, fillRow, patternState.colors, patternState.pattern.length, patternState.selectedAction, patternState.selectedColorIndex])
 
     const dropDownColumn = useMemo(() => 
         <DropDown
             x={dropDownPos.x}
             y={dropDownPos.y}
-            onclose={(e) => closeDropDown(e)}
+            onclose={closeAllDropDowns}
             menu={[
                 { name: `Column ${patternState.pattern[0].length - dropDownPos.col}`},
                 MenuItemDivider,
                 {
                     name: '➕ add col',
-                    onClick: () =>
+                    onClick: (e) => {
                         addColumn(dropDownPos.col)
+                        closeAllDropDowns(e)
+                    }
                 },
                 {
                     name: '❌ delete col',
-                    onClick: () =>
+                    onClick: (e) => {
                         deleteColumn(dropDownPos.col)
+                        closeAllDropDowns(e)
+                    }
                 },
                 MenuItemDivider,
                 {
                     name: 'col fill',
-                    onClick: () =>
-                        fillColumn(dropDownPos.col),
+                    onClick: (e) => {
+                        fillColumn(dropDownPos.col)
+                        closeAllDropDowns(e)
+                    },
                     action: patternState.selectedAction,
                     color: patternState
                         .colors[
@@ -210,7 +243,7 @@ export const DropDownMenu: FC<{
                     ]
                 }
             ]}
-        />, [dropDownPos.x, dropDownPos.y, dropDownPos.col, patternState.pattern, patternState.selectedAction, patternState.colors, patternState.selectedColorIndex, closeDropDown, addColumn, deleteColumn, fillColumn])
+        />, [addColumn, closeAllDropDowns, deleteColumn, dropDownPos.col, dropDownPos.x, dropDownPos.y, fillColumn, patternState.colors, patternState.pattern, patternState.selectedAction, patternState.selectedColorIndex])
 
 
     return (
