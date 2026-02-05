@@ -8,9 +8,8 @@ import { PatternHeaderComponent } from "../pattern/pattern.header"
 import { DropDownMenu } from "./dropdownmenu"
 import { IPatternGrid } from "../../model/patterncell.model"
 import { BufferRowComponent } from "../pattern/buffer.row"
-import { useStateDebounced } from "../../services/debounce"
 
-const cellSize = 10
+const cellSize = 16
 
 const getCoords = (
       e: React.MouseEvent<HTMLCanvasElement>,
