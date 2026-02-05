@@ -8,8 +8,22 @@ import { PatternHeaderComponent } from "../pattern/pattern.header"
 import { DropDownMenu } from "./dropdownmenu"
 import { IPatternGrid } from "../../model/patterncell.model"
 import { BufferRowComponent } from "../pattern/buffer.row"
+import { useStateDebounced } from "../../services/debounce"
 
 const cellSize = 10
+
+const getCoords = (
+      e: React.MouseEvent<HTMLCanvasElement>,
+      boxSize: TSize
+  ) => {
+      const { clientX, clientY } = e;
+      var rect = e.currentTarget.getBoundingClientRect();
+      
+      // get cell from pattern based on click position
+      const col = Math.floor(((clientX - rect.left) - boxSize.rowNumberWidth) / boxSize.cellSize);
+      const row = Math.floor(((clientY - rect.top) - boxSize.headerHeight) / boxSize.cellSize);
+      return { row, col };
+  }
 
 export const PatternWithCanvasComponent: FC = () => {
   const {
@@ -44,9 +58,9 @@ export const PatternWithCanvasComponent: FC = () => {
 
   const draw = useCallback((canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     if (canvas) {
-
+      const fontSize = patternState.scaleFactor * cellSize
       const size = PatternDraw2.drawPattern(
-        patternState.pattern, patternState.colors, patternState.scaleFactor * cellSize, showCellStitchType, canvas, ctx, 
+        patternState.pattern, patternState.colors, fontSize, showCellStitchType, canvas, ctx, 
         drawnState.pattern, drawnState.colors, drawnState.showCellStitchType, drawnState.fontSize
       )
       setBoxSize(size)
@@ -55,34 +69,55 @@ export const PatternWithCanvasComponent: FC = () => {
         pattern: patternState.pattern, 
         colors: patternState.colors, 
         showCellStitchType, 
-        fontSize: patternState.scaleFactor * cellSize })
+        fontSize: fontSize })
     } else {
       console.error("couldn't find canvas with id canvasPreview");
     }
-  }, [patternState.pattern, patternState.colors, showCellStitchType, patternState.scaleFactor]);
+  }, [patternState.pattern, patternState.colors, patternState.scaleFactor, showCellStitchType]);
 
 
   const [clicked, setClicked] = useState<{ row: number; col: number, x: number, y: number}>({row: -1, col: -1, x: 0, y: 0});
 
-  const handleClick = (e: React.MouseEvent<HTMLCanvasElement>, canvas: HTMLCanvasElement) => {
-
-    const { clientX, clientY } = e;
-    var rect = canvas.getBoundingClientRect();
+  const handleClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>, mouseOver: boolean) => {
     
-    // get cell from pattern based on click position
-    const col = Math.floor(((clientX - rect.left) - boxSize.rowNumberWidth) / boxSize.cellSize);
-    const row = Math.floor(((clientY - rect.top) - boxSize.headerHeight) / boxSize.cellSize);
-
+    const { clientX, clientY } = e;
+    const { row, col } = getCoords(e, boxSize);
+    
     if (row >= 0 && row < patternState.pattern.length && col >= 0 && col < patternState.pattern[0].length) {
-      const mouseOver = false
       if (e.ctrlKey) 
         setClicked({ row, col, x: clientX, y: clientY })
       else
         changeCell(row, col, mouseOver)
     } else {
-      setClicked({ row, col, x: clientX, y: clientY })
+      const r = row < 0 || row > patternState.pattern.length - 1 ? -1 : row 
+      const c = col < 0 || col > patternState.pattern[0].length - 1 ? -1 : col
+      
+      setClicked({ row: r, col: c, x: clientX, y: clientY })
     }
-  }
+  }, [boxSize, patternState.pattern, changeCell]);
+
+
+  const [mouseOverCell, setMouseOverCell] = useState<{ row: number; col: number}>({row: -1, col: -1});
+
+  const handleMouseOver = useCallback((
+      e: React.MouseEvent<HTMLCanvasElement>
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+      const { row, col } = getCoords(e, boxSize);
+
+      if (row !== mouseOverCell.row || col !== mouseOverCell.col) {
+        setMouseOverCell({ row, col });
+        if (e.buttons === 1) {
+          console.log('mouse over click');
+          
+          handleClick(e, true)
+        }
+      } else {
+        return;
+      }
+  }, [handleClick, boxSize, mouseOverCell]);
 
 
   return (<>
@@ -101,8 +136,8 @@ export const PatternWithCanvasComponent: FC = () => {
             id="canvasPreview"
             draw={draw}
             className="canvas-preview"
-            onClick={handleClick}
-
+            onClick={(e: React.MouseEvent<HTMLCanvasElement>) => {handleClick(e, false)}}
+            onMouseMove={(e: React.MouseEvent<HTMLCanvasElement>) => {handleMouseOver(e)}}
           />
         
           { showBufferData && <div
