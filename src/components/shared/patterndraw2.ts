@@ -1,8 +1,7 @@
 
-import { log } from "node:console"
 import { BACKGROUND_COLOR, BACKGROUND_COLOR_ERROR } from "../../model/constats"
 import { IPatternGrid } from "../../model/patterncell.model"
-import { CELL_TYPE, hasX } from "../../model/patterntype.enum"
+import { CELL_TYPE, hasX, TVIEWBOX_SIZE } from "../../model/patterntype.enum"
 import { DRAW } from "../export/draw"
 
 
@@ -28,15 +27,25 @@ const drawPattern = (
   ctx: CanvasRenderingContext2D,
   oldPattern: IPatternGrid,
   oldColors: string[],
-  oldShowCellStitchType?: boolean,
-  oldFontSize?: number
+  oldShowCellStitchType: boolean,
+  oldFontSize: number,
+  viewBox: TVIEWBOX_SIZE,
+  viewBoxOld: TVIEWBOX_SIZE,
 ): TSize =>  {
-  const rows = pattern.length
-  const cols = pattern[0].length
+  const maxRows = pattern.length
+  const maxCols = pattern[0].length
+
+  const rows = viewBox ? Math.min(viewBox.wy, maxRows) : maxRows
+  const cols = viewBox ? Math.min(viewBox.wx, maxCols) : maxCols
+  const startRow = viewBox ? Math.max(0, viewBox.row) : 0
+  const startCol = viewBox ? Math.max(0, viewBox.col) : 0
+
+  console.log('rows, cols, startRow, startCol', rows, cols, startRow, startCol);
+  
 
   ctx.font = `normal ${fontSize}pt monospace`
-  let metricsCols = ctx.measureText(cols.toString());
-  let metricsRows = ctx.measureText(rows.toString());
+  let metricsCols = ctx.measureText(maxCols.toString());
+  let metricsRows = ctx.measureText(maxRows.toString());
   //let fontHeight = metricsCols.fontBoundingBoxAscent + metricsCols.fontBoundingBoxDescent;
   let actualHeight = Math.floor(metricsCols.actualBoundingBoxAscent + metricsCols.actualBoundingBoxDescent);
 
@@ -46,10 +55,14 @@ const drawPattern = (
 
   let rowIndexWidth = Math.ceil(metricsRows.width) + 4
     
-  if (oldPattern.length === 0|| oldColors.length === 0 || !oldShowCellStitchType || !oldFontSize || 
+  if (
+    oldPattern.length === 0|| oldColors.length === 0 || !oldShowCellStitchType || 
     fontSize !== oldFontSize || showCellStitchType !== oldShowCellStitchType || 
     pattern.length !== oldPattern.length || pattern[0].length !== oldPattern[0].length ||
-    colors.length !== oldColors.length) {
+    colors.length !== oldColors.length || 
+    viewBox.row !== viewBoxOld.row || viewBox.col !== viewBoxOld.col || 
+    viewBox.wx !== viewBoxOld.wx || viewBox.wy !== viewBoxOld.wy
+  ) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     let w = cellSize * cols + rowIndexWidth * 2
@@ -75,13 +88,13 @@ const drawPattern = (
     ctx.textAlign = "right"
     for (let r = 1; r <= rows; r++) {
       let y = h - headerHeight - r * cellSize + cellSize / 2
-      ctx.fillText(r.toString(), leftAxisX, y) // left
+      ctx.fillText( (startRow + r).toString(), leftAxisX, y) // left
     }
 
     ctx.textAlign = "left"
     for (let r = 1; r <= rows; r++) {
       let y = h - headerHeight - r * cellSize + cellSize / 2
-      ctx.fillText(r.toString(), rightAxisX, y) // right
+      ctx.fillText((startRow + r).toString(), rightAxisX, y) // right
     }
 
     ctx.save();
@@ -91,9 +104,9 @@ const drawPattern = (
     for (let c = 0; c < cols; c++) {
       const x = c * cellSize;
       ctx.textAlign = "left";
-      ctx.fillText((cols - c).toString(), 2, x + cellSize/2); // top
+      ctx.fillText((maxCols - startCol - c).toString(), 2, x + cellSize/2); // top
       ctx.textAlign = "right";
-      ctx.fillText((cols - c).toString(), -h + headerHeight * 2 - 2, x + cellSize/2); // bottom
+      ctx.fillText((maxCols - startCol - c).toString(), -h + headerHeight * 2 - 2, x + cellSize/2); // bottom
     }
 
     ctx.restore();
@@ -106,14 +119,11 @@ const drawPattern = (
         let x = rowIndexWidth + c * cellSize
         drawLine(ctx, [x, 0], [x, h])
       }
-    }
-    console.log('redraw all');
-    
-    drawStitches(ctx, cellSize, pattern, colors, showCellStitchType, rowIndexWidth, headerHeight, rows, oldPattern, true, oldColors)
+    }    
+    drawStitches(ctx, cellSize, pattern, colors, showCellStitchType, rowIndexWidth, headerHeight, oldPattern, true, oldColors, viewBox)
     return {width: w, height: h, rowNumberWidth: rowIndexWidth, headerHeight: headerHeight, cellSize: cellSize}
   } else {
-    console.log('redraw stitches only');
-    drawStitches(ctx, cellSize, pattern, colors, showCellStitchType, rowIndexWidth, headerHeight, rows, oldPattern, false, oldColors)
+    drawStitches(ctx, cellSize, pattern, colors, showCellStitchType, rowIndexWidth, headerHeight, oldPattern, false, oldColors, viewBox)
     return {width: canvas.width, height: canvas.height, rowNumberWidth: rowIndexWidth, headerHeight: headerHeight, cellSize: cellSize}
   }
 }
@@ -127,12 +137,19 @@ function drawStitches(
   showCellStitchType: boolean,
   rowIndexWidth: number,
   headerHeight: number,
-  rows: number,
   oldPattern: IPatternGrid,
   redrawAll: boolean,
-  oldColors: string[]
+  oldColors: string[],
+  viewBox: TVIEWBOX_SIZE,
 ) {
   const iconSize = cellSize-4
+
+  const rows = viewBox ? Math.min(viewBox.wy, pattern.length) : pattern.length
+  const cols = viewBox ? Math.min(viewBox.wx, pattern[0].length) : pattern[0].length
+  const startRow = viewBox ? Math.max(0, viewBox.row) : 0
+  const startCol = viewBox ? Math.max(0, viewBox.col) : 0
+
+  console.log('rows, cols, startRow, startCol', rows, cols, startRow, startCol);
 
   if (cachedIconSize !== iconSize) {
     Object.keys(iconCache).forEach(key => delete iconCache[key]);
@@ -171,19 +188,18 @@ function drawStitches(
   }
     
   // pattern content
-  for (let r = rows - 1; r >= 0; r--) {
-    const row = pattern[r];
-    for (let c = 0; c < row.length; c++) {
+  for (let r = startRow + rows - 1; r >= startRow; r--) {
+    for (let c = startCol; c < startCol + cols; c++) {
       const error = hasError(pattern, r, c);
       const oldCellError = hasError(oldPattern, r, c);
       const cellColor = error ? BACKGROUND_COLOR_ERROR : getCellColor(pattern, colors, r, c);
       const oldCellColor = oldCellError ? BACKGROUND_COLOR_ERROR : getCellColor(oldPattern, oldColors, r, c);
-      const stitchType = row[c].t;
+      const stitchType = pattern[r][c].t;
       const oldStitchType = oldPattern.length > 0 && oldPattern[r] && oldPattern[r][c] ? oldPattern[r][c].t : null;
 
       if (redrawAll || cellColor !== oldCellColor || stitchType !== oldStitchType) {
-        const x = rowIndexWidth + c * cellSize;
-        const y = headerHeight + r * cellSize;
+        const x = rowIndexWidth + (c-startCol) * cellSize;
+        const y = headerHeight + (r-startRow) * cellSize;
         ctx.fillStyle = cellColor;
         ctx.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
         if (showCellStitchType && stitchType !== CELL_TYPE.EMPTY) {

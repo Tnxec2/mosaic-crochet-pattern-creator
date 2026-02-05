@@ -58,7 +58,9 @@ export const PatternWithCanvasComponent: FC = () => {
       const fontSize = patternState.scaleFactor * cellSize
       const size = PatternDraw2.drawPattern(
         patternState.pattern, patternState.colors, fontSize, showCellStitchType, canvas, ctx, 
-        drawnState.pattern, drawnState.colors, drawnState.showCellStitchType, drawnState.fontSize
+        drawnState.pattern, drawnState.colors, drawnState.showCellStitchType, drawnState.fontSize,
+        { row: 0, col: 0, wx: patternState.pattern[0].length, wy: patternState.pattern.length },
+        { row: 0, col: 0, wx: patternState.pattern[0].length, wy: patternState.pattern.length }
       )
       setBoxSize(size)
       
