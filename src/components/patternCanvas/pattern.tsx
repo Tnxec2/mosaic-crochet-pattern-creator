@@ -33,8 +33,6 @@ export const PatternWithCanvasComponent: FC = () => {
     bufferdata
   } = useStore()
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
   const [boxSize, setBoxSize] = useState<TSize>({ 
     width: 0,
     height: 0,
@@ -108,9 +106,7 @@ export const PatternWithCanvasComponent: FC = () => {
 
       if (row !== mouseOverCell.row || col !== mouseOverCell.col) {
         setMouseOverCell({ row, col });
-        if (e.buttons === 1) {
-          console.log('mouse over click');
-          
+        if (e.buttons === 1) {         
           handleClick(e, true)
         }
       } else {
@@ -131,7 +127,6 @@ export const PatternWithCanvasComponent: FC = () => {
       <Card.Body className="pattern-container">
         
           <Canvas
-            ref={canvasRef}
             id="canvasPreview"
             draw={draw}
             className="canvas-preview"
