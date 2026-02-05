@@ -215,8 +215,8 @@ export const DropDownMenu: FC<{
 
     return (
         <>
-            {dropDownPos?.opened && dropDownPos.col === -1 && dropDownColumn}
-            {dropDownPos?.opened && dropDownPos.row === -1 && dropDownRow}
+            {dropDownPos?.opened && dropDownPos.row === -1 && dropDownColumn}
+            {dropDownPos?.opened && dropDownPos.col === -1 && dropDownRow}
             {dropDownPosPatternCell?.opened && dropDownCell}
         </>
     )
