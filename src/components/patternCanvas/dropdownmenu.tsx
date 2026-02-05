@@ -58,7 +58,7 @@ export const DropDownMenu: FC<{
         else {
             console.log("open postion for row/col menu", row, col);
             
-            setDropDownPos({ row, col, x, y, opened: true })
+            setDropDownPos({ row, col, x, y, opened: !(row < 0 && col < 0) })
         }
     }, [row, col, x, y, patternState.pattern.length, patternState.pattern[0].length])
 
