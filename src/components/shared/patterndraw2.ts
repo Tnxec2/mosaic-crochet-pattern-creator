@@ -3,6 +3,7 @@ import { BACKGROUND_COLOR, BACKGROUND_COLOR_ERROR } from "../../model/constats"
 import { IPatternGrid } from "../../model/patterncell.model"
 import { CELL_TYPE, hasX, TVIEWBOX_SIZE } from "../../model/patterntype.enum"
 import { DRAW } from "../export/draw"
+import ConsoleHelper from "./consoleHelper"
 
 
 export type TSize = {
@@ -41,7 +42,7 @@ const drawPattern = (
   const startRow = viewBox ? Math.max(0, Math.min(viewBox.row, pattern.length - viewBox.wy)) : 0
   const startCol = viewBox ? Math.max(0, Math.min(viewBox.col, pattern[0].length - viewBox.wx)) : 0
 
-  console.log(`draw2. maxRows: ${maxRows}, maxCols: ${maxCols}, rows: ${rows}, cols: ${cols}, startRow: ${startRow}, startCol: ${startCol}`);
+  ConsoleHelper(`draw2. maxRows: ${maxRows}, maxCols: ${maxCols}, rows: ${rows}, cols: ${cols}, startRow: ${startRow}, startCol: ${startCol}`);
   
   ctx.font = `normal ${fontSize}pt monospace`
   let metricsCols = ctx.measureText(maxCols.toString());
