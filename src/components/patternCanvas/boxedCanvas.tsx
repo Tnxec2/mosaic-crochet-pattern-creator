@@ -27,6 +27,9 @@ const getCoords = (
     // get cell from pattern based on click position
     const col = Math.floor(((clientX - rect.left) - boxSize.rowNumberWidth) / boxSize.cellSize) + viewBox.col;
     const row = Math.floor(((clientY - rect.top) - boxSize.headerHeight) / boxSize.cellSize) + viewBox.row;
+
+    // console.log('getCoords', { row, col, w: viewBox.row + viewBox.wy, h: viewBox.col + viewBox.wx });
+    
     return { row, col };
 }
 
@@ -118,22 +121,25 @@ export const BoxedCanvasComponent: FC<TPatternWindowedWithCanvasComponentProps> 
 
     const handleClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>, mouseOver: boolean) => {
 
+        //console.log("handleClick");
+        
         const { clientX, clientY } = e;
         const { row, col } = getCoords(e, boxSize, viewBox);
 
-        if (row >= viewBox.row && row < (patternState.pattern.length - viewBox.wx) 
-            && col >= viewBox.col && col < (patternState.pattern[0].length - viewBox.wy)) {
+        if (row >= viewBox.row && row < (viewBox.row + viewBox.wy) 
+            && col >= viewBox.col && col < (viewBox.col + viewBox.wx)
+        ) {
             if (e.ctrlKey)
                 onClicked({ row, col, x: clientX, y: clientY })
             else
                 changeCell(row, col, mouseOver)
         } else {
-            const r = row < viewBox.row || row > patternState.pattern.length + viewBox.row - 1 ? -1 : row
-            const c = col < viewBox.col || col > patternState.pattern[0].length + viewBox.col - 1 ? -1 : col
+            const r = row < viewBox.row || row > viewBox.row + viewBox.wy - 1 ? -1 : row
+            const c = col < viewBox.col || col > viewBox.col + viewBox.wx - 1 ? -1 : col
 
             onClicked({ row: r, col: c, x: clientX, y: clientY })
         }
-    }, [boxSize, patternState.pattern, changeCell, viewBox]);
+    }, [boxSize, patternState.pattern, changeCell, viewBox.row, viewBox.col, viewBox.wx, viewBox.wy]);
 
 
     const [mouseOverCell, setMouseOverCell] = useState<{ row: number; col: number }>({ row: -1, col: -1 });
@@ -143,16 +149,15 @@ export const BoxedCanvasComponent: FC<TPatternWindowedWithCanvasComponentProps> 
     ) => {
         e.stopPropagation();
         e.preventDefault();
+        if (e.buttons === 1) {
+            const { row, col } = getCoords(e, boxSize, viewBox);
 
-        const { row, col } = getCoords(e, boxSize, viewBox);
-
-        if (row !== mouseOverCell.row || col !== mouseOverCell.col) {
-            setMouseOverCell({ row, col });
-            if (e.buttons === 1) {
+            if (row !== mouseOverCell.row || col !== mouseOverCell.col) {
+                setMouseOverCell({ row, col });
                 handleClick(e, true)
+            } else {
+                return;
             }
-        } else {
-            return;
         }
     }, [handleClick, boxSize, mouseOverCell, viewBox]);
 
