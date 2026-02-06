@@ -54,7 +54,7 @@ export const PatternHeaderComponent: FC = () => {
                             }}
 
                         />
-                        <label className="form-check-label" onClick={(e) => { toggleIsPatternWindowed() }}>new version</label>
+                        <label className="form-check-label" onClick={(e) => { toggleIsPatternWindowed() }}>view box</label>
                     </div>
                     { 
                         isPatternWindowed &&
@@ -69,7 +69,7 @@ export const PatternHeaderComponent: FC = () => {
                                 }}
 
                             />
-                            <label className="form-check-label" onClick={(e) => { toggleSplittedViewBox() }}>split viewbox</label>
+                            <label className="form-check-label" onClick={(e) => { toggleSplittedViewBox() }}>split</label>
                         </div>
             }
                     <div className="form-check form-check-inline form-switch">

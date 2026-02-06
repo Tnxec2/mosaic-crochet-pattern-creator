@@ -42,7 +42,8 @@ export const createCopyBufferSlice: StateCreator<
         set((state) => ({ ...state, endCopy: coords, bufferdata: data }));
     },
     showBufferData: false,
-    toggleShowBufferData: () => set((state) => ({ showBufferData: !state.showBufferData }))
+    toggleShowBufferData: () => set((state) => ({ showBufferData: !state.showBufferData })),
+    clearBuffer: () => set((state) => ({ bufferdata: [] })),
 });
 function between(value: number, first: number, last: number) {
     let lower = Math.min(first, last), upper = Math.max(first, last);
@@ -56,5 +57,6 @@ function between(value: number, first: number, last: number) {
     setEnd: (coords: TCellCoords) => void
     showBufferData: boolean
     toggleShowBufferData: () => void
+    clearBuffer: () => void
 }
 

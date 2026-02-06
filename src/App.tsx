@@ -1,10 +1,10 @@
 import NavbarComponent from './components/navbar/navbar'
 import { PanelComponent } from './components/panel/panel'
-import { PatternComponent } from './components/pattern/pattern'
-import { PatternWindowedComponent } from './components/pattern/windowed/pattern'
 
 import { Col, Row } from 'react-bootstrap'
 import { useStore } from './context'
+import { PatternWithCanvasComponent } from './components/patternCanvas/pattern'
+import { PatternWindowedWithCanvasComponent } from './components/patternCanvas/patternWindowed'
 
 function App() {
     const isPatternWindowed = useStore().isPatternWindowed
@@ -17,9 +17,10 @@ function App() {
                 </Col>
                 <Col sm={10} style={{ maxHeight: '90vh', overflowY: 'scroll' }}>
                 { isPatternWindowed ?
-                    <PatternWindowedComponent />
+                    <PatternWindowedWithCanvasComponent />
                     :
-                    <PatternComponent />
+                    // <PatternComponent />
+                    <PatternWithCanvasComponent />
                 }
                 </Col>
             </Row>

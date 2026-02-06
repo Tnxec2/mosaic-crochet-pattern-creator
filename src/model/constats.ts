@@ -1,8 +1,9 @@
 import { TVIEWBOX_SIZE } from "./patterntype.enum"
 
-export const VERSION = '1.5.4'
+export const VERSION = '1.6.0'
 
 export const BACKGROUND_COLOR = '#ffffff'
+export const BACKGROUND_COLOR_ERROR = '#000000'
 export const DEFAULT_COLOR = '#ffffff'
 export const DEFAULT_COLOR_2 = '#FF0000'
 export const MINMAP_FRAME = '#000'
@@ -20,3 +21,5 @@ export const DEFAULT_VIEWBOX: TVIEWBOX_SIZE = {
         wx: 30,
         wy: 20,
     }
+export const DEFAULT_CELL_SIZE = 16
+export const SCROLL_STEP = 3;

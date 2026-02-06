@@ -6,9 +6,10 @@ type PROPS = {
     children?: React.ReactNode
     style?: any
     className?: any
+    disabled?: boolean
 }
 
-export const HoldButton: FC<PROPS> = ({ onFire, children, scrollDuration = 100, style, className }) => {
+export const HoldButton: FC<PROPS> = ({ onFire, children, scrollDuration = 100, style, className, disabled }) => {
 
     const intervalRef = useRef<NodeJS.Timer>();
 
@@ -38,6 +39,7 @@ export const HoldButton: FC<PROPS> = ({ onFire, children, scrollDuration = 100, 
         onMouseUp={stopFire}
         onMouseLeave={stopFire}
         onClick={onFire}
+        disabled={disabled}
     >
         {children}
     </button>

@@ -5,7 +5,7 @@ import { PatternDraw } from "../../shared/patterndraw"
 import { useStateDebounced } from "../../../services/debounce"
 import Canvas from "../../export/canvas"
 import { BACKGROUND_COLOR, MINMAP_FRAME, MINMAP_FRAME2 } from "../../../model/constats"
-import { Card, Form } from "react-bootstrap"
+import { Card } from "react-bootstrap"
 
 
 
@@ -152,7 +152,7 @@ export const PatternMinimapComponent: FC = () => {
     return (
         <Card className="minimap-container mb-2">
             <Card.Header className="d-flex" onClick={() => { setShowContent(!showContent) }}>
-                <Form.Label style={{ flex: 1 }}>Minimap</Form.Label>
+                <div style={{ flex: 1 }}>Minimap</div>
 
                 {isPatternWindowed && <div className="form-check form-check-inline form-switch m-0" onClick={(e) => {
                             e.stopPropagation();

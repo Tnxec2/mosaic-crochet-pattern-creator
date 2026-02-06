@@ -9,6 +9,7 @@ type PROPS = {
 
 export const PatternRowHeaderComponent: FC<PROPS> = ({ setDropDownPos }) => {
     const patternState = useStore((state) => state.patternState)
+    
     const style: React.CSSProperties = useMemo(() => (
             {
                 writingMode: 'vertical-lr',
