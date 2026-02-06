@@ -1,6 +1,6 @@
 import { FC, useState } from "react"
 import { useStore } from "../../context"
-import { Button, Card, Form } from "react-bootstrap"
+import { Button, Card } from "react-bootstrap"
 import { BufferRowComponent } from "../pattern/buffer.row"
 
 type Props = {}
