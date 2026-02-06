@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef, useState } from "react"
+import { FC, useCallback, useState } from "react"
 
 import Canvas from "./canvas"
 import { useStore } from '../../context'
@@ -8,8 +8,8 @@ import { PatternHeaderComponent } from "../pattern/pattern.header"
 import { DropDownMenu } from "./dropdownmenu"
 import { IPatternGrid } from "../../model/patterncell.model"
 import { BufferRowComponent } from "../pattern/buffer.row"
+import { DEFAULT_CELL_SIZE } from "../../model/constats"
 
-const cellSize = 16
 
 const getCoords = (
       e: React.MouseEvent<HTMLCanvasElement>,
@@ -38,7 +38,7 @@ export const PatternWithCanvasComponent: FC = () => {
     height: 0,
     rowNumberWidth: 0,
     headerHeight: 0,
-    cellSize: patternState.scaleFactor * cellSize
+    cellSize: patternState.scaleFactor * DEFAULT_CELL_SIZE
   });
 
   const [drawnState, setDrawnState] = useState<{ 
@@ -50,12 +50,12 @@ export const PatternWithCanvasComponent: FC = () => {
     pattern: [],
     colors: [],
     showCellStitchType: false,
-    fontSize: patternState.scaleFactor * cellSize
+    fontSize: patternState.scaleFactor * DEFAULT_CELL_SIZE
   });
 
   const draw = useCallback((canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     if (canvas) {
-      const fontSize = patternState.scaleFactor * cellSize
+      const fontSize = patternState.scaleFactor * DEFAULT_CELL_SIZE
       const size = PatternDraw2.drawPattern(
         patternState.pattern, patternState.colors, fontSize, showCellStitchType, canvas, ctx, 
         drawnState.pattern, drawnState.colors, drawnState.showCellStitchType, drawnState.fontSize,

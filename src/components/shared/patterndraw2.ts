@@ -40,9 +40,8 @@ const drawPattern = (
   const startRow = viewBox ? Math.max(0, viewBox.row) : 0
   const startCol = viewBox ? Math.max(0, viewBox.col) : 0
 
-  console.log('rows, cols, startRow, startCol', rows, cols, startRow, startCol);
+  console.log('maxRows, maxCols, startRow, startCol, rows, cols', maxRows, maxCols, startRow, startCol, rows, cols);
   
-
   ctx.font = `normal ${fontSize}pt monospace`
   let metricsCols = ctx.measureText(maxCols.toString());
   let metricsRows = ctx.measureText(maxRows.toString());
@@ -85,18 +84,18 @@ const drawPattern = (
     const leftAxisX = rowIndexWidth - 2;
     const rightAxisX = w - rowIndexWidth + 2;
 
-    ctx.textAlign = "right"
-    for (let r = 1; r <= rows; r++) {
-      let y = h - headerHeight - r * cellSize + cellSize / 2
-      ctx.fillText( (startRow + r).toString(), leftAxisX, y) // left
+    // left and right row numbers
+    
+    for (let r = 0; r < rows; r++) {
+      let y = headerHeight + r * cellSize + cellSize / 2
+      let n = (maxRows - startRow - r).toString()
+      ctx.textAlign = "right"
+      ctx.fillText( n, leftAxisX, y) // left
+      ctx.textAlign = "left"
+      ctx.fillText( n, rightAxisX, y) // right
     }
 
-    ctx.textAlign = "left"
-    for (let r = 1; r <= rows; r++) {
-      let y = h - headerHeight - r * cellSize + cellSize / 2
-      ctx.fillText((startRow + r).toString(), rightAxisX, y) // right
-    }
-
+    // top and bottom column numbers
     ctx.save();
     ctx.translate(rowIndexWidth, headerHeight);
     ctx.rotate(-Math.PI/2);

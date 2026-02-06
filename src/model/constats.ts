@@ -21,3 +21,5 @@ export const DEFAULT_VIEWBOX: TVIEWBOX_SIZE = {
         wx: 30,
         wy: 20,
     }
+export const DEFAULT_CELL_SIZE = 16
+export const SCROLL_STEP = 3;
