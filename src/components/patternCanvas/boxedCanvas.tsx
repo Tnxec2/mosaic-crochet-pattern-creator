@@ -149,7 +149,7 @@ export const BoxedCanvasComponent: FC<TPatternWindowedWithCanvasComponentProps> 
     ) => {
         e.stopPropagation();
         e.preventDefault();
-        if (e.buttons === 1) {
+        if (e.buttons === 1) { // left mouse button is pressed
             const { row, col } = getCoords(e, boxSize, viewBox);
 
             if (row !== mouseOverCell.row || col !== mouseOverCell.col) {

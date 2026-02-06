@@ -7,7 +7,7 @@ import { Card } from "react-bootstrap"
 import { PatternHeaderComponent } from "../pattern/pattern.header"
 import { DropDownMenu } from "./dropdownmenu"
 import { IPatternGrid } from "../../model/patterncell.model"
-import { BufferRowComponent } from "../pattern/buffer.row"
+
 import { DEFAULT_CELL_SIZE } from "../../model/constats"
 
 
@@ -68,7 +68,7 @@ export const PatternWithCanvasComponent: FC = () => {
         showCellStitchType, 
         fontSize: fontSize })
     } else {
-      console.error("couldn't find canvas with id canvasPreview");
+      console.error("couldn't find canvas with id canvasMainPattern");
     }
   }, [patternState.pattern, patternState.colors, patternState.scaleFactor, showCellStitchType]);
 
@@ -125,9 +125,8 @@ export const PatternWithCanvasComponent: FC = () => {
     <Card className="h-100">
       <PatternHeaderComponent />
       <Card.Body className="pattern-container">
-        
           <Canvas
-            id="canvasPreview"
+            id="canvasMainPattern"
             draw={draw}
             className="canvas-preview"
             onClick={(e: React.MouseEvent<HTMLCanvasElement>) => {handleClick(e, false)}}
