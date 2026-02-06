@@ -37,10 +37,11 @@ const drawPattern = (
 
   const rows = viewBox ? Math.min(viewBox.wy, maxRows) : maxRows
   const cols = viewBox ? Math.min(viewBox.wx, maxCols) : maxCols
-  const startRow = viewBox ? Math.max(0, viewBox.row) : 0
-  const startCol = viewBox ? Math.max(0, viewBox.col) : 0
+ 
+  const startRow = viewBox ? Math.max(0, Math.min(viewBox.row, pattern.length - viewBox.wy)) : 0
+  const startCol = viewBox ? Math.max(0, Math.min(viewBox.col, pattern[0].length - viewBox.wx)) : 0
 
-  console.log('maxRows, maxCols, startRow, startCol, rows, cols', maxRows, maxCols, startRow, startCol, rows, cols);
+  console.log(`draw2. maxRows: ${maxRows}, maxCols: ${maxCols}, rows: ${rows}, cols: ${cols}, startRow: ${startRow}, startCol: ${startCol}`);
   
   ctx.font = `normal ${fontSize}pt monospace`
   let metricsCols = ctx.measureText(maxCols.toString());
@@ -145,10 +146,9 @@ function drawStitches(
 
   const rows = viewBox ? Math.min(viewBox.wy, pattern.length) : pattern.length
   const cols = viewBox ? Math.min(viewBox.wx, pattern[0].length) : pattern[0].length
-  const startRow = viewBox ? Math.max(0, viewBox.row) : 0
-  const startCol = viewBox ? Math.max(0, viewBox.col) : 0
 
-  console.log('rows, cols, startRow, startCol', rows, cols, startRow, startCol);
+  const startRow = viewBox ? Math.max(0, Math.min(viewBox.row, pattern.length - viewBox.wy)) : 0
+  const startCol = viewBox ? Math.max(0, Math.min(viewBox.col, pattern[0].length - viewBox.wx)) : 0
 
   if (cachedIconSize !== iconSize) {
     Object.keys(iconCache).forEach(key => delete iconCache[key]);
@@ -188,13 +188,14 @@ function drawStitches(
     
   // pattern content
   for (let r = startRow + rows - 1; r >= startRow; r--) {
-    for (let c = startCol; c < startCol + cols; c++) {
+    for (let c = startCol; c < startCol + cols; c++) {      
       const error = hasError(pattern, r, c);
       const oldCellError = hasError(oldPattern, r, c);
       const cellColor = error ? BACKGROUND_COLOR_ERROR : getCellColor(pattern, colors, r, c);
       const oldCellColor = oldCellError ? BACKGROUND_COLOR_ERROR : getCellColor(oldPattern, oldColors, r, c);
+
       const stitchType = pattern[r][c].t;
-      const oldStitchType = oldPattern.length > 0 && oldPattern[r] && oldPattern[r][c] ? oldPattern[r][c].t : null;
+      const oldStitchType = oldPattern.length > 0 && oldPattern[r] && oldPattern[r].length > c ? oldPattern[r][c].t : null;
 
       if (redrawAll || cellColor !== oldCellColor || stitchType !== oldStitchType) {
         const x = rowIndexWidth + (c-startCol) * cellSize;
