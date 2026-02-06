@@ -12,7 +12,7 @@ export const PropertiesComponent: FC<Props> = () => {
     return (
         <Card className='mt-2'>
             <Card.Header onClick={() => { setShowContent(!showContent) }}>
-                <Form.Label>Properties</Form.Label>
+                Properties
             </Card.Header>
             {showContent &&
             <Card.Body className='p-1'>           

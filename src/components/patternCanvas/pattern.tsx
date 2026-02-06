@@ -28,9 +28,7 @@ export const PatternWithCanvasComponent: FC = () => {
   const {
     patternState,
     showCellStitchType,
-    changeCell,
-    showBufferData,
-    bufferdata
+    changeCell
   } = useStore()
 
   const [boxSize, setBoxSize] = useState<TSize>({ 
@@ -135,33 +133,6 @@ export const PatternWithCanvasComponent: FC = () => {
             onClick={(e: React.MouseEvent<HTMLCanvasElement>) => {handleClick(e, false)}}
             onMouseMove={(e: React.MouseEvent<HTMLCanvasElement>) => {handleMouseOver(e)}}
           />
-        
-          { showBufferData && <div
-              className="noselect mt-3"
-              id="copyBuffer"
-              style={{
-                  display: 'flex',
-                  flexDirection: 'column'
-              }}
-          >
-              <h6>Copy Buffer</h6>
-              <div style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  overflow: 'auto'
-              }}>
-                  <div>
-                      {bufferdata
-                          .map((row, rowIndex) => (
-                              <BufferRowComponent
-                                  key={`bufferRow-${rowIndex}`}
-                                  row={row}
-                                  rowIndex={rowIndex }
-                              />
-                          ))}
-                  </div>
-              </div>
-          </div> }
       </Card.Body>
     </Card>
   </>)

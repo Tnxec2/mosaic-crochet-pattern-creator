@@ -13,7 +13,7 @@ export const ColorsComponent: FC<Props> = () => {
     return (
         <Card className='mt-2'>
             <Card.Header onClick={() => { setShowContent(!showContent) }}>
-                <Form.Label>Colors</Form.Label>
+                Colors
             </Card.Header>
             {showContent &&
                 <Card.Body className='p-1'>

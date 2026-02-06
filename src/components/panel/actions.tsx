@@ -59,7 +59,7 @@ export const ActionsComponent: FC<Props> = () => {
     return (
         <Card className='mt-2'>
             <Card.Header onClick={() => { setShowContent(!showContent) }}>
-                <Form.Label>Actions</Form.Label>
+                Actions
             </Card.Header>
             {showContent &&
             <Card.Body className='p-1'>

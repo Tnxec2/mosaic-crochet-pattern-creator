@@ -98,7 +98,7 @@ export const PatternSizeComponent: FC<Props> = () => {
     return (
         <Card>
             <Card.Header onClick={() => {setShowContent(!showContent)}}>
-            <Form.Label>Size of pattern</Form.Label>
+            Size of pattern
         </Card.Header>
         { showContent && 
         <Card.Body className='p-1'>
