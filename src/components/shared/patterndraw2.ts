@@ -197,7 +197,7 @@ function drawStitches(
       const stitchType = pattern[r][c].t;
       const oldStitchType = oldPattern.length > 0 && oldPattern[r] && oldPattern[r].length > c ? oldPattern[r][c].t : null;
 
-      if (redrawAll || cellColor !== oldCellColor || stitchType !== oldStitchType) {
+      if (redrawAll || cellColor !== oldCellColor || stitchType !== oldStitchType || error !== oldCellError) {
         const x = rowIndexWidth + (c-startCol) * cellSize;
         const y = headerHeight + (r-startRow) * cellSize;
         ctx.fillStyle = cellColor;
