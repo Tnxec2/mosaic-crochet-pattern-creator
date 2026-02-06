@@ -5,7 +5,7 @@ import { PatternDraw } from "../../shared/patterndraw"
 import { useStateDebounced } from "../../../services/debounce"
 import Canvas from "../../export/canvas"
 import { BACKGROUND_COLOR, MINMAP_FRAME, MINMAP_FRAME2 } from "../../../model/constats"
-import { Card, Form } from "react-bootstrap"
+import { Card } from "react-bootstrap"
 
 
 
