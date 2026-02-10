@@ -355,9 +355,11 @@ export const fillRowLeft = (r: IPatternCell[], row: number, col: number, selecte
         const cell = result[index]
 
         if (
-            (selectedAction !== ACTION_TYPES.NONE && cell.t !== CELL_TYPE.EMPTY)
-            || (selectedAction === ACTION_TYPES.NONE && cell.t === CELL_TYPE.EMPTY)
-            || (selectedAction === ACTION_TYPES.COLOR && cell.c !== r[col].c)
+            (selectedAction === ACTION_TYPES.COLOR && cell.c !== r[col].c)
+            ||
+            (selectedAction !== ACTION_TYPES.COLOR && selectedAction !== ACTION_TYPES.NONE && cell.t !== CELL_TYPE.EMPTY)
+            || 
+            (selectedAction === ACTION_TYPES.NONE && cell.t === CELL_TYPE.EMPTY) 
             ) return result
         result[index] = getNewCell(cell, selectedAction, selectedColorIndex, false, toggleStitch)
     }
@@ -370,9 +372,11 @@ export const fillRowRight = (r: IPatternCell[], row: number, col: number, select
     for (let index = col; index < r.length; index++) {
         const cell = result[index]
         if (
-            (selectedAction !== ACTION_TYPES.NONE && cell.t !== CELL_TYPE.EMPTY)
-            || (selectedAction === ACTION_TYPES.NONE && cell.t === CELL_TYPE.EMPTY)
-            || (selectedAction === ACTION_TYPES.COLOR && cell.c !== r[col].c)
+            (selectedAction === ACTION_TYPES.COLOR && cell.c !== r[col].c)
+            ||
+            (selectedAction !== ACTION_TYPES.COLOR && selectedAction !== ACTION_TYPES.NONE && cell.t !== CELL_TYPE.EMPTY)
+            || 
+            (selectedAction === ACTION_TYPES.NONE && cell.t === CELL_TYPE.EMPTY)
             ) return result
         result[index] = getNewCell(cell, selectedAction, selectedColorIndex, false, toggleStitch)
     }
