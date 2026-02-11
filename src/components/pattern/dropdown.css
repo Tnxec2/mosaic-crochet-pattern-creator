@@ -3,50 +3,19 @@
     position: absolute !important;
     transform-origin: left top;
     z-index: 99999;
-} 
-
-.menu {
-    list-style-type: none;
-    padding: 0;
-    border: 1px solid #c2c2c2;
-    width: max-content;
-    padding: 0 0 1rem 0;
-    background-color: white;
 }
 
-.menu > li {
-    margin: 0;
-    text-align: left;
-    padding: 0 5px;
-}
-
-.menu > li:hover {
-    background-color: rgb(237, 237, 237);
-}
-
-.menu > li > button {
-    width: 100%;
-    height: 100%;
-    text-align: left;
-
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 5px;
-    margin: 0;
-    font: inherit;
+.dropdown-item {
     cursor: pointer;
 }
 
-.divider {
-    height: 0;
-    border-bottom: 1px solid #acacac;
-    margin: 0.5rem 0 !important;
-}
-
-.menu-item img {
+.dropdown-item img {
     width: 1em !important;
     height: 1em !important;
     margin-right: 1em;
     vertical-align: middle !important;
+    filter: brightness(0) saturate(100%);
+    border: 1px solid #585858;
+    padding: 2px;
+    border-radius: 5px;
 }

@@ -48,14 +48,14 @@ export const DropDown: FC<Props> = ({ x, y, onclose, menu }) => {
 
     return (
         <div 
-            className="cell-dropdown" 
+            className="dropdown cell-dropdown" 
             ref={refDropDownOutside}                         
             style={{
                 left: x,
                 top: y,
             }}
         >
-            <ul className="menu">
+            <ul className="dropdown-menu" style={{ display: 'block' }}>
                 {menu.concat([
                     MenuItemDivider,
                     {
@@ -66,8 +66,8 @@ export const DropDown: FC<Props> = ({ x, y, onclose, menu }) => {
                 ]).map((menuItem, index) => (
                     <li
                         key={index}
-                        className={`menu-item ${
-                            menuItem.divider ? 'divider' : ''
+                        className={`${
+                            menuItem.divider ? 'dropdown-divider' : (menuItem.onClick ? 'dropdown-item' : 'dropdown-item-text')
                         }`}
                         onClick={(e) => {
                             e.preventDefault()

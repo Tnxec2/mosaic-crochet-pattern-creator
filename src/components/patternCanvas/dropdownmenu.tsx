@@ -156,16 +156,9 @@ export const DropDownMenu: FC<{
                         paste(dropDownPosPatternCell, true)
                         closeAllDropDowns(e)
                     },
-                },
-                {
-                    name: showBufferData ? <><EyeInvisibleFilled/> hidde buffer preview</> : <><EyeFilled/> show buffer preview</>,
-                    onClick: (e) => {
-                        toggleShowBufferData()
-                        closeAllDropDowns(e)
-                    },
                 }
             ]}
-        />, [closeAllDropDowns, dropDownPosPatternCell, fillLeft, fillRight, paste, patternState, setEnd, setStart, showBufferData, toggleShowBufferData])
+        />, [closeAllDropDowns, dropDownPosPatternCell, fillLeft, fillRight, paste, patternState, setEnd, setStart])
 
     const dropDownRow = useMemo(() => 
         <DropDown
