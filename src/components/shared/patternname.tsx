@@ -55,6 +55,7 @@ export const PatternName: FC = () => {
                 </Button> }
             </ButtonGroup>
             <Form.Control
+                id="pattern-name-edit"
                 style={{minWidth: 100}}
                 type="text"
                 title={name} 

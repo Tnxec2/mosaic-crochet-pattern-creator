@@ -1,6 +1,6 @@
 import { TVIEWBOX_SIZE } from "./patterntype.enum"
 
-export const VERSION = '1.6.2'
+export const VERSION = '1.6.3'
 
 export const BACKGROUND_COLOR = '#ffffff'
 export const BACKGROUND_COLOR_ERROR = '#000000'
@@ -11,7 +11,7 @@ export const MINMAP_FRAME2 = '#00FF00'
 export const KEY_STORAGE_OLD = 'com.kontranik.mosaiccrochetpattern.state'
 export const KEY_STORAGE_ZUSTAND = 'com.kontranik.mosaiccrochetpattern.storage'
 
-export const UNKNOWN_NAME = 'unnamed pattern'
+export const UNKNOWN_NAME = 'mosaic_crochet_pattern-unnamed'
 export const DEFAULT_FONT_SIZE = 10
 export const VIEWBOX_MIN_SIZE = 10
 export const UNDO_LIMIT = 20

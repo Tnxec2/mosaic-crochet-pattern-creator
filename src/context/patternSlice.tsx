@@ -270,6 +270,9 @@ export const createPatternSlice: StateCreator<
     handleKeyDown: (event: KeyboardEvent) => {
         const key = event.key; // Normalize key to lowercase
         if (event.ctrlKey || event.altKey) return;
+
+        // dont take action on edit pattern name 
+        if (document.activeElement?.id === 'pattern-name-edit') return;
         
         if (actionKeys.includes(key)) {
             get().setAction(keyToActionType(key));
