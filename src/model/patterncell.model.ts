@@ -1,6 +1,6 @@
 import { IPattern } from '../context'
 import { ACTION_TYPES } from './actiontype.enum'
-import { DEFAULT_COLOR, DEFAULT_COLOR_2, DEFAULT_FONT_SIZE, UNKNOWN_NAME } from './constats'
+import { DEFAULT_COLOR, DEFAULT_COLOR_2, DEFAULT_FONT_SIZE, DEFAULT_NEW_PATTERN_SIZE, UNKNOWN_NAME } from './constats'
 import { CELL_TYPE } from './patterntype.enum'
 
 export type IPatternRow_Old = IPatternCell_Old[]
@@ -40,9 +40,9 @@ export const initialPattern: IPattern = {
 
 function genpat() {
     let newpat: IPatternGrid = []
-    for (let row = 0; row < 10; row++) {
+    for (let row = 0; row < DEFAULT_NEW_PATTERN_SIZE; row++) {
         const r: IPatternCell[] = []
-        for (let col = 0; col < 10; col++) {
+        for (let col = 0; col < DEFAULT_NEW_PATTERN_SIZE; col++) {
             r.push({
                 c: row % 2 > 0 ? 0 : 1,
                 t: CELL_TYPE.EMPTY
