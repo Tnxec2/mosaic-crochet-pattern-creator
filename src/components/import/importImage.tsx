@@ -30,7 +30,7 @@ export const ImportImageComponent: FC<PROPS> = ({ file, onClose }) => {
   const [cutTop, cutTopDebounced, setCutTop] = useStateDebounced<number>(0, 500)
   const [cutBottom, cutBottomDebounced, setCutBottom] = useStateDebounced<number>(0, 500)
 
-  const [colors, colorsDebounced, setColors] = useStateDebounced<number>(4, 500)
+  const [colors, colorsDebounced, setColors] = useStateDebounced<number>(2, 500)
   const [width, widthDebounced, setWidth] = useStateDebounced<number>(40, 500)
   const [height, heightDebounced, setHeight] = useStateDebounced<number>(40, 500)
 
