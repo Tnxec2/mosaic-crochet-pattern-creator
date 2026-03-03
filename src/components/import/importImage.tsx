@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { IPattern, useStore } from "../../context";
 import Canvas from "./canvas"
 import { Button, Modal } from "react-bootstrap";
@@ -34,10 +34,25 @@ export const ImportImageComponent: FC<PROPS> = ({ file, onClose }) => {
   const [width, widthDebounced, setWidth] = useStateDebounced<number>(40, 500)
   const [height, heightDebounced, setHeight] = useStateDebounced<number>(40, 500)
 
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 })
+
   useEffect(() => {
     const url = URL.createObjectURL(file)
 
     setImage(url)
+
+    var originalImage = new Image()
+    
+    originalImage.onload = () => {
+      const originalWidth = originalImage.width;
+      const originalHeight = originalImage.height;
+      setImageSize({ width: originalWidth, height: originalHeight })
+    }
+    originalImage.src = url
+
+    return () => {
+      URL.revokeObjectURL(url)
+    }
   }, [file])
 
   const draw = useCallback((canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
@@ -62,6 +77,8 @@ export const ImportImageComponent: FC<PROPS> = ({ file, onClose }) => {
             <div style={{ border: 'solid 1px lightgray', margin: 5, float: 'left', padding: 5 }} >
               <div style={{ fontSize: 'small' }}>Original</div>
               <img style={{ width: 100, paddingTop: 5 }} src={image} alt={file.name} />
+              <div style={{ fontSize: 'small' }}>{imageSize.width} x {imageSize.height}</div>
+              <div style={{ fontSize: 'small' }}>aspect ratio: {(Math.round((imageSize.height / imageSize.width) * 100) / 100).toFixed(2)}</div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{ border: 'solid 1px lightgray', margin: 5, padding: 5, width: 'min-content' }}>
