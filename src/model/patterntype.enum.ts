@@ -64,6 +64,12 @@ export type GroupedStitch = {
   count: number;
 };
 
+export type SequencePart = {
+    sequence: GroupedStitch[];
+    repeat: number;
+};
+
+
 const stitchTypeMap: Record<CELL_TYPE, string> = {
   [CELL_TYPE.EMPTY]: 'sc',
   [CELL_TYPE.X]: 'DC',

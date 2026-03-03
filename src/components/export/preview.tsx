@@ -62,7 +62,7 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   }, [canvasToSave, patternState.name])
 
   const { savePdf, writePatternToPdf } = usePdf(canvasToSave, patternState);
-  const { writePatternToHtml } = useHtml(canvasToSave, patternState);
+  const { writePatternToHtml } = useHtml(patternState);
 
   return (
     <Modal fullscreen show={true}>

@@ -1,3 +1,4 @@
+import { on } from "events";
 import { useRef, useEffect, MutableRefObject, useState } from "react";
 
 const Canvas = (props: any) => {
@@ -15,7 +16,7 @@ const Canvas = (props: any) => {
     }
   }, [draw, drawing]);
 
-  return <canvas className={className} ref={canvasRef} onClick={(e) => {onClick(e, canvasRef.current)}} {...rest} />;
+  return <canvas className={className} ref={canvasRef} onClick={(e) => {if (onClick) onClick(e, canvasRef.current)}} {...rest} />;
 };
 
 export default Canvas;

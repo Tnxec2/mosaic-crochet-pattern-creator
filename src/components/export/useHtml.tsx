@@ -1,10 +1,9 @@
-import jsPDF from "jspdf";
 import { useCallback } from "react";
 import { IPattern } from "../../context";
-import { GroupedStitch, stitchTypeToWritten } from "../../model/patterntype.enum";
+import { rowToWrittenString } from "./helpers";
 
 
-export const useHtml = (canvas: HTMLCanvasElement | undefined, patternState: IPattern) => {
+export const useHtml = (patternState: IPattern) => {
     const writePatternToHtml = useCallback(() => {
 
         const name = patternState.name.charAt(0).toUpperCase() + patternState.name.slice(1)
@@ -13,32 +12,10 @@ export const useHtml = (canvas: HTMLCanvasElement | undefined, patternState: IPa
 
         let htmlText = ``;
 
-        const groupStitches = (row: any[]): GroupedStitch[] => {
-            if (!row || row.length === 0) {
-                return [];
-            }
-            const grouped: GroupedStitch[] = [];
-            let lastType = row[0].t;
-            let count = 1;
-            for (let i = 1; i < row.length; i++) {
-                if (row[i].t === lastType) {
-                    count++;
-                } else {
-                    grouped.push({ type: lastType, count });
-                    lastType = row[i].t;
-                    count = 1;
-                }
-            }
-            grouped.push({ type: lastType, count });
-            return grouped;
-        };
-
         // process the pattern from down to up
         for (let rowIndex = patternState.pattern.length - 1; rowIndex >= 0; rowIndex--) {
             const row = [...patternState.pattern[rowIndex]].reverse();
-            const groupedStitches = groupStitches(row);
-            // const line = groupedStitches.map(stitch => `${stitch.count > 1 ? stitch.count + ' ' : ''}${stitchTypeToWritten(stitch.type)}`).join(', ');
-            const line = groupedStitches.map(stitch => `${stitch.count} ${stitchTypeToWritten(stitch.type)}`).join(', ');
+            const line = rowToWrittenString(row);
             htmlText += `<p>Row ${patternState.pattern.length - rowIndex}: ${line}</p>\n`;
         }
 
