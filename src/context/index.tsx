@@ -59,6 +59,7 @@ export const useStore = create<PatternSlice & VieboxSlice & CopyBufferSlice & Hi
             toggleStitch: state.toggleStitch,
             showCellStitchType: state.showCellStitchType,
             isPatternWindowed: state.isPatternWindowed,
+            sequencedColor: state.sequencedColor,
         }),
         version: 2,
         migrate: (prevState: any, prevVersion) => {

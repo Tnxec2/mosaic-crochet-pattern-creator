@@ -1,9 +1,11 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IPattern } from "../../context";
 import { rowToWrittenString } from "./helpers";
 
 
-export const useHtml = (patternState: IPattern) => {
+export const useHtml = (patternState: IPattern, sequencedColor: string | undefined) => {
+
+
     const writePatternToHtml = useCallback(() => {
 
         const name = patternState.name.charAt(0).toUpperCase() + patternState.name.slice(1)
@@ -15,7 +17,7 @@ export const useHtml = (patternState: IPattern) => {
         // process the pattern from down to up
         for (let rowIndex = patternState.pattern.length - 1; rowIndex >= 0; rowIndex--) {
             const row = [...patternState.pattern[rowIndex]].reverse();
-            const line = rowToWrittenString(row);
+            const line = rowToWrittenString(row, sequencedColor);
             htmlText += `<p>Row ${patternState.pattern.length - rowIndex}: ${line}</p>\n`;
         }
 
@@ -46,7 +48,7 @@ ${htmlText}
         // Clean up the URL object
         URL.revokeObjectURL(url);
 
-    }, [patternState.pattern, patternState.name]);
+    }, [patternState.pattern, patternState.name, sequencedColor]);
 
     return { writePatternToHtml }
 }

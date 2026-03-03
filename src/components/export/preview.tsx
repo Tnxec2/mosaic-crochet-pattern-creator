@@ -24,12 +24,17 @@ const MIN_FONT_SIZE = 6
 export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
   const {
     patternState,
-    saveFontSize
+    saveFontSize,
+    setSequencedColor,
+    sequencedColor
   } = useStore((state) => state)
 
   const [fontSize, fontSizeDebounced, setFontSize] = useStateDebounced<number>(patternState.previewFontSize || MIN_FONT_SIZE, 300)
   const [showCellStitchType, setShowCellStitchType] = useState<boolean>(true)
   const [canvasToSave, setCanvasToSave] = useState<HTMLCanvasElement | undefined>()
+
+  const [sequencedColorValue, debouncedColorValue, setColorValue] = useStateDebounced(sequencedColor, 1000);
+  useEffect(() => setSequencedColor(debouncedColorValue), [debouncedColorValue])
 
   useEffect(() => {
     saveFontSize(fontSizeDebounced)
@@ -61,8 +66,9 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
     }
   }, [canvasToSave, patternState.name])
 
-  const { savePdf, writePatternToPdf } = usePdf(canvasToSave, patternState);
-  const { writePatternToHtml } = useHtml(patternState);
+
+  const { savePdf, writePatternToPdf } = usePdf(canvasToSave, patternState, sequencedColorValue);
+  const { writePatternToHtml } = useHtml(patternState, sequencedColorValue);
 
   return (
     <Modal fullscreen show={true}>
@@ -73,9 +79,11 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
       <Modal.Body>
         <h2>Check preview and save image</h2>
 
-        <div>
-          <InputGroup className="mb-3">
-            <PatternName />
+        <InputGroup>
+          <PatternName />
+        </InputGroup>
+
+        <InputGroup className="mt-3">
             <InputGroup.Text>Font size</InputGroup.Text>
             <Button
                 size="sm"
@@ -118,11 +126,11 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
               />            
             </div>
             <ScaleFactor />
-          </InputGroup>
-        </div>
-        <div>
+        </InputGroup>
+
+        <div className="mt-3">
           <Button variant="secondary" onClick={onClose} >
-            <span className="btn-close me-3"></span> Close
+            <span className="btn-close"></span> Close
           </Button>
           <Button variant="primary" onClick={save} className="ms-1">
             Save Image as PNG
@@ -130,19 +138,44 @@ export const PreviewComponent: FC<PROPS> = ({ onClose }) => {
           <Button variant="danger" onClick={savePdf} className="ms-1">
             Save Image as PDF
           </Button>
-          <Button variant="info" onClick={writePatternToPdf} className="ms-1">
+        </div>
+
+        <div className="input-group input-group-sm d-flex mt-3">
+            <span className="input-group-text" style={{backgroundColor: sequencedColor}}>Written sequence color</span>
+            <input
+                  type="color"
+                  className="form-control form-control-sm form-control-color"
+                  style={{width: 100, flex: 'none'}}
+                  title="color"
+                  value={sequencedColorValue}
+                  onChange={(e) => {
+                    setColorValue(e.target.value);
+                  }}
+              />
+              <button
+                  type="button"
+                  className="btn btn-outline-danger btn-sm"
+                  onClick={(e) => setColorValue("#ffffff")}
+                  title='unset color'
+              >
+                  ❌
+              </button>
+        </div>
+
+        <div className="mt-3">
+          <Button variant="info" onClick={writePatternToPdf}>
             Save written pattern as PDF
           </Button>
           <Button variant="secondary" onClick={writePatternToHtml} className="ms-1">
             Save written pattern as HTML
           </Button>
         </div>
-        <div style={{ transform: `scale(${patternState.scaleFactor})`, transformOrigin: 'top left', marginTop: 10   }}>
+
+        <div style={{ transform: `scale(${patternState.scaleFactor})`, transformOrigin: 'top left', marginTop: 20, border: '1px solid gray', padding: 5  }}>
           <Canvas
             id="canvasPreview"
             draw={draw}
             className="canvas-preview"
-            
           />
         </div>
 

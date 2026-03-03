@@ -12,6 +12,7 @@ export const DEFAULT_COLOR = '#ffffff'
 export const DEFAULT_COLOR_2 = '#FF0000'
 export const MINMAP_FRAME = '#000'
 export const MINMAP_FRAME2 = '#00FF00'
+export const BACKGROUND_COLOR_WRITTEN_PATTERN_SEQUENCE = '#6cd6ff'
 
 export const UNKNOWN_NAME = 'mosaic_crochet_pattern-unnamed'
 export const DEFAULT_FONT_SIZE = 10

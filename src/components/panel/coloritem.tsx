@@ -21,11 +21,11 @@ export const ColorItemComponent: FC<Props> = ({colorIndex, color, changeColor, s
 
   useEffect(() => changeColor(debouncedValue, colorIndex), [changeColor, colorIndex, debouncedValue])
 
-  return <div key={`color-${colorIndex}`} className="input-group">
-    <span>{colorIndex+1}&nbsp;&nbsp;</span>
+  return <div key={`color-${colorIndex}`} className="input-group input-group-sm d-flex">
+    <span className="input-group-text">{colorIndex+1}&nbsp;&nbsp;</span>
   <input
       type="color"
-      className="form-control form-control-sm"
+      className="form-control form-control-sm form-control-color"
       title="color"
       value={value}
       onChange={(e) => {

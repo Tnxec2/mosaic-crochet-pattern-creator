@@ -1,3 +1,4 @@
+import { BACKGROUND_COLOR_WRITTEN_PATTERN_SEQUENCE } from "../../model/constats";
 import { GroupedStitch, SequencePart, stitchTypeToWritten } from "../../model/patterntype.enum";
 
 const groupStitches = (row: any[]): GroupedStitch[] => {
@@ -98,7 +99,7 @@ export const analyzeSequences = (groupedStitches: GroupedStitch[]): SequencePart
     return finalResult;
 };
 
-export const rowToWrittenString = (row: any[]): string => {
+export const rowToWrittenString = (row: any[], sequencedColor?: string ): string => {
     const groupedStitches = groupStitches(row);
     const sequenceParts = analyzeSequences(groupedStitches);
 
@@ -108,7 +109,7 @@ export const rowToWrittenString = (row: any[]): string => {
             .join(', ');
 
         if (part.repeat > 1) {
-            return `[${sequenceString}] x ${part.repeat}`;
+            return `(${[undefined, '#ffffff', '#ffffffff'].includes(sequencedColor) ? sequenceString : `<span style="background-color: ${sequencedColor || BACKGROUND_COLOR_WRITTEN_PATTERN_SEQUENCE};">${sequenceString}</span>`}) x ${part.repeat}`;
         }
         return sequenceString;
     }).join(', ');

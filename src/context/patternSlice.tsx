@@ -4,7 +4,7 @@ import { HistorySlice } from './historySlice';
 import { VieboxSlice } from './viewBoxSlice';
 import { getNewCell } from '../components/pattern/getnewcell';
 import { ACTION_TYPES, actionKeys, actionTypesToKey, keyToActionType, mirrorActionType } from '../model/actiontype.enum';
-import { DEFAULT_COLOR } from '../model/constats';
+import { BACKGROUND_COLOR_WRITTEN_PATTERN_SEQUENCE, DEFAULT_COLOR } from '../model/constats';
 import { initialPattern, IPatternCell } from '../model/patterncell.model';
 import { actionToCellType, CELL_TYPE } from '../model/patterntype.enum';
 
@@ -312,7 +312,15 @@ export const createPatternSlice: StateCreator<
             }
         }));
     },
-});export interface PatternSlice {
+    sequencedColor: BACKGROUND_COLOR_WRITTEN_PATTERN_SEQUENCE,
+    setSequencedColor: (color: string | undefined) => {
+        set((state) => ({
+            ...state,
+            sequencedColor: color
+    }))}
+});
+
+export interface PatternSlice {
     isPatternWindowed: boolean
     toggleIsPatternWindowed: () => void
     patternState: IPattern
@@ -348,7 +356,9 @@ export const createPatternSlice: StateCreator<
     changeScale: (increase: boolean) => void
     resetScale: () => void
     handleKeyDown: (event: KeyboardEvent) => void
-    changeName: (name: string) => void
+    changeName: (name: string) => void,
+    sequencedColor: string | undefined
+    setSequencedColor: (color: string | undefined) => void
 }
 
 export const fillRowLeft = (r: IPatternCell[], row: number, col: number, selectedAction: ACTION_TYPES, selectedColorIndex: number, toggleStitch: boolean): IPatternCell[] => {

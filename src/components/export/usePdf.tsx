@@ -1,10 +1,11 @@
 import jsPDF from "jspdf";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IPattern } from "../../context";
 import { rowToWrittenString } from "./helpers";
 
 
-export const usePdf = (canvas: HTMLCanvasElement | undefined, patternState: IPattern) => {
+export const usePdf = (canvas: HTMLCanvasElement | undefined, patternState: IPattern, sequencedColor: string | undefined) => {
+
     const savePdf = useCallback(() => {
         if (canvas) {
             let width = canvas.width;
@@ -40,7 +41,7 @@ export const usePdf = (canvas: HTMLCanvasElement | undefined, patternState: IPat
         // process the pattern from down to up
         for (let rowIndex = patternState.pattern.length - 1; rowIndex >= 0; rowIndex--) {
             const row = [...patternState.pattern[rowIndex]].reverse();
-            const line = rowToWrittenString(row);
+            const line = rowToWrittenString(row, sequencedColor);
 
             htmlText += `<p>Row ${patternState.pattern.length - rowIndex}: ${line}</p>\n`;
         }
@@ -53,7 +54,7 @@ export const usePdf = (canvas: HTMLCanvasElement | undefined, patternState: IPat
                 doc.save(filename);
             }
         });
-    }, [patternState.pattern, patternState.name]);
+    }, [patternState.pattern, patternState.name, sequencedColor]);
 
     return { savePdf, writePatternToPdf }
 }
