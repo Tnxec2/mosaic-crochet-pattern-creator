@@ -1,24 +1,29 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { IPattern, useStore } from "../../context";
 import Canvas from "./canvas"
-import { Button, Modal } from "react-bootstrap";
+import { Button, Card, Nav, Navbar } from "react-bootstrap";
 
 import { useStateDebounced } from "../../services/debounce";
 import { PatternImport } from "../shared/patternImport";
+import { Link, useNavigate } from "react-router-dom";
+import { ImageFileLoaderComponent } from "./fileloader";
 
 const DEFAULT_BRIGHTNESS = 100;
 const DEFAULT_CONTRAST = 100;
 
-interface PROPS {
-  file: File,
-  onClose: () => void
-}
 
-export const ImportImageComponent: FC<PROPS> = ({ file, onClose }) => {
+
+export const ImportImageComponent = () => {
   const savePattern = useStore((state) => state.savePattern)
 
+  const navigate = useNavigate();
+
+  const [showOpenImageDialog, setShowOpenImageDialog] = useState(true)
+  const [fileImage, setFileImage] = useState<File | undefined>()
+
   const [image, setImage] = useState<string>()
-  const [imageName] = useState<string>(file.name)
+  const imageName = useMemo(() => fileImage?.name, [fileImage])
+
   const [processPattern, setProcessPattern] = useState(true)
   const [pattern, setPattern] = useState<IPattern>()
 
@@ -37,26 +42,28 @@ export const ImportImageComponent: FC<PROPS> = ({ file, onClose }) => {
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 })
 
   useEffect(() => {
-    const url = URL.createObjectURL(file)
+    if (fileImage) {
+      const url = URL.createObjectURL(fileImage)
 
-    setImage(url)
+      setImage(url)
 
-    var originalImage = new Image()
-    
-    originalImage.onload = () => {
-      const originalWidth = originalImage.width;
-      const originalHeight = originalImage.height;
-      setImageSize({ width: originalWidth, height: originalHeight })
+      var originalImage = new Image()
+
+      originalImage.onload = () => {
+        const originalWidth = originalImage.width;
+        const originalHeight = originalImage.height;
+        setImageSize({ width: originalWidth, height: originalHeight })
+      }
+      originalImage.src = url
+
+      return () => {
+        URL.revokeObjectURL(url)
+      }
     }
-    originalImage.src = url
-
-    return () => {
-      URL.revokeObjectURL(url)
-    }
-  }, [file])
+  }, [fileImage])
 
   const draw = useCallback((canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
-    if (canvas && image) {
+    if (canvas && image && imageName) {
       PatternImport.drawCanvas(
         image, imageName, canvas, ctx,
         brightness, contrast, colorsDebounced, widthDebounced, heightDebounced,
@@ -65,122 +72,141 @@ export const ImportImageComponent: FC<PROPS> = ({ file, onClose }) => {
     }
   }, [image, imageName, brightness, contrast, colorsDebounced, widthDebounced, heightDebounced, cutLeftDebounced, cutRightDebounced, cutTopDebounced, cutBottomDebounced, processPattern])
 
+  if (showOpenImageDialog) return <ImageFileLoaderComponent
+    onClose={() => { navigate("/") }}
+    onLoad={(data) => {
+      setShowOpenImageDialog(false)
+      setFileImage(data)
+    }
+    }
+  />
+
   return (
-    <Modal fullscreen show={true}>
-      <Modal.Header closeButton onHide={onClose}>
-        <Modal.Title>Import Image {file.name}</Modal.Title>
-      </Modal.Header>
+    <div>
+      <Navbar className="justify-content-between bg-body-tertiary px-3">
+        <Navbar.Brand>
+          Import Image
+        </Navbar.Brand>
+        <Nav.Link>
+          <Link to="/" >Back</Link>
+        </Nav.Link>
+      </Navbar>
 
-      <Modal.Body>
-        <div className="card">
-          <div className="card-body">
-            <div style={{ border: 'solid 1px lightgray', margin: 5, float: 'left', padding: 5 }} >
-              <div style={{ fontSize: 'small' }}>Original</div>
-              <img style={{ width: 100, paddingTop: 5 }} src={image} alt={file.name} />
-              <div style={{ fontSize: 'small' }}>{imageSize.width} x {imageSize.height}</div>
-              <div style={{ fontSize: 'small' }}>aspect ratio: {(Math.round((imageSize.height / imageSize.width) * 100) / 100).toFixed(2)}</div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ border: 'solid 1px lightgray', margin: 5, padding: 5, width: 'min-content' }}>
-                <Canvas
-                  id="canvasImport"
-                  draw={draw}
-                  className="canvas-import"
-                />
-              </div>
-              <div style={{ display: 'flex', height: 30, flex: 1 }}>
-                {pattern?.colors.map((c, index) => <div key={`color-${index}`} style={{ width: 30, backgroundColor: c, border: '1px solid black' }}>&nbsp;</div>)}
-              </div>
+
+      <Card className="mt-3 mx-3">
+        <Card.Body>
+          <h3>Crop original image, in pixel</h3>
+          <div className="input-group mb-1">
+            <span className="input-group-text">Left</span>
+            <input type="number" className="form-control" id="cutLeft" min={1} value={cutLeft} onChange={(e) => setCutLeft(Number(e.target.value))} />
+            <span className="input-group-text">Top</span>
+            <input type="number" className="form-control" id="cutTop" min={1} value={cutTop} onChange={(e) => setCutTop(Number(e.target.value))} />
+            <span className="input-group-text">Right</span>
+            <input type="number" className="form-control" id="cutRight" min={1} value={cutRight} onChange={(e) => setCutRight(Number(e.target.value))} />
+            <span className="input-group-text">Bottom</span>
+            <input type="number" className="form-control" id="cutBottom" min={1} value={cutBottom} onChange={(e) => setCutBottom(Number(e.target.value))} />
+            <button className="btn btn-outline-danger" type="button" title="reset crop dimensions"
+              onClick={() => {
+                setCutLeft(0)
+                setCutRight(0)
+                setCutTop(0)
+                setCutBottom(0)
+              }}
+            >✖</button>
+          </div>
+
+          <h3>Change color</h3>
+          <div className="input-group mb-1">
+            <span className="input-group-text">Brightness</span>
+            <input type="range" className="form-control" id="brightnessRange"
+              min={0} max={200} step={10}
+              value={brightness} onChange={(e) => setBrightness(Number(e.target.value))}
+            />
+            <span className="input-group-text">{brightness}</span>
+            <button className="btn btn-outline-danger" type="button" title="reset brightness to default"
+              onClick={() => { setBrightness(DEFAULT_BRIGHTNESS) }}
+            >✖</button>
+          </div>
+          <div className="input-group mb-1">
+            <span className="input-group-text">Contrast</span>
+            <input type="range" className="form-control" id="contrastRange"
+              min={0} max={200} step={10}
+              value={contrast} onChange={(e) => setContrast(Number(e.target.value))}
+            />
+            <span className="input-group-text">{contrast}</span>
+            <button className="btn btn-outline-danger" type="button" title="reset contrast to default"
+              onClick={() => { setContrast(DEFAULT_CONTRAST) }}
+            >✖</button>
+          </div>
+          <div className="input-group mb-1">
+            <span className="input-group-text">Colors</span>
+            <input type="number" className="form-control" id="colorsCount" min={1} max={255} step={1} value={colors} onChange={(e) => setColors(Number(e.target.value))} />
+          </div>
+
+          <h3>Set pattern size</h3>
+          <div className="input-group mb-1">
+            <span className="input-group-text">Width</span>
+            <input type="number" className="form-control" id="width" min={10} step={1} value={width} onChange={(e) => setWidth(Number(e.target.value))} />
+            <span className="input-group-text">x</span>
+            <span className="input-group-text">Height</span>
+            <input type="number" className="form-control" id="height" min={1} step={1} value={height} onChange={(e) => setHeight(Number(e.target.value))} />
+          </div>
+          <div className="input-group mb-1">
+            <span className="input-group-text" onClick={() => {
+              setProcessPattern(!processPattern)
+            }}>Process pattern</span>
+            <div className="input-group-text">
+              <input type="checkbox" className="form-check-input" id="processPattern" checked={processPattern} onChange={(e) => setProcessPattern(e.target.checked)} />
             </div>
           </div>
+        </Card.Body>
+      </Card>
+
+      <Card className="m-3">
+        <Card.Header className="d-flex justify-content-between align-items-center">
+          <Card.Title>
+            Filename: {fileImage?.name}
+          </Card.Title>
+          <div>
+          <Button variant="outline-secondary" onClick={() => {setShowOpenImageDialog(true)}}>
+            load other image
+          </Button>
+                  <Button variant="primary" className="ms-3" onClick={() => {
+          if (pattern) {
+            if (window.confirm('Do you really want to accept this pattern? All other changes in the main program will be lost.'))
+              savePattern(pattern);
+            navigate(-1);
+          }
+        }}>
+          Accept this pattern
+        </Button>
         </div>
-
-        <div className="card mt-3">
-          <div className="card-body">
-
-            <h3>Crop original image, in pixel</h3>
-            <div className="input-group mb-1">
-              <span className="input-group-text">Left</span>
-              <input type="number" className="form-control" id="cutLeft" min={1} value={cutLeft} onChange={(e) => setCutLeft(Number(e.target.value))} />
-              <span className="input-group-text">Top</span>
-              <input type="number" className="form-control" id="cutTop" min={1} value={cutTop} onChange={(e) => setCutTop(Number(e.target.value))} />
-              <span className="input-group-text">Right</span>
-              <input type="number" className="form-control" id="cutRight" min={1} value={cutRight} onChange={(e) => setCutRight(Number(e.target.value))} />
-              <span className="input-group-text">Bottom</span>
-              <input type="number" className="form-control" id="cutBottom" min={1} value={cutBottom} onChange={(e) => setCutBottom(Number(e.target.value))} />
-              <button className="btn btn-outline-danger" type="button" title="reset crop dimensions"
-                onClick={() => {
-                  setCutLeft(0)
-                  setCutRight(0)
-                  setCutTop(0)
-                  setCutBottom(0)
-                }}
-              >✖</button>
-            </div>
-
-            <h3>Change color</h3>
-            <div className="input-group mb-1">
-              <span className="input-group-text">Brightness</span>
-              <input type="range" className="form-control" id="brightnessRange"
-                min={0} max={200} step={10}
-                value={brightness} onChange={(e) => setBrightness(Number(e.target.value))}
+        </Card.Header>
+        <Card.Body>
+          <div style={{ border: 'solid 1px lightgray', margin: 5, float: 'left', padding: 5, fontSize: 'small' }} >
+            <div>Original</div>
+            <img className="py-1" width={100} src={image} alt={fileImage?.name} />
+            <div>{imageSize.width} x {imageSize.height}</div>
+            <div>aspect ratio: {(Math.round((imageSize.height / imageSize.width) * 100) / 100).toFixed(2)}</div>
+          </div>
+          <div className="d-flex flex-column">
+            <div style={{ border: 'solid 1px lightgray', margin: 5, padding: 5, width: 'min-content' }}>
+              <Canvas
+                id="canvasImport"
+                draw={draw}
+                className="canvas-import"
               />
-              <span className="input-group-text">{brightness}</span>
-              <button className="btn btn-outline-danger" type="button" title="reset brightness to default"
-                onClick={() => { setBrightness(DEFAULT_BRIGHTNESS) }}
-              >✖</button>
             </div>
-            <div className="input-group mb-1">
-              <span className="input-group-text">Contrast</span>
-              <input type="range" className="form-control" id="contrastRange"
-                min={0} max={200} step={10}
-                value={contrast} onChange={(e) => setContrast(Number(e.target.value))}
-              />
-              <span className="input-group-text">{contrast}</span>
-              <button className="btn btn-outline-danger" type="button" title="reset contrast to default"
-                onClick={() => { setContrast(DEFAULT_CONTRAST) }}
-              >✖</button>
-            </div>
-            <div className="input-group mb-1">
-              <span className="input-group-text">Colors</span>
-              <input type="number" className="form-control" id="colorsCount" min={1} max={255} step={1} value={colors} onChange={(e) => setColors(Number(e.target.value))} />
-            </div>
-
-            <h3>Set pattern size</h3>
-            <div className="input-group mb-1">
-              <span className="input-group-text">Width</span>
-              <input type="number" className="form-control" id="width" min={10} step={1} value={width} onChange={(e) => setWidth(Number(e.target.value))} />
-              <span className="input-group-text">x</span>
-              <span className="input-group-text">Height</span>
-              <input type="number" className="form-control" id="height" min={1} step={1} value={height} onChange={(e) => setHeight(Number(e.target.value))} />
-            </div>
-            <div className="input-group mb-1">
-              <span className="input-group-text" onClick={() => {
-                setProcessPattern(!processPattern)
-              }}>Process pattern</span>
-              <div className="input-group-text">
-                <input type="checkbox" className="form-check-input" id="processPattern" checked={processPattern} onChange={(e) => setProcessPattern(e.target.checked)} />
-              </div>
+            <div style={{ display: 'flex', height: 30, flex: 1 }}>
+              {pattern?.colors.map((c, index) => <div key={`color-${index}`} style={{ width: 30, backgroundColor: c, border: '1px solid black' }}>&nbsp;</div>)}
             </div>
           </div>
-        </div>
-        <div className="mt-3">
-          <Button variant="secondary" onClick={onClose}>
-            Close
-          </Button>
-          &nbsp;
-          <Button variant="primary" onClick={() => {
-            if (pattern) {
-              if (window.confirm('Do you really want to accept this pattern? All other changes in the main program will be lost.'))
-                savePattern(pattern)
-              onClose();
-            }
-          }}>
-            Accept this pattern
-          </Button>
-        </div>
-      </Modal.Body>
-    </Modal>
+        </Card.Body>
+      </Card>
+    </div>
+
+
+
 
   )
 }

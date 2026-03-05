@@ -103,13 +103,15 @@ export const rowToWrittenString = (row: any[], sequencedColor?: string ): string
     const groupedStitches = groupStitches(row);
     const sequenceParts = analyzeSequences(groupedStitches);
 
+    const noColor = [undefined, '#ffffff', '#ffffffff'].includes(sequencedColor)
+
     const line = sequenceParts.map(part => {
         const sequenceString = part.sequence
             .map(stitch => `${stitch.count} ${stitchTypeToWritten(stitch.type)}`)
             .join(', ');
 
         if (part.repeat > 1) {
-            return `(${[undefined, '#ffffff', '#ffffffff'].includes(sequencedColor) ? sequenceString : `<span style="background-color: ${sequencedColor || BACKGROUND_COLOR_WRITTEN_PATTERN_SEQUENCE};">${sequenceString}</span>`}) x ${part.repeat}`;
+            return `(${ noColor ? sequenceString : `<span style="background-color: ${sequencedColor || BACKGROUND_COLOR_WRITTEN_PATTERN_SEQUENCE};">${sequenceString}</span>`}) x ${part.repeat}`;
         }
         return sequenceString;
     }).join(', ');

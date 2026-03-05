@@ -7,34 +7,32 @@ import { FileLoaderComponent } from '../fileload/fileloader'
 import { IPattern, useStore } from '../../context'
 import { onSave } from '../../services/file.service'
 import { VERSION } from '../../model/constats'
-import { PreviewComponent } from '../export/preview'
+import { ExportComponent } from '../export/export'
 import { mug } from '../../sampledata/mug'
 import { nya } from '../../sampledata/nya'
 import { infinityBorder } from '../../sampledata/infinityborder'
 import { ImageFileLoaderComponent } from '../import/fileloader'
 import { ImportImageComponent } from '../import/importImage'
 import { initialPattern } from '../../model/patterncell.model'
+import { useNavigate } from 'react-router-dom'
 
 function NavbarComponent() {
     const {
         patternState,
         savePattern,
         newPattern,
-        showOpenFileDialog,
-        showPreviewDialog,
-        setShowOpenFileDialog,
-        setShowPreviewDialog,
         resetViewBox,
     } = useStore((state) => state)
+
+    const navigate = useNavigate();
+
+    const [showOpenFileDialog, setShowOpenFileDialog] = useState(false)
 
     const onLoad = useCallback((pattern: IPattern) => {
         savePattern(pattern)
         resetViewBox(pattern.pattern)
         setShowOpenFileDialog(false)
-    }, [resetViewBox, savePattern, setShowOpenFileDialog])
-
-    const [showOpenImageDialog, setShowOpenImageDialog] = useState(false)
-    const [fileImage, setFileImage] = useState<File | undefined>()
+    }, [resetViewBox, savePattern])
 
     return (
         <>
@@ -70,14 +68,14 @@ function NavbarComponent() {
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={() => setShowPreviewDialog(true)}
+                                    onClick={() => navigate('/export')}
                                 >
                                     Export Pattern
                                 </NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item
                                     href=""
-                                    onClick={() => setShowOpenImageDialog(true)}
+                                    onClick={() => navigate('/import')}
                                 >
                                     Import Image to Pattern
                                 </NavDropdown.Item>
@@ -172,31 +170,6 @@ function NavbarComponent() {
                 <FileLoaderComponent
                     onClose={() => setShowOpenFileDialog(false)}
                     onLoad={onLoad}
-                />
-            )}
-
-            {showPreviewDialog && (
-                <PreviewComponent
-                    onClose={() => setShowPreviewDialog(false)}
-                />
-            )}
-
-
-            {showOpenImageDialog && (
-                <ImageFileLoaderComponent
-                    onClose={() => setShowOpenImageDialog(false)}
-                    onLoad={ (data) => {
-                            setShowOpenImageDialog(false)
-                            setFileImage(data)
-                        }
-                    }
-                />
-            )}
-
-            {fileImage && (
-                <ImportImageComponent
-                    file={fileImage}
-                    onClose={() => setFileImage(undefined)}
                 />
             )}
         </>

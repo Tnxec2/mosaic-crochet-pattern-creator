@@ -3,10 +3,10 @@ import { IPattern } from '.';
 import { HistorySlice } from './historySlice';
 import { VieboxSlice } from './viewBoxSlice';
 import { getNewCell } from '../components/pattern/getnewcell';
-import { ACTION_TYPES, actionKeys, actionTypesToKey, keyToActionType, mirrorActionType } from '../model/actiontype.enum';
+import { ACTION_TYPES, actionKeys, keyToActionType, mirrorActionType } from '../model/actiontype.enum';
 import { BACKGROUND_COLOR_WRITTEN_PATTERN_SEQUENCE, DEFAULT_COLOR } from '../model/constats';
 import { initialPattern, IPatternCell } from '../model/patterncell.model';
-import { actionToCellType, CELL_TYPE } from '../model/patterntype.enum';
+import { CELL_TYPE } from '../model/patterntype.enum';
 
 export const createPatternSlice: StateCreator<
     PatternSlice & VieboxSlice & HistorySlice, [], [], PatternSlice
@@ -16,10 +16,6 @@ export const createPatternSlice: StateCreator<
     patternState: initialPattern,
     toggleStitch: true,
     setToggleStitch: (s: boolean) => set((state) => ({ toggleStitch: s })),
-    showOpenFileDialog: false,
-    setShowOpenFileDialog: (s: boolean) => set((state) => ({ showOpenFileDialog: s })),
-    showPreviewDialog: false,
-    setShowPreviewDialog: (s: boolean) => set((state) => ({ showPreviewDialog: s })),
     showCellStitchType: true,
     setShowCellStitchType: (s: boolean) => set((state) => ({ showCellStitchType: s })),
     mirrorVertical: false,
@@ -324,10 +320,6 @@ export interface PatternSlice {
     isPatternWindowed: boolean
     toggleIsPatternWindowed: () => void
     patternState: IPattern
-    showOpenFileDialog: boolean
-    setShowOpenFileDialog: (s: boolean) => void
-    showPreviewDialog: boolean
-    setShowPreviewDialog: (s: boolean) => void
     showCellStitchType: boolean
     setShowCellStitchType: (s: boolean) => void
     mirrorVertical: boolean

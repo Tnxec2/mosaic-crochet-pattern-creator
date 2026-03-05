@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import { ChangeEvent, FC, useCallback, useState } from 'react'
+import { Card, Col, Container, Row } from 'react-bootstrap'
 
 interface PROPS {
     onClose: () => void
@@ -19,28 +20,34 @@ export const ImageFileLoaderComponent: FC<PROPS> = ({ onLoad, onClose }) => {
     }, [])
 
     return (
-        <Modal show={true}>
-            <Modal.Header closeButton onHide={onClose}>
-                <Modal.Title>Load Image</Modal.Title>
-            </Modal.Header>
+        <Container>
+            <Row>
+                <Col>
+                <Card className='m-3'>
+                <Card.Header>
+                    <Card.Title>Load Image</Card.Title>
+                </Card.Header>
 
-            <Modal.Body>
-                <p>Select image file to load.</p>
-                <Form.Control
-                    type="file"
-                    accept="image/*"
-                    onChange={loadFileInput}
-                />
-            </Modal.Body>
+                <Card.Body>
+                    <p>Select image file to load.</p>
+                    <Form.Control
+                        type="file"
+                        accept="image/*"
+                        onChange={loadFileInput}
+                    />
+                </Card.Body>
 
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onClose}>
-                    Close
-                </Button>
-                <Button variant="primary" onClick={() => onLoad(file)}>
-                    Load
-                </Button>
-            </Modal.Footer>
-        </Modal>
+                <Card.Footer className='d-flex justify-content-between'>
+                    <Button variant="secondary" onClick={onClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={() => onLoad(file)}>
+                        Load
+                    </Button>
+                </Card.Footer>
+                </Card>
+                </Col>
+            </Row>
+        </Container>
     )
 }
