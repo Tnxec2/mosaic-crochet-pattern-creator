@@ -50,7 +50,7 @@ const drawPattern = (
   //let fontHeight = metricsCols.fontBoundingBoxAscent + metricsCols.fontBoundingBoxDescent;
   let actualHeight = Math.floor(metricsCols.actualBoundingBoxAscent + metricsCols.actualBoundingBoxDescent);
 
-  let cellSize = actualHeight + 4
+  let cellSize = Math.max(8, actualHeight + 4);
 
   let headerHeight = Math.ceil(metricsCols.width) + 10
 
@@ -71,6 +71,9 @@ const drawPattern = (
 
     canvas.width = w
     canvas.height = h
+
+    // console.log(w, h, cellSize);
+    
 
     drawGrid(
       ctx,
