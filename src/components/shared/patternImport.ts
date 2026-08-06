@@ -118,9 +118,13 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
     patternColumnsCount: number,
     patternRowsCount: number
   ) {
-    const factorX = Math.floor(imageWidth / patternColumnsCount);
-    const factorY = Math.floor(imageHeight / patternRowsCount);
+    const factorX = imageWidth / patternColumnsCount;
+    const factorY = imageHeight / patternRowsCount;
+    
+    console.log('generateColorGrid, init', imageWidth, imageHeight, patternColumnsCount, patternRowsCount, factorX, factorY);
+    
     const colorGrid = new Array(patternRowsCount);
+    
     var row = 0;
     for (let y = 0; y < imageHeight; y += factorY) {
       colorGrid[row] = [];
@@ -136,10 +140,11 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
   
         // extracting all pixels of the square
         const pixels = [];
+
         for (let yP = y; yP < y + factorY; yP++) {
           for (let xP = x; xP < x + factorX; xP++) {
             // extracting the position of the sample pixel
-            const pixelIndexPosition = (xP + yP * imageWidth) * 4;
+            const pixelIndexPosition = (Math.floor(xP) + Math.floor(yP) * imageWidth) * 4;
             pixels.push(
               rgbToHex(
                 imageData[pixelIndexPosition],
@@ -154,7 +159,7 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
       }
       row++;
     }
-  
+    console.log('generateColorGrid, finish', colorGrid.length, colorGrid[0].length);
     return colorGrid;
   }
   
@@ -235,8 +240,8 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
       pattern[rowIndex][0].c = rowColor[rowIndex]
     }
   
-    console.log(rowColor);
-    console.log(pattern);
+    // console.log(rowColor);
+    //console.log(pattern);
     
     //return pattern
   
@@ -322,10 +327,19 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
     return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
   }
   
-  function drawCanvas(image: string, imageName: string, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D,
-    brightness: number, contrast: number, colors: number, width: number, height: number,
+  function drawCanvas(
+    image: string, 
+    imageName: string, 
+    canvas: HTMLCanvasElement, 
+    ctx: CanvasRenderingContext2D,
+    brightness: number, 
+    contrast: number, 
+    colors: number, 
+    width: number, 
+    height: number,
     cutLeft: number, cutRight: number, cutTop: number, cutBottom: number,
-    processPattern: boolean, setPattern: (pattern: IPattern) => void
+    processPattern: boolean, 
+    setPattern: (pattern: IPattern) => void
   ) {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
   

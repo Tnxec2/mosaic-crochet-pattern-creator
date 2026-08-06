@@ -68,7 +68,10 @@ export const ImportImageComponent = () => {
         image, imageName, canvas, ctx,
         brightness, contrast, colorsDebounced, widthDebounced, heightDebounced,
         cutLeftDebounced, cutRightDebounced, cutTopDebounced, cutBottomDebounced,
-        processPattern, (pattern: IPattern) => { setPattern(pattern) })
+        processPattern, (pattern: IPattern) => {
+          console.log('setPattern', pattern.pattern.length, pattern.pattern[0].length);
+          
+          setPattern(pattern) })
     }
   }, [image, imageName, brightness, contrast, colorsDebounced, widthDebounced, heightDebounced, cutLeftDebounced, cutRightDebounced, cutTopDebounced, cutBottomDebounced, processPattern])
 
@@ -174,6 +177,8 @@ export const ImportImageComponent = () => {
                   <Button variant="primary" className="ms-3" onClick={() => {
           if (pattern) {
             if (window.confirm('Do you really want to accept this pattern? All other changes in the main program will be lost.'))
+              console.log('save pattern', pattern.pattern.length, pattern.pattern[0].length);
+              
               savePattern(pattern);
             navigate(-1);
           }
