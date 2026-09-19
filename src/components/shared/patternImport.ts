@@ -187,6 +187,15 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
   }
   
   function generatePattern2(colorGrid: [][], paletteHex: string[], processPattern: boolean): IPatternGrid {
+    
+    
+    // console.log("palette", paletteHex);
+    // console.log("grid colors", [...colorGrid.flat()]);
+    // console.log(
+    //   "invalid colors",
+    //   colorGrid.flat().filter(color => !paletteHex.includes(color))
+    // );
+
     const pattern: IPatternCell[][] = colorGrid.map((row) =>
       [
         { c: 0, t: CELL_TYPE.EMPTY },  // empty cell for row color
@@ -225,8 +234,7 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
     const mostColor = findWinner(row.map((c) => c.c))
     rowColor[0] = mostColor
     pattern[0][0].c = rowColor[0]
-    console.log(mostColor);
-    
+       
   
     for (let rowIndex = 1; rowIndex <= height; rowIndex++) {
       const row = pattern[rowIndex];
@@ -236,7 +244,8 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
           .map((c) => c.c)
           .filter((c) => c !== rowColor[rowIndex - 1])
       );
-      rowColor[rowIndex] = rowColor[rowIndex-1] === firstColor ? secondColor : firstColor
+      // rowColor[rowIndex] = rowColor[rowIndex-1] === firstColor ? secondColor : firstColor
+      rowColor[rowIndex] = mostColor;
       pattern[rowIndex][0].c = rowColor[rowIndex]
     }
   
@@ -369,17 +378,25 @@ function fillTransparentPixelsWithWhite(imageData: ImageData) {
       );
     
       const medianCut = new MedianCut(contrastedImageData);
-      const reducedImageData = medianCut.reduce(colors).data;
+      const reducedImage = medianCut.reduce(colors);
+
+      
+      
     
-      const paletteHex = medianCut.palette.map((color) =>
-        rgbToHex(color[0], color[1], color[2])
-      );
+      // const paletteHex = medianCut.colors.map((color) => 
+      //   rgbToHex(color[0], color[1], color[2])
+      // );
     
       const colorGrid = generateColorGrid(
-        reducedImageData,
+        reducedImage.data,
         canvas.width, canvas.height,
         width, height
       );
+
+      const paletteHex: string[] = [];
+      (new Set(colorGrid.flat())).forEach((color) => {
+        paletteHex.push(color)
+      })
     
       const pattern = generatePattern2(colorGrid, paletteHex, processPattern);
   
