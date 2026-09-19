@@ -1,6 +1,6 @@
 import { TVIEWBOX_SIZE } from "./patterntype.enum"
 
-export const VERSION = '1.6.7'
+export const VERSION = '1.6.8'
 
 
 export const KEY_STORAGE_OLD = 'com.kontranik.mosaiccrochetpattern.state'
